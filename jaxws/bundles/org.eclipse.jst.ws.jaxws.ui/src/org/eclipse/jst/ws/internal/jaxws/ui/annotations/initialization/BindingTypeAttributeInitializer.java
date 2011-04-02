@@ -11,14 +11,16 @@
 package org.eclipse.jst.ws.internal.jaxws.ui.annotations.initialization;
 
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.VALUE;
-import java.lang.annotation.Annotation;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import javax.xml.ws.http.HTTPBinding;
 import javax.xml.ws.soap.SOAPBinding;
+
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.AST;
@@ -49,10 +51,9 @@ public class BindingTypeAttributeInitializer extends AnnotationAttributeInitiali
         JAXWSUIPlugin.getDefault().getImageRegistry().put(HTTP_BINDING,
                 JAXWSUIPlugin.getImageDescriptor("icons/obj16/httpbinding_obj.gif").createImage()); //$NON-NLS-1$
     }
-
+    
     @Override
-    public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast,
-            Class<? extends Annotation> annotationClass) {
+    public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast, IType annotationType) {
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
         if (javaElement.getElementType() == IJavaElement.TYPE) {
             MemberValuePair value = AnnotationsCore.createStringMemberValuePair(ast, VALUE, getDefault()); //$NON-NLS-1$

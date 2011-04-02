@@ -317,9 +317,10 @@ public final class AnnotationUtils {
         final String annotationSimpleName = qualifiedName.substring(qualifiedName.lastIndexOf(".") + 1);
         final List<String> occurences = new ArrayList<String>();
         AnnotationDefinition annotationDefinition = AnnotationsManager.getAnnotationDefinitionForClass(qualifiedName);
+        annotationDefinition.setJavaProject(javaElement.getJavaProject());
         List<ElementType> elementTypes = Collections.emptyList();
         if (annotationDefinition != null) {
-            elementTypes = annotationDefinition.getTargets();
+            elementTypes = annotationDefinition.getAnnotationTypeTargets();
         }
         for (ElementType elementType : elementTypes) {
             if (elementType == ElementType.PACKAGE) {

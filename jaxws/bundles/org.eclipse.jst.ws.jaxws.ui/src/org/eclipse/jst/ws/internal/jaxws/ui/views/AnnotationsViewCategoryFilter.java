@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.ui.views;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -38,9 +38,8 @@ public class AnnotationsViewCategoryFilter extends ViewerFilter {
 
     @Override
     public boolean select(Viewer viewer, Object parentElement, Object element) {
-        if (element instanceof Class && ((Class<?>) element).isAnnotation()) {
-            AnnotationDefinition annotationDefinition = AnnotationsManager.
-            getAnnotationDefinitionForClass((Class<? extends Annotation>) element);
+        if (element instanceof IType) {
+            AnnotationDefinition annotationDefinition = AnnotationsManager.getAnnotationDefinitionForType((IType) element);
             if (annotationDefinition != null) {
                 return !categories.contains(annotationDefinition.getCategory());
             }
@@ -77,5 +76,4 @@ public class AnnotationsViewCategoryFilter extends ViewerFilter {
         IDialogSettings settings = JAXWSUIPlugin.getDefault().getDialogSettings();
         settings.put(TAG_CATEGORY_NAME, categories.toArray(new String[categories.size()]));
     }
-
 }

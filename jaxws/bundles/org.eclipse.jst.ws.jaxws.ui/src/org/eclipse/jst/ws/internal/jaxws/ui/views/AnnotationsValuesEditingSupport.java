@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.ui.views;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -27,10 +26,13 @@ import org.eclipse.jdt.core.IAnnotatable;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Annotation;
@@ -53,6 +55,7 @@ import org.eclipse.jst.ws.annotations.core.AnnotationsCorePlugin;
 import org.eclipse.jst.ws.annotations.core.AnnotationsManager;
 import org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
+import org.eclipse.jst.ws.internal.annotations.core.utils.SignatureUtils;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIMessages;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 import org.eclipse.ltk.core.refactoring.Change;
@@ -63,6 +66,7 @@ import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.text.edits.MultiTextEdit;
 
 public class AnnotationsValuesEditingSupport extends EditingSupport {
+
     private AnnotationsView annotationsView;
     private TreeViewer treeViewer;
 
@@ -85,97 +89,99 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
 
     @Override
     protected boolean canEdit(Object element) {
-        if (element instanceof Method) {
-            Method method = (Method)element;
-            return (Boolean) getValue(method.getDeclaringClass());
+        if (element instanceof IMethod) {
+            IMethod method = (IMethod) element;
+            return (Boolean) getValue(method.getDeclaringType());
         }
         return true;
     }
 
     @Override
     protected CellEditor getCellEditor(Object element) {
-        if (element instanceof Class) {
+        if (element instanceof IType) {
             return checkboxCellEditor;
         }
-        if (element instanceof Method) {
-            Method method = (Method) element;
-            final Class<?> returnType = method.getReturnType();
-            if (returnType.isEnum()) {
-                Object[] enumConstants = returnType.getEnumConstants();
-                String[] values = new String[enumConstants.length];
-                for (int i = 0; i < enumConstants.length; i++) {
-                    values[i] = enumConstants[i].toString();
+        if (element instanceof IMethod) {
+            try {
+                IMethod method = (IMethod) element;
+
+                IType enumType = SignatureUtils.getEnumReturnType(method);
+                if (enumType != null) {
+                    comboBoxCellEditor.setItems(SignatureUtils.getEnumConstantsNames(enumType));
+                    return comboBoxCellEditor;
                 }
-                comboBoxCellEditor.setItems(values);
-                return comboBoxCellEditor;
-            }
-            if (returnType.equals(Boolean.TYPE)) {
-                return checkboxCellEditor;
-            }
 
-            if (returnType.equals(Class.class)) {
-                return classDialogCellEditor;
-            }
+                final String returnType = method.getReturnType();
 
-            if (returnType.isArray()) {
-                annotationArrayCellEditor.setMethod(method);
-                return annotationArrayCellEditor;
-            }
-            if (returnType.isPrimitive()) {
-                textCellEditor.setValidator(new ICellEditorValidator() {
-                    public String isValid(Object value) {
-                        try {
-                            if (returnType.equals(Byte.TYPE)) {
-                                Byte.parseByte((String) value);
+                if (SignatureUtils.isBoolean(returnType)) {
+                    return checkboxCellEditor;
+                }
+
+                if (SignatureUtils.isClass(returnType)) {
+                    return classDialogCellEditor;
+                }
+
+                if (SignatureUtils.isArray(returnType)) {
+                    annotationArrayCellEditor.setMethod(method);
+                    return annotationArrayCellEditor;
+                }
+                if (SignatureUtils.isPrimitive(returnType)) {
+                    textCellEditor.setValidator(new ICellEditorValidator() {
+                        public String isValid(Object value) {
+                            try {
+                                if (returnType.charAt(0) == Signature.C_BYTE) {
+                                    Byte.parseByte((String) value);
+                                }
+                                if (returnType.charAt(0) == Signature.C_SHORT) {
+                                    Short.parseShort((String) value);
+                                }
+                                if (returnType.charAt(0) == Signature.C_INT) {
+                                    Integer.parseInt((String) value);
+                                }
+                                if (returnType.charAt(0) == Signature.C_LONG) {
+                                    Long.parseLong((String) value);
+                                }
+                                if (returnType.charAt(0) == Signature.C_FLOAT) {
+                                    Float.parseFloat((String) value);
+                                }
+                                if (returnType.charAt(0) == Signature.C_DOUBLE) {
+                                    Double.parseDouble((String) value);
+                                }
+                            } catch (NumberFormatException nfe) {
+                                return JAXWSUIMessages.ANNOTATION_EDITING_SUPPORT_NOT_VALID_MESSAGE_PREFIX + value;
                             }
-                            if (returnType.equals(Short.TYPE)) {
-                                Short.parseShort((String) value);
-                            }
-                            if (returnType.equals(Integer.TYPE)) {
-                                Integer.parseInt((String) value);
-                            }
-                            if (returnType.equals(Long.TYPE)) {
-                                Long.parseLong((String) value);
-                            }
-                            if (returnType.equals(Float.TYPE)) {
-                                Float.parseFloat((String) value);
-                            }
-                            if (returnType.equals(Double.TYPE)) {
-                                Double.parseDouble((String) value);
-                            }
-                        } catch (NumberFormatException nfe) {
-                            return JAXWSUIMessages.ANNOTATION_EDITING_SUPPORT_NOT_VALID_MESSAGE_PREFIX
-                            + returnType.getSimpleName();
+                            return null;
                         }
-                        return null;
-                    }
-                });
+                    });
+                    return textCellEditor;
+                }
                 return textCellEditor;
+            } catch (JavaModelException jme) {
+                JAXWSUIPlugin.log(jme.getStatus());
             }
-            return textCellEditor;
         }
         return checkboxCellEditor;
     }
 
     @Override
     protected Object getValue(Object element) {
-        if (element instanceof Class) {
-            return getValueForClass((Class<?>) element);
+        if (element instanceof IType) {
+            return getValueForClass((IType) element);
         }
-        if (element instanceof Method) {
-            return getValueForMethod((Method) element);
+        if (element instanceof IMethod) {
+            return getValueForMethod((IMethod) element);
         }
         return null;
     }
 
-    private Object getValueForClass(Class<?> aClass) {
+    private Object getValueForClass(IType type) {
         if (treeViewer.getInput() instanceof IAnnotatable) {
-            return getValueForClass(aClass, (IAnnotatable) treeViewer.getInput());
+            return getValueForClass(type, (IAnnotatable) treeViewer.getInput());
         }
         return Boolean.FALSE;
     }
 
-    private Object getValueForClass(Class<?> aClass, IAnnotatable annotatedElement) {
+    private Object getValueForClass(IType type, IAnnotatable annotatedElement) {
         if (annotatedElement instanceof ILocalVariable) {
             ILocalVariable localVariable = getLocalVariable(annotatedElement);
             if (localVariable != null) {
@@ -187,8 +193,8 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
             for (IAnnotation annotation : annotations) {
                 String annotationName = annotation.getElementName();
                 if (AnnotationUtils.isAnnotationPresent((IJavaElement)annotatedElement, annotationName)
-                        && (annotationName.equals(aClass.getSimpleName())
-                                || annotationName.equals(aClass.getCanonicalName()))) {
+                        && (annotationName.equals(type.getElementName())
+                                || annotationName.equals(type.getFullyQualifiedName()))) {
                     return Boolean.TRUE;
                 }
             }
@@ -198,7 +204,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         return Boolean.FALSE;
     }
 
-    private Object getValueForMethod(Method method) {
+    private Object getValueForMethod(IMethod method) {
         Object value = null;
         try {
             if (treeViewer.getInput() instanceof IAnnotatable) {
@@ -210,50 +216,51 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         return value;
     }
 
-    private Object getValueForMethod(Method method, IAnnotatable annotatedElement) throws JavaModelException {
+    private Object getValueForMethod(IMethod method, IAnnotatable annotatedElement) throws JavaModelException {
         if (annotatedElement instanceof ILocalVariable) {
             ILocalVariable localVariable = getLocalVariable(annotatedElement);
             if (localVariable != null) {
                 annotatedElement = localVariable;
             }
         }
-        Class<?> returnType = method.getReturnType();
+        String returnType = method.getReturnType();
         IAnnotation[] annotations = annotatedElement.getAnnotations();
         for (IAnnotation annotation : annotations) {
-            Class<?> declaringClass = method.getDeclaringClass();
+            IType declaringType = method.getDeclaringType();
+
             String annotationName = annotation.getElementName();
-            if (annotationName.equals(declaringClass.getSimpleName())
-                    || annotationName.equals(declaringClass.getCanonicalName())) {
+            if (annotationName.equals(declaringType.getElementName())
+                    || annotationName.equals(declaringType.getFullyQualifiedName())) {
                 IMemberValuePair[] memberValuePairs = annotation.getMemberValuePairs();
                 for (IMemberValuePair memberValuePair : memberValuePairs) {
-                    if (memberValuePair.getMemberName().equals(method.getName())) {
-                        if (returnType.equals(String.class)) {
+                    if (memberValuePair.getMemberName().equals(method.getElementName())) {
+                        if (SignatureUtils.isString(returnType)) {
                             return memberValuePair.getValue();
                         }
 
-                        if (returnType.isEnum()) {
+                        IType enumType = SignatureUtils.getEnumReturnType(method);
+                        if (enumType != null) {
                             String enumValue = memberValuePair.getValue().toString();
                             String literal = enumValue.substring(enumValue.lastIndexOf(".") + 1); //$NON-NLS-1$
-                            Object[] enumConstants = method.getReturnType().getEnumConstants();
+                            String[] enumConstants = SignatureUtils.getEnumConstantsNames(enumType);
                             for (int i = 0; i < enumConstants.length; i++) {
-                                if (enumConstants[i].toString().equals(literal)) {
+                                if (enumConstants[i].equals(literal)) {
                                     return i;
                                 }
                             }
                         }
-
-                        if (returnType.equals(Class.class)) {
+                        if (SignatureUtils.isClass(returnType)) {
                             return memberValuePair.getValue();
                         }
 
-                        if (returnType.equals(Boolean.TYPE)) {
+                        if (SignatureUtils.isBoolean(returnType)) {
                             return memberValuePair.getValue();
                         }
 
-                        if (returnType.isPrimitive()) {
+                        if (SignatureUtils.isPrimitive(returnType)) {
                             return ""; //$NON-NLS-1$
                         }
-                        if (returnType.isArray()) {
+                        if (SignatureUtils.isArray(returnType)) {
                             if (memberValuePair.getValueKind() == IMemberValuePair.K_CLASS) {
                                 Object[] arrayValues = (Object[])memberValuePair.getValue();
                                 for (int i = 0; i < arrayValues.length; i++) {
@@ -266,28 +273,35 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                         }
                     }
                 }
-                return getDefaultValueForMethod(returnType);
+                return getDefaultValueForMethod(method);
             }
         }
         return null;
     }
 
-    private Object getDefaultValueForMethod(Class<?> returnType) {
-        if (returnType.equals(String.class)) {
+    private Object getDefaultValueForMethod(IMethod method) throws JavaModelException {
+        String returnType = method.getReturnType();
+
+        if (SignatureUtils.isString(returnType)) {
             return ""; //$NON-NLS-1$
         }
-        if (returnType.equals(Boolean.TYPE)) {
+
+        if (SignatureUtils.isBoolean(returnType)) {
             return Boolean.FALSE;
         }
-        if (returnType.isEnum()) {
+
+        if (SignatureUtils.isEnum(method)) {
             return -1;
         }
-        if (returnType.isPrimitive()) {
+
+        if (SignatureUtils.isPrimitive(returnType)) {
             return ""; //$NON-NLS-1$
         }
-        if (returnType.isArray()) {
+
+        if (SignatureUtils.isArray(returnType)) {
             return new Object[] {};
         }
+
         return null;
     }
 
@@ -310,41 +324,34 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         }
 
         try {
-            if (element instanceof Class && ((Class<?>) element).isAnnotation()) {
-                @SuppressWarnings("unchecked")
-                Class<? extends java.lang.annotation.Annotation> annotationClass =
-                    (Class<? extends java.lang.annotation.Annotation>) element;
-                if (annotationClass != null) {
-                    setValueForClass(annotationClass, (Boolean) value);
-                }
+            if (element instanceof IType && ((IType) element).isAnnotation()) {
+                setValueForClass((IType) element, (Boolean) value);
             }
-            if (element instanceof Method) {
-                setValueForMethod((Method) element, value);
+
+            if (element instanceof IMethod) {
+                setValueForMethod((IMethod) element, value);
             }
         } catch (CoreException ce) {
             JAXWSUIPlugin.log(ce.getStatus());
         }
     }
 
-    private void setValueForClass(Class<? extends java.lang.annotation.Annotation> annotationClass,
-            Boolean annotate) throws CoreException {
+    private void setValueForClass(IType type, Boolean annotate) throws CoreException {
         Object viewerInput = treeViewer.getInput();
 
         IAnnotationAttributeInitializer annotationAttributeInitializer =
-            AnnotationsManager.getAnnotationDefinitionForClass(annotationClass).getAnnotationAttributeInitializer();
+            AnnotationsManager.getAnnotationDefinitionForClass(type.getFullyQualifiedName()).getAnnotationAttributeInitializer();
 
         if (viewerInput instanceof IJavaElement) {
-            setValueForClass(annotationClass, annotate, (IJavaElement) viewerInput, annotationAttributeInitializer);
+            setValueForClass(type, annotate, (IJavaElement) viewerInput, annotationAttributeInitializer);
         }
     }
 
-    private Annotation getAnnotation(AST ast, Class<? extends java.lang.annotation.Annotation> annotationClass,
-            List<MemberValuePair> memberValuePairs) {
-
+    private Annotation getAnnotation(AST ast, IType type, List<MemberValuePair> memberValuePairs) throws JavaModelException {
         Annotation annotation =  null;
-        int numberOfDeclaredMethods = annotationClass.getDeclaredMethods().length;
+        int numberOfDeclaredMethods = type.getMethods().length;
         if (numberOfDeclaredMethods == 0) {
-            annotation = AnnotationsCore.createMarkerAnnotation(ast, annotationClass.getSimpleName());
+            annotation = AnnotationsCore.createMarkerAnnotation(ast, type.getElementName());
         } else if (numberOfDeclaredMethods == 1) {
             Expression value = null;
             if (memberValuePairs != null && memberValuePairs.size() == 1) {
@@ -354,28 +361,27 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                 }
             }
             if (value != null) {
-                annotation = AnnotationsCore.createSingleMemberAnnotation(ast, annotationClass.getSimpleName(), value);
+                annotation = AnnotationsCore.createSingleMemberAnnotation(ast, type.getElementName(), value);
             } else {
-                annotation = AnnotationsCore.createNormalAnnotation(ast, annotationClass.getSimpleName(), memberValuePairs);
+                annotation = AnnotationsCore.createNormalAnnotation(ast, type.getElementName(), memberValuePairs);
             }
         } else if (numberOfDeclaredMethods > 1) {
-            annotation = AnnotationsCore.createNormalAnnotation(ast, annotationClass.getSimpleName(), memberValuePairs);
+            annotation = AnnotationsCore.createNormalAnnotation(ast, type.getElementName(), memberValuePairs);
         }
 
         return annotation;
     }
 
-    private void setValueForClass(Class<? extends java.lang.annotation.Annotation> annotationClass,
-            Boolean annotate, IJavaElement javaElement, IAnnotationAttributeInitializer annotationAttributeInitializer)
-    throws CoreException {
+    private void setValueForClass(IType type, Boolean annotate, IJavaElement javaElement,
+            IAnnotationAttributeInitializer annotationAttributeInitializer) throws CoreException {
         ICompilationUnit source = AnnotationUtils.getCompilationUnitFromJavaElement(javaElement);
         CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
         AST ast = compilationUnit.getAST();
 
         List<MemberValuePair> memberValuePairs = getMemberValuePairs(annotationAttributeInitializer, javaElement,
-                ast, annotationClass);
+                ast, type);
 
-        Annotation annotation = getAnnotation(ast, annotationClass, memberValuePairs);
+        Annotation annotation = getAnnotation(ast, type, memberValuePairs);
 
         TextFileChange change = new TextFileChange("Add/Remove Annotation", (IFile) source.getResource()); //$NON-NLS-1$
         MultiTextEdit multiTextEdit = new MultiTextEdit();
@@ -387,7 +393,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                     || javaElement.getElementType() == IJavaElement.FIELD
                     || javaElement.getElementType() == IJavaElement.METHOD
                     || javaElement.getElementType() == IJavaElement.LOCAL_VARIABLE) {
-                change.addEdit(AnnotationUtils.createAddImportTextEdit(javaElement, annotationClass.getCanonicalName()));
+                change.addEdit(AnnotationUtils.createAddImportTextEdit(javaElement, type.getFullyQualifiedName()));
                 change.addEdit(AnnotationUtils.createAddAnnotationTextEdit(javaElement, annotation));
             }
         } else {
@@ -396,25 +402,37 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                     || javaElement.getElementType() == IJavaElement.FIELD
                     || javaElement.getElementType() == IJavaElement.METHOD
                     || javaElement.getElementType() == IJavaElement.LOCAL_VARIABLE) {
-                change.addEdit(AnnotationUtils.createRemoveImportTextEdit(javaElement, annotationClass.getCanonicalName()));
+                change.addEdit(AnnotationUtils.createRemoveImportTextEdit(javaElement, type.getFullyQualifiedName()));
                 change.addEdit(AnnotationUtils.createRemoveAnnotationTextEdit(javaElement, annotation));
             }
         }
         executeChange(new NullProgressMonitor(), change);
     }
 
-    private List<MemberValuePair> getMemberValuePairs(
-            IAnnotationAttributeInitializer annotationAttributeInitializer, IJavaElement javaElement, AST ast,
-            Class<?extends java.lang.annotation.Annotation> annotationClass) {
+    private List<MemberValuePair> getMemberValuePairs(IAnnotationAttributeInitializer annotationAttributeInitializer,
+            IJavaElement javaElement, AST ast, IType type) {
         if (annotationAttributeInitializer != null) {
-            return annotationAttributeInitializer.getMemberValuePairs(javaElement, ast, annotationClass);
+            List<MemberValuePair> memberValuePairs = annotationAttributeInitializer.getMemberValuePairs(javaElement, ast, type);
+            if (memberValuePairs.size() > 0) {
+                return memberValuePairs;
+            } else {
+                return annotationAttributeInitializer.getMemberValuePairs(javaElement, ast,
+                        AnnotationsManager.getAnnotationDefinitionForType(type).getAnnotationClass());
+            }
         }
         return Collections.emptyList();
     }
 
-
-    private void setValueForMethod(Method method, Object value) throws CoreException {
-        if (((Boolean) getValue(method.getDeclaringClass())).booleanValue()) {
+    private void setValueForMethod(IMethod method, Object value) throws CoreException {
+        if (value instanceof String) {
+            Object currentValue = getValue(method);
+            if (currentValue != null && currentValue instanceof String) {
+                if (((String) value).equals(currentValue)) {
+                    return;
+                }
+            }
+        }
+        if (((Boolean) getValue(method.getDeclaringType())).booleanValue()) {
             Object viewerInput = treeViewer.getInput();
             if (viewerInput instanceof IAnnotatable) {
                 setValueForMethod(method, value, (IJavaElement) viewerInput);
@@ -422,7 +440,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         }
     }
 
-    private void setValueForMethod(Method method, Object value, IJavaElement javaElement) throws CoreException {
+    private void setValueForMethod(IMethod method, Object value, IJavaElement javaElement) throws CoreException {
         ICompilationUnit source = AnnotationUtils.getCompilationUnitFromJavaElement(javaElement);
         CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
         AST ast = compilationUnit.getAST();
@@ -435,14 +453,14 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         for (Annotation annotation : annotations) {
             if (annotation instanceof NormalAnnotation) {
                 NormalAnnotation normalAnnotation = (NormalAnnotation) annotation;
-                Class<?> declaringClass = method.getDeclaringClass();
+                IType declaringType = method.getDeclaringType();
                 String annotationName = normalAnnotation.getTypeName().getFullyQualifiedName();
-                if (annotationName.equals(declaringClass.getSimpleName()) || annotationName.equals(declaringClass.getCanonicalName())) {
+                if (annotationName.equals(declaringType.getElementName()) || annotationName.equals(declaringType.getFullyQualifiedName())) {
                     @SuppressWarnings("unchecked")
                     List<MemberValuePair> memberValuePairs = normalAnnotation.values();
                     boolean hasMemberValuePair = false;
                     for (MemberValuePair memberValuePair : memberValuePairs) {
-                        if (memberValuePair.getName().getIdentifier().equals(method.getName())) {
+                        if (memberValuePair.getName().getIdentifier().equals(method.getElementName())) {
                             ASTNode memberValue = getMemberValuePairValue(ast, method, value);
                             if (memberValue != null) {
                                 change.addEdit(AnnotationUtils.createUpdateMemberValuePairTextEdit(memberValuePair, memberValue));
@@ -461,9 +479,9 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                 }
             } else if (annotation instanceof SingleMemberAnnotation) {
                 SingleMemberAnnotation singleMemberAnnotation = (SingleMemberAnnotation) annotation;
-                Class<?> declaringClass = method.getDeclaringClass();
+                IType declaringType = method.getDeclaringType();
                 String annotationName = singleMemberAnnotation.getTypeName().getFullyQualifiedName();
-                if (annotationName.equals(declaringClass.getSimpleName()) || annotationName.equals(declaringClass.getCanonicalName())) {
+                if (annotationName.equals(declaringType.getElementName()) || annotationName.equals(declaringType.getFullyQualifiedName())) {
                     MemberValuePair memberValuePair = getMemberValuePair(ast, method, value);
                     if (memberValuePair != null) {
                         change.addEdit(AnnotationUtils.createUpdateSingleMemberAnnotationTextEdit(singleMemberAnnotation, memberValuePair.getValue()));
@@ -477,76 +495,108 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         executeChange(new NullProgressMonitor(), change);
     }
 
-    private ASTNode getMemberValuePairValue(AST ast, Method method, Object value) {
-        Class<?> returnType = method.getReturnType();
-        if (returnType.equals(String.class)) {
-            return AnnotationsCore.createStringLiteral(ast, value.toString());
+    private MemberValuePair getMemberValuePair(AST ast, IMethod method, Object value) throws JavaModelException {
+        String returnType = method.getReturnType();
+        if (SignatureUtils.isString(returnType)) {
+            return AnnotationsCore.createStringMemberValuePair(ast, method.getElementName(), (String) value);
         }
-        if (returnType.equals(Boolean.TYPE)) {
-            return AnnotationsCore.createBooleanLiteral(ast, ((Boolean) value).booleanValue());
+        if (SignatureUtils.isBoolean(returnType)) {
+            return AnnotationsCore.createBooleanMemberValuePair(ast, method.getElementName(), (Boolean) value);
         }
-        if (returnType.isPrimitive()
-                && (returnType.equals(Byte.TYPE) || returnType.equals(Short.TYPE)
-                        || returnType.equals(Integer.TYPE) || returnType.equals(Long.TYPE)
-                        || returnType.equals(Float.TYPE) || returnType.equals(Double.TYPE))) {
-            return AnnotationsCore.createNumberLiteral(ast, value.toString());
-        }
-        if (returnType.isArray()) {
-            if (method.getReturnType().getComponentType().isAnnotation()) {
-                return createArrayValueLiteral(ast, method, (Object[]) value);
-            } else {
-                return AnnotationsCore.createArrayValueLiteral(ast, (Object[]) value);
+
+        if (SignatureUtils.isPrimitive(returnType)) {
+            if (returnType.charAt(0) == Signature.C_BYTE
+                    || returnType.charAt(0) == Signature.C_SHORT
+                    || returnType.charAt(0) == Signature.C_INT
+                    || returnType.charAt(0) == Signature.C_LONG
+                    || returnType.charAt(0) == Signature.C_FLOAT
+                    || returnType.charAt(0) == Signature.C_DOUBLE) {
+                return AnnotationsCore.createNumberMemberValuePair(ast, method.getElementName(), value.toString());
             }
         }
 
-        if (returnType.equals(Class.class)) {
-            return AnnotationsCore.createTypeLiteral(ast, value.toString());
+        if (SignatureUtils.isArray(returnType)) {
+            IType componentType = getComponentType(method);
+            if (componentType != null) {
+                if (componentType.isAnnotation()) {
+                    return createArrayMemberValuePair(ast, method, (Object[]) value);
+                } else {
+                    return AnnotationsCore.createArrayMemberValuePair(ast, method.getElementName(), (Object[]) value);
+                }
+            }
         }
 
-        if (returnType.isEnum()) {
+        if (SignatureUtils.isClass(returnType)) {
+            return AnnotationsCore.createTypeMemberValuePair(ast, method.getElementName(), value.toString());
+        }
+
+        IType enumType = SignatureUtils.getEnumReturnType(method);
+        if (enumType != null) {
             int selected = ((Integer) value).intValue();
             if (selected != -1) {
-                return AnnotationsCore.createEnumLiteral(ast, method.getDeclaringClass().getCanonicalName(),
-                        method.getReturnType().getEnumConstants()[selected]);
+                if (enumType.isMember()) {
+                    return AnnotationsCore.createEnumMemberValuePair(ast, enumType.getDeclaringType().getFullyQualifiedName(),
+                            method.getElementName(), SignatureUtils.getEnumConstants(enumType)[selected]);
+                } else {
+                    return AnnotationsCore.createEnumMemberValuePair(ast, enumType.getFullyQualifiedName(),
+                            method.getElementName(), SignatureUtils.getEnumConstants(enumType)[selected]);
+                }
             }
         }
         return null;
     }
 
-    private MemberValuePair getMemberValuePair(AST ast, Method method, Object value) {
-        Class<?> returnType = method.getReturnType();
-        if (returnType.equals(String.class)) {
-            return AnnotationsCore.createStringMemberValuePair(ast, method.getName(), (String) value);
+    private ASTNode getMemberValuePairValue(AST ast, IMethod method, Object value) throws JavaModelException {
+        String returnType = method.getReturnType();
+        if (SignatureUtils.isString(returnType)) {
+            return AnnotationsCore.createStringLiteral(ast, value.toString());
         }
-        if (returnType.equals(Boolean.TYPE)) {
-            return AnnotationsCore.createBooleanMemberValuePair(ast, method.getName(), (Boolean) value);
+
+        if (SignatureUtils.isBoolean(returnType)) {
+            return AnnotationsCore.createBooleanLiteral(ast, ((Boolean) value).booleanValue());
         }
-        if (returnType.isPrimitive()
-                && (returnType.equals(Byte.TYPE) || returnType.equals(Short.TYPE)
-                        || returnType.equals(Integer.TYPE) || returnType.equals(Long.TYPE)
-                        || returnType.equals(Float.TYPE) || returnType.equals(Double.TYPE))) {
-            return AnnotationsCore.createNumberMemberValuePair(ast, method.getName(), value.toString());
-        }
-        if (returnType.isArray()) {
-            if (method.getReturnType().getComponentType().isAnnotation()) {
-                return createArrayMemberValuePair(ast, method, (Object[]) value);
-            } else {
-                return AnnotationsCore.createArrayMemberValuePair(ast, method.getName(), (Object[]) value);
+
+        if (SignatureUtils.isPrimitive(returnType)) {
+            if (returnType.charAt(0) == Signature.C_BYTE
+                    || returnType.charAt(0) == Signature.C_SHORT
+                    || returnType.charAt(0) == Signature.C_INT
+                    || returnType.charAt(0) == Signature.C_LONG
+                    || returnType.charAt(0) == Signature.C_FLOAT
+                    || returnType.charAt(0) == Signature.C_DOUBLE) {
+                return AnnotationsCore.createNumberLiteral(ast, value.toString());
             }
         }
 
-        if (returnType.equals(Class.class)) {
-            return AnnotationsCore.createTypeMemberValuePair(ast, method.getName(), value.toString());
+        if (SignatureUtils.isArray(returnType)) {
+            IType componentType = getComponentType(method);
+            if (componentType != null) {
+                if (componentType.isAnnotation()) {
+                    return createArrayValueLiteral(ast, method, (Object[]) value);
+                } else {
+                    return AnnotationsCore.createArrayValueLiteral(ast, (Object[]) value);
+                }
+            }
         }
 
-        if (returnType.isEnum()) {
+        if (SignatureUtils.isClass(returnType)) {
+            return AnnotationsCore.createTypeLiteral(ast, value.toString());
+        }
+
+
+        IType enumType = SignatureUtils.getEnumReturnType(method);
+        if (enumType != null) {
             int selected = ((Integer) value).intValue();
             if (selected != -1) {
-                return AnnotationsCore.createEnumMemberValuePair(ast,
-                        method.getDeclaringClass().getCanonicalName(), method.getName(), method.getReturnType()
-                        .getEnumConstants()[selected]);
+                if (enumType.isMember()) {
+                    return AnnotationsCore.createEnumLiteral(ast, enumType.getDeclaringType().getFullyQualifiedName(),
+                            SignatureUtils.getEnumConstants(enumType)[selected]);
+                } else {
+                    return AnnotationsCore.createEnumLiteral(ast, enumType.getFullyQualifiedName(),
+                            SignatureUtils.getEnumConstants(enumType)[selected]);
+                }
             }
         }
+
         return null;
     }
 
@@ -578,65 +628,76 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         annotationsView.refreshLabels();
     }
 
-    private MemberValuePair createArrayMemberValuePair(AST ast, Method method, Object[] values) {
-        return AnnotationsCore.createMemberValuePair(ast, method.getName(), createArrayValueLiteral(ast,
+    private MemberValuePair createArrayMemberValuePair(AST ast, IMethod method, Object[] values) throws JavaModelException {
+        return AnnotationsCore.createMemberValuePair(ast, method.getElementName(), createArrayValueLiteral(ast,
                 method, values));
     }
 
-    @SuppressWarnings("unchecked")
-    private ArrayInitializer createArrayValueLiteral(AST ast, Method method, Object[] values) {
+    private IType getComponentType(IMethod method) throws JavaModelException {
+        String returnType = method.getReturnType();
+        if (SignatureUtils.isArray(returnType)) {
+            String elementType = Signature.getElementType(returnType);
+            IType declaringType = method.getDeclaringType();
+            IJavaProject javaProject = declaringType.getJavaProject();
+            if (javaProject != null) {
+                return javaProject.findType(Signature.toString(elementType));
+            }
+        }
+        return null;
+    }
+
+    private ArrayInitializer createArrayValueLiteral(AST ast, IMethod method, Object[] values) throws JavaModelException {
         ArrayInitializer arrayInitializer = ast.newArrayInitializer();
         for (Object value : values) {
-            if (value instanceof List) {
-                Class<? extends java.lang.annotation.Annotation> annotationClass =
-                    (Class<? extends java.lang.annotation.Annotation>) method.getReturnType().getComponentType();
+            if (value instanceof List<?>) {
+                IType componentType = getComponentType(method);
+                if (componentType != null) {
 
-                List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
-
-                List<Map<String, Object>> valuesList = (List<Map<String, Object>>) value;
-                Iterator<Map<String, Object>> valuesIterator = valuesList.iterator();
-                while (valuesIterator.hasNext()) {
-                    Map<String, Object> annotationMap = valuesIterator.next();
-                    Set<Entry<String, Object>> entrySet = annotationMap.entrySet();
-                    Iterator<Map.Entry<String, Object>> iterator = entrySet.iterator();
-                    while (iterator.hasNext()) {
-                        Map.Entry<java.lang.String, Object> entry = iterator.next();
-                        String memberName = entry.getKey();
-                        try {
-                            Method annotationMethod = annotationClass.getMethod(memberName, new Class[0]);
-                            if (annotationMethod != null) {
-                                Object memberValue = entry.getValue();
-                                Class<?> returnType = annotationMethod.getReturnType();
-                                if (returnType.equals(String.class)) {
-                                    memberValuePairs.add(AnnotationsCore.createStringMemberValuePair(ast, memberName,
-                                            memberValue.toString()));
-                                }
-                                if (returnType.equals(Boolean.TYPE)) {
-                                    memberValuePairs.add(AnnotationsCore.createBooleanMemberValuePair(ast, memberName,
-                                            (Boolean) memberValue));
-                                }
-                                if (returnType.equals(Class.class)) {
-                                    String className = memberValue.toString();
-                                    if (className.endsWith(".class")) {
-                                        className = className.substring(0, className.lastIndexOf("."));
+                    List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
+                    @SuppressWarnings("unchecked")
+                    List<Map<String, Object>> valuesList = (List<Map<String, Object>>) value;
+                    Iterator<Map<String, Object>> valuesIterator = valuesList.iterator();
+                    while (valuesIterator.hasNext()) {
+                        Map<String, Object> annotationMap = valuesIterator.next();
+                        Set<Entry<String, Object>> entrySet = annotationMap.entrySet();
+                        Iterator<Map.Entry<String, Object>> iterator = entrySet.iterator();
+                        while (iterator.hasNext()) {
+                            Map.Entry<java.lang.String, Object> entry = iterator.next();
+                            String memberName = entry.getKey();
+                            try {
+                                IMethod annotationMethod = componentType.getMethod(memberName, new String[] {});
+                                if (annotationMethod != null) {
+                                    Object memberValue = entry.getValue();
+                                    String returnType = annotationMethod.getReturnType();
+                                    if (SignatureUtils.isString(returnType)) {
+                                        memberValuePairs.add(AnnotationsCore.createStringMemberValuePair(ast, memberName,
+                                                memberValue.toString()));
                                     }
-                                    memberValuePairs.add(AnnotationsCore.createMemberValuePair(ast, memberName,
-                                            AnnotationsCore.createTypeLiteral(ast, className)));
+                                    if (SignatureUtils.isBoolean(returnType)) {
+                                        memberValuePairs.add(AnnotationsCore.createBooleanMemberValuePair(ast, memberName,
+                                                (Boolean) memberValue));
+                                    }
+                                    if (SignatureUtils.isClass(returnType)) {
+                                        String className = memberValue.toString();
+                                        if (className.endsWith(".class")) {
+                                            className = className.substring(0, className.lastIndexOf("."));
+                                        }
+                                        memberValuePairs.add(AnnotationsCore.createMemberValuePair(ast, memberName,
+                                                AnnotationsCore.createTypeLiteral(ast, className)));
+                                    }
+                                    //                                if (returnType.isPrimitive()) {
+                                    //                                    memberValuePairs.add(getNumberMemberValuePair(ast, memberName, memberValue));
+                                    //                                }
                                 }
-                                //                                if (returnType.isPrimitive()) {
-                                //                                    memberValuePairs.add(getNumberMemberValuePair(ast, memberName, memberValue));
-                                //                                }
-                            }
 
-                        } catch (SecurityException se) {
-                            AnnotationsCorePlugin.log(se);
-                        } catch (NoSuchMethodException nsme) {
-                            AnnotationsCorePlugin.log(nsme);
+                            } catch (SecurityException se) {
+                                AnnotationsCorePlugin.log(se);
+                            }
                         }
                     }
+                    arrayInitializer.expressions().add(AnnotationsCore.createNormalAnnotation(ast, componentType.getFullyQualifiedName(),
+                            memberValuePairs));
                 }
-                arrayInitializer.expressions().add(AnnotationsCore.createNormalAnnotation(ast, annotationClass.getCanonicalName(),
-                        memberValuePairs));
             }
         }
         return arrayInitializer;

@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.MemberValuePair;
@@ -40,59 +41,65 @@ import org.eclipse.ui.PlatformUI;
  */
 public abstract class AnnotationAttributeInitializer implements IAnnotationAttributeInitializer {
 
-    protected static final String MISSING_IDENTIFER = "$missing$";
+	protected static final String MISSING_IDENTIFER = "$missing$";
 
-    protected AnnotationAttributeInitializer() {
+	protected AnnotationAttributeInitializer() {
+	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer#getMemberValuePairs(org.eclipse.jdt.core.IJavaElement, org.eclipse.jdt.core.dom.AST, java.lang.Class)
+	 */
+	@Deprecated
+	public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast,  Class<? extends Annotation> annotationClass) {
+		return Collections.emptyList();
+	}
+
+	/**
+	 * @see org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer#getMemberValuePairs(org.eclipse.jdt.core.IJavaElement, org.eclipse.jdt.core.dom.AST, java.lang.Class)
+	 * @since 1.1
+	 */
+	public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast, IType type) {
+	    return Collections.emptyList();
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer#getMemberValuePairs(org.eclipse.jdt.core.IJavaElement, org.eclipse.jdt.core.dom.AST, java.lang.Class)
-     */
-    public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast,
-            Class<? extends Annotation> annotationClass) {
-        return Collections.emptyList();
-    }
+	/* (non-Javadoc)
+	 * @see org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer#getCompletionProposalsForMemberValuePair(org.eclipse.jdt.core.IJavaElement, org.eclipse.jdt.core.dom.MemberValuePair)
+	 */
+	public List<ICompletionProposal> getCompletionProposalsForMemberValuePair(IJavaElement javaElement,
+			MemberValuePair memberValuePair) {
+		return Collections.emptyList();
+	}
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer#getCompletionProposalsForMemberValuePair(org.eclipse.jdt.core.IJavaElement, org.eclipse.jdt.core.dom.MemberValuePair)
-     */
-    public List<ICompletionProposal> getCompletionProposalsForMemberValuePair(IJavaElement javaElement,
-            MemberValuePair memberValuePair) {
-        return Collections.emptyList();
-    }
+	/* (non-Javadoc)
+	 * @see org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer#getCompletionProposalsForSingleMemberAnnotation(org.eclipse.jdt.core.IJavaElement, org.eclipse.jdt.core.dom.SingleMemberAnnotation)
+	 */
+	public List<ICompletionProposal> getCompletionProposalsForSingleMemberAnnotation(IJavaElement javaElement,
+			SingleMemberAnnotation singleMemberAnnotation) {
+		return Collections.emptyList();
+	}
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer#getCompletionProposalsForSingleMemberAnnotation(org.eclipse.jdt.core.IJavaElement, org.eclipse.jdt.core.dom.SingleMemberAnnotation)
-     */
-    public List<ICompletionProposal> getCompletionProposalsForSingleMemberAnnotation(IJavaElement javaElement,
-            SingleMemberAnnotation singleMemberAnnotation) {
-        return Collections.emptyList();
-    }
+	protected CompletionProposal createCompletionProposal(String proposal, Expression value) {
+		Image image = PlatformUI.getWorkbench().getSharedImages().getImage(org.eclipse.ui.ISharedImages.IMG_OBJ_FILE);
+		return createCompletionProposal(proposal, value, image, proposal);
+	}
 
-    protected CompletionProposal createCompletionProposal(String proposal, Expression value) {
-        Image image = PlatformUI.getWorkbench().getSharedImages().getImage(org.eclipse.ui.ISharedImages.IMG_OBJ_FILE);
-        return createCompletionProposal(proposal, value, image, proposal);
-    }
+	protected CompletionProposal createCompletionProposal(String proposal, Expression value, Image image, String displayString) {
+		int replacementOffset = value.getStartPosition();
+		int replacementLength = 0;
+		if (value.toString().equals(MISSING_IDENTIFER)) {
+			if (proposal.charAt(0) != '\"') {
+				proposal = "\"" + proposal;
+			}
+			if (proposal.charAt(proposal.length() - 1) != '\"') {
+				proposal = proposal + "\"";
+			}
+		} else {
+			replacementOffset += 1;
+			replacementLength = value.getLength() - 2;
+		}
 
-    protected CompletionProposal createCompletionProposal(String proposal, Expression value, Image image,
-            String displayString) {
-        int replacementOffset = value.getStartPosition();
-        int replacementLength = 0;
-        if (value.toString().equals(MISSING_IDENTIFER)) {
-            if (proposal.charAt(0) != '\"') {
-                proposal = "\"" + proposal;
-            }
-            if (proposal.charAt(proposal.length() - 1) != '\"') {
-                proposal = proposal + "\"";
-            }
-        } else {
-            replacementOffset += 1;
-            replacementLength = value.getLength() - 2;
-        }
-
-        return new CompletionProposal(proposal, replacementOffset, replacementLength, proposal.length(),
-                image, displayString, null, null);
-    }
+		return new CompletionProposal(proposal, replacementOffset, replacementLength, proposal.length(),
+				image, displayString, null, null);
+	}
 
 }

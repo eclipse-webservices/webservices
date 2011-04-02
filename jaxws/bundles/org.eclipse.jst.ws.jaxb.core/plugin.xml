@@ -17,15 +17,6 @@
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlAccessorType"
             name="XmlAccessorType"/>
-      
-      <!-- TODO Reinstate when XmlAdapter issue is solved
-      <annotation
-            category="jaxb.category"
-            class="javax.xml.bind.annotation.adapters.XmlAdapter"
-            name="XmlAdapter">
-      </annotation>
-      -->
-      
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlAnyAttribute"
@@ -177,5 +168,5 @@
             name="XmlValue">
       </annotation>
    </extension>
-   
+
 </plugin>

@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.ui.views;
 
-import java.lang.reflect.Method;
-
+import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.ui.ISharedImages;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -22,22 +22,22 @@ public class AnnotationsColumnLabelProvider extends ColumnLabelProvider {
 
     @Override
     public String getText(Object element) {
-        if (element instanceof Class) {
-            return ((Class<?>)element).getName();
+        if (element instanceof IType) {
+            return ((IType) element).getFullyQualifiedName();
         }
         
-        if (element instanceof Method) {
-            return ((Method)element).getName();
+        if (element instanceof IMethod) {
+            return ((IMethod) element).getElementName();
         }
         return ""; //$NON-NLS-1$
     }
 
     @Override
     public Image getImage(Object element) {
-        if (element instanceof Class) {
+        if (element instanceof IType) {
             return JavaUI.getSharedImages().getImage(ISharedImages.IMG_OBJS_ANNOTATION);
         }
-        if (element instanceof Method) {
+        if (element instanceof IMethod) {
             return PlatformUI.getWorkbench().getSharedImages().getImage(
                     org.eclipse.ui.ISharedImages.IMG_OBJ_FILE);
         }

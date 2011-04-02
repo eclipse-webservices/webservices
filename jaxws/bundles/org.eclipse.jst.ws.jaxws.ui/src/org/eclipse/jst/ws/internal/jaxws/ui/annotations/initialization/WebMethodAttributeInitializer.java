@@ -13,7 +13,6 @@ package org.eclipse.jst.ws.internal.jaxws.ui.annotations.initialization;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.ACTION;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.OPERATION_NAME;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,22 +29,20 @@ import org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 
 public class WebMethodAttributeInitializer extends AnnotationAttributeInitializer {
-    
+        
     @Override
-    public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast,
-            Class<? extends Annotation> annotationClass) {
+    public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast, IType annotationType) {
 
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
 
         if (javaElement.getElementType() == IJavaElement.METHOD) {
             IMethod method = (IMethod) javaElement;
-            IType type = method.getCompilationUnit().findPrimaryType();
             
             MemberValuePair operationValuePair = AnnotationsCore.createStringMemberValuePair(ast, 
-                    OPERATION_NAME, getOperationNameValue(type, method));
+                    OPERATION_NAME, getOperationNameValue(method));
 
             MemberValuePair actionValuePair = AnnotationsCore.createStringMemberValuePair(ast, 
-                    ACTION, getActionValue(type, method));
+                    ACTION, getActionValue(method));
 
             memberValuePairs.add(operationValuePair);
             memberValuePairs.add(actionValuePair);
@@ -61,17 +58,16 @@ public class WebMethodAttributeInitializer extends AnnotationAttributeInitialize
         
         if (javaElement.getElementType() == IJavaElement.METHOD) {
             IMethod method = (IMethod) javaElement;
-            IType type = method.getCompilationUnit().findPrimaryType();
             
             String memberValuePairName = memberValuePair.getName().getIdentifier();
 
             if (memberValuePairName.equals(OPERATION_NAME)) {
-                completionProposals.add(createCompletionProposal(getOperationNameValue(type, method), 
+                completionProposals.add(createCompletionProposal(getOperationNameValue(method), 
                 		memberValuePair.getValue()));
             }
             
             if (memberValuePairName.equals(ACTION)) {
-                completionProposals.add(createCompletionProposal(getActionValue(type, method),
+                completionProposals.add(createCompletionProposal(getActionValue(method),
                 		memberValuePair.getValue()));
             }
 
@@ -79,7 +75,7 @@ public class WebMethodAttributeInitializer extends AnnotationAttributeInitialize
         return completionProposals;
     }
 
-    private String getOperationNameValue(IType type, IMethod method) {
+    private String getOperationNameValue(IMethod method) {
         try {
             return method.getElementName() + JAXWSUtils.accountForOverloadedMethods(method);
         } catch (JavaModelException jme) {
@@ -88,7 +84,7 @@ public class WebMethodAttributeInitializer extends AnnotationAttributeInitialize
         return ""; //$NON-NLS-1$
     }
     
-    private String getActionValue(IType type, IMethod method) {
+    private String getActionValue(IMethod method) {
         try {
             String methodName = method.getElementName();
             return "urn:" + methodName.substring(0, 1).toUpperCase()  //$NON-NLS-1$

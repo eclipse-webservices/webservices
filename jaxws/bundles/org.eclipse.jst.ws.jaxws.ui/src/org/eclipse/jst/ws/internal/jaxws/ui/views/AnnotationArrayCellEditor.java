@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.ui.views;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,9 +19,12 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMemberValuePair;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.ISharedImages;
@@ -39,6 +41,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jst.ws.internal.annotations.core.utils.SignatureUtils;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIMessages;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 import org.eclipse.swt.SWT;
@@ -59,7 +62,7 @@ import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.dialogs.SelectionStatusDialog;
 
 public class AnnotationArrayCellEditor extends DialogCellEditor {
-    private Method method;
+    private IMethod method;
     private Object[] values;
 
     private List<Object> originalValues;
@@ -89,7 +92,7 @@ public class AnnotationArrayCellEditor extends DialogCellEditor {
         return values;
     }
 
-    public void setMethod(Method method) {
+    public void setMethod(IMethod method) {
         this.method = method;
         if (updatedValues != null) {
             updatedValues.clear();
@@ -184,263 +187,296 @@ public class AnnotationArrayCellEditor extends DialogCellEditor {
         protected Control createDialogArea(Composite parent) {
             Composite mainComposite = (Composite) super.createDialogArea(parent);
 
-            GridLayout gridLayout = new GridLayout(3, false);
-            mainComposite.setLayout(gridLayout);
+            try {
+                GridLayout gridLayout = new GridLayout(3, false);
+                mainComposite.setLayout(gridLayout);
 
-            GridData gridData = new GridData(SWT.FILL, SWT.BEGINNING, false, false);
-            gridData.widthHint = 800;
-            mainComposite.setLayoutData(gridData);
+                GridData gridData = new GridData(SWT.FILL, SWT.BEGINNING, false, false);
+                gridData.widthHint = 800;
+                mainComposite.setLayoutData(gridData);
 
-            Composite typeComposite = new Composite(mainComposite, SWT.NONE);
-            gridLayout = new GridLayout(3, false);
-            typeComposite.setLayout(gridLayout);
-            gridData = new GridData(SWT.FILL, SWT.BEGINNING, true, true);
-            typeComposite.setLayoutData(gridData);
+                Composite typeComposite = new Composite(mainComposite, SWT.NONE);
+                gridLayout = new GridLayout(3, false);
+                typeComposite.setLayout(gridLayout);
+                gridData = new GridData(SWT.FILL, SWT.BEGINNING, true, true);
+                typeComposite.setLayoutData(gridData);
 
-            final Class<?> componentType = method.getReturnType().getComponentType();
-            if (componentType.isAnnotation()) {
-                Label compontTypeLabel = new Label(typeComposite, SWT.NONE);
-                compontTypeLabel.setText("@" + componentType.getName()); //$NON-NLS-1$
-                gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-                gridData.horizontalSpan = 3;
-                compontTypeLabel.setLayoutData(gridData);
+                final IType componentType = getComponentType(method);
+                if (componentType != null) {
+                    if (componentType.isAnnotation()) {
+                        Label compontTypeLabel = new Label(typeComposite, SWT.NONE);
+                        compontTypeLabel.setText("@" + componentType.getFullyQualifiedName()); //$NON-NLS-1$
+                        gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+                        gridData.horizontalSpan = 3;
+                        compontTypeLabel.setLayoutData(gridData);
 
-                Method[] methods = componentType.getDeclaredMethods();
-                for (Method method : methods) {
-                    Label label = new Label(typeComposite, SWT.NONE);
-                    label.setText(method.getName() + ":"); //$NON-NLS-1$
-                    createEntryFields(method, typeComposite);
-                }
-            } else {
-                Label label = new Label(typeComposite, SWT.NONE);
-                label.setText(method.getReturnType().getSimpleName());
-                createEntryFields(method, typeComposite);
-            }
-
-            Composite buttonComposite = new Composite(mainComposite, SWT.NONE);
-            gridLayout = new GridLayout(1, false);
-            buttonComposite.setLayout(gridLayout);
-
-            addButton = new Button(buttonComposite, SWT.PUSH);
-            addButton.setText(JAXWSUIMessages.ANNOTATION_ARRAY_CELL_EDITOR_ADD_LABEL);
-            addButton.addSelectionListener(new SelectionAdapter() {
-                @Override
-                public void widgetSelected(SelectionEvent event) {
-                    Set<Entry<String, Control>> entrySet = controls.entrySet();
-                    Iterator<Map.Entry<String, Control>> iterator = entrySet.iterator();
-                    List<Map<String, Object>> aList = new ArrayList<Map<String,Object>>();
-                    while (iterator.hasNext()) {
-                        Map.Entry<String, Control> entry = iterator.next();
-                        if (entry.getValue() instanceof Text) {
-                            Text textField = (Text) entry.getValue();
-                            Method method = (Method) textField.getData();
-                            if (textField.getText().trim().length() > 0) {
-                                if (componentType.isAnnotation()) {
-                                    Map<String, Object> memberValuePairs = new HashMap<String, Object>();
-                                    memberValuePairs.put(method.getName(), textField.getText());
-                                    aList.add(memberValuePairs);
-                                } else {
-                                    updatedValues.add(textField.getText());
-                                }
-                            }
+                        IMethod[] methods = componentType.getMethods();
+                        for (IMethod method : methods) {
+                            Label label = new Label(typeComposite, SWT.NONE);
+                            label.setText(method.getElementName() + ":"); //$NON-NLS-1$
+                            createEntryFields(method, typeComposite);
                         }
-                        if (entry.getValue() instanceof Button) {
-                            Button button = (Button) entry.getValue();
-                            Method method = (Method) button.getData();
-                            if (componentType.isAnnotation()) {
-                                Map<String, Object> memberValuePairs = new HashMap<String, Object>();
-                                memberValuePairs.put(method.getName(), button.getSelection());
-                                aList.add(memberValuePairs);
-                            } else {
-                                updatedValues.add(button.getSelection());
-                            }
-                        }
-
-                    }
-                    if (aList.size() > 0) {
-                        updatedValues.add(aList);
-                    }
-                    arrayValuesTableViewer.refresh();
-                }
-            });
-            gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
-            addButton.setLayoutData(gridData);
-
-            removeButton = new Button(buttonComposite, SWT.PUSH);
-            removeButton.setText(JAXWSUIMessages.ANNOTATION_ARRAY_CELL_EDITOR_REMOVE_LABEL);
-            removeButton.addSelectionListener(new SelectionAdapter() {
-                @Override
-                public void widgetSelected(SelectionEvent event) {
-                    ISelection selection = arrayValuesTableViewer.getSelection();
-                    if (selection != null && !selection.isEmpty()) {
-                        int index = arrayValuesTable.getSelectionIndex();
-                        updatedValues.remove(index);
-                        arrayValuesTableViewer.refresh();
+                    } else {
+                        Label label = new Label(typeComposite, SWT.NONE);
+                        label.setText(Signature.getSimpleName(Signature.toString(method.getReturnType())));
+                        createEntryFields(method, typeComposite);
                     }
                 }
-            });
-            gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
-            removeButton.setLayoutData(gridData);
 
-            upButton = new Button(buttonComposite, SWT.PUSH);
-            upButton.setText(JAXWSUIMessages.ANNOTATION_ARRAY_CELL_EDITOR_UP_LABEL);
-            upButton.addSelectionListener(new SelectionAdapter() {
-                @Override
-                public void widgetSelected(SelectionEvent e) {
-                    moveSelectedElememtUp(getSelectedElement(), getTableViewer());
-                }
-            });
+                Composite buttonComposite = new Composite(mainComposite, SWT.NONE);
+                gridLayout = new GridLayout(1, false);
+                buttonComposite.setLayout(gridLayout);
 
-            gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
-            upButton.setLayoutData(gridData);
-
-            downButton = new Button(buttonComposite, SWT.PUSH);
-            downButton.setText(JAXWSUIMessages.ANNOTATION_ARRAY_CELL_EDITOR_DOWN_LABEL);
-            downButton.addSelectionListener(new SelectionAdapter() {
-                @Override
-                public void widgetSelected(SelectionEvent e) {
-                    moveSelectedElememtDown(getSelectedElement(), getTableViewer());
-                }
-            });
-            gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
-            downButton.setLayoutData(gridData);
-
-            Composite valuesComposite = new Composite(mainComposite, SWT.NONE);
-            gridLayout = new GridLayout(1, false);
-            valuesComposite.setLayout(gridLayout);
-            gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-            gridData.widthHint = 200;
-            valuesComposite.setLayoutData(gridData);
-
-            Label valuesLabel = new Label(valuesComposite, SWT.NONE);
-            valuesLabel.setText(method.getName() + ":"); //$NON-NLS-1$
-
-            arrayValuesTableViewer = new TableViewer(valuesComposite, SWT.BORDER | SWT.SINGLE | SWT.V_SCROLL
-                    | SWT.H_SCROLL);
-            arrayValuesTableViewer.setLabelProvider(new LabelProvider() {
-                @Override
-                public String getText(Object element) {
-                    if (element instanceof List<?>) {
-                        String annotationName = method.getReturnType().getComponentType().getSimpleName();
-                        annotationName += "("; //$NON-NLS-1$
-                        List<Map<String, Object>> valuesList = (List<Map<String, Object>>)element;
-                        Iterator<Map<String, Object>> valuesIterator = valuesList.iterator();
-                        while (valuesIterator.hasNext()) {
-                            Map<String, Object> valuesMap = valuesIterator.next();
-                            Set<Entry<String, Object>> entrySet = valuesMap.entrySet();
-                            Iterator<Map.Entry<String, Object>> iterator = entrySet.iterator();
+                addButton = new Button(buttonComposite, SWT.PUSH);
+                addButton.setText(JAXWSUIMessages.ANNOTATION_ARRAY_CELL_EDITOR_ADD_LABEL);
+                addButton.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent event) {
+                        try {
+                            Set<Entry<String, Control>> entrySet = controls.entrySet();
+                            Iterator<Map.Entry<String, Control>> iterator = entrySet.iterator();
+                            List<Map<String, Object>> aList = new ArrayList<Map<String,Object>>();
                             while (iterator.hasNext()) {
-                                Map.Entry<String, Object> entry = iterator.next();
-                                Object value = entry.getValue();
-                                boolean isString = value instanceof String && !value.toString().
-                                endsWith(".class"); //$NON-NLS-1$
-                                if (isString) {
-                                    annotationName += entry.getKey() + "=\"" + value + "\""; //$NON-NLS-1$ //$NON-NLS-2$
-                                } else {
-                                    annotationName += entry.getKey() + "=" + value; //$NON-NLS-1$
+                                Map.Entry<String, Control> entry = iterator.next();
+                                if (entry.getValue() instanceof Text) {
+                                    Text textField = (Text) entry.getValue();
+                                    IMethod methodAA = (IMethod) textField.getData();
+                                    if (textField.getText().trim().length() > 0) {
+                                        if (componentType != null && componentType.isAnnotation())  {
+                                            Map<String, Object> memberValuePairs = new HashMap<String, Object>();
+                                            memberValuePairs.put(methodAA.getElementName(), textField.getText());
+                                            aList.add(memberValuePairs);
+                                        } else {
+                                            updatedValues.add(textField.getText());
+                                        }
+                                    }
+                                }
+                                if (entry.getValue() instanceof Button) {
+                                    Button button = (Button) entry.getValue();
+                                    IMethod methodVV = (IMethod) button.getData();
+                                    if (componentType != null && componentType.isAnnotation()) {
+                                        Map<String, Object> memberValuePairs = new HashMap<String, Object>();
+                                        memberValuePairs.put(methodVV.getElementName(), button.getSelection());
+                                        aList.add(memberValuePairs);
+                                    } else {
+                                        updatedValues.add(button.getSelection());
+                                    }
                                 }
                             }
-                            if (valuesIterator.hasNext()) {
-                                annotationName += ", "; //$NON-NLS-1$
+                            if (aList.size() > 0) {
+                                updatedValues.add(aList);
                             }
+                            arrayValuesTableViewer.refresh();
+                        } catch (JavaModelException jme) {
+                            JAXWSUIPlugin.log(jme.getStatus());
                         }
-                        return annotationName += ")"; //$NON-NLS-1$
                     }
-                    return element.toString();
-                }
+                });
+                gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+                addButton.setLayoutData(gridData);
 
-                @Override
-                public Image getImage(Object element) {
-                    Class<?> returnType = method.getReturnType();
-                    if (returnType.getComponentType().isAnnotation()) {
-                        return JavaUI.getSharedImages().getImage(ISharedImages.IMG_OBJS_ANNOTATION);
-                    } if (returnType.equals(Class.class)) {
-                        return JavaUI.getSharedImages().getImage(ISharedImages.IMG_OBJS_CLASS);
-                    } else {
-                        return PlatformUI.getWorkbench().getSharedImages().getImage(
-                                org.eclipse.ui.ISharedImages.IMG_OBJ_FILE);
+                removeButton = new Button(buttonComposite, SWT.PUSH);
+                removeButton.setText(JAXWSUIMessages.ANNOTATION_ARRAY_CELL_EDITOR_REMOVE_LABEL);
+                removeButton.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent event) {
+                        ISelection selection = arrayValuesTableViewer.getSelection();
+                        if (selection != null && !selection.isEmpty()) {
+                            int index = arrayValuesTable.getSelectionIndex();
+                            updatedValues.remove(index);
+                            arrayValuesTableViewer.refresh();
+                        }
                     }
-                }
-            });
+                });
+                gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+                removeButton.setLayoutData(gridData);
 
-            arrayValuesTableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-                public void selectionChanged(SelectionChangedEvent event) {
-                    int index = arrayValuesTable.getSelectionIndex();
-                    int itemCount = arrayValuesTable.getItemCount();
+                upButton = new Button(buttonComposite, SWT.PUSH);
+                upButton.setText(JAXWSUIMessages.ANNOTATION_ARRAY_CELL_EDITOR_UP_LABEL);
+                upButton.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        moveSelectedElememtUp(getSelectedElement(), getTableViewer());
+                    }
+                });
 
-                    if (index == 0 && itemCount <= 1) {
-                        upButton.setEnabled(false);
-                        downButton.setEnabled(false);
+                gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+                upButton.setLayoutData(gridData);
+
+                downButton = new Button(buttonComposite, SWT.PUSH);
+                downButton.setText(JAXWSUIMessages.ANNOTATION_ARRAY_CELL_EDITOR_DOWN_LABEL);
+                downButton.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        moveSelectedElememtDown(getSelectedElement(), getTableViewer());
+                    }
+                });
+                gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+                downButton.setLayoutData(gridData);
+
+                Composite valuesComposite = new Composite(mainComposite, SWT.NONE);
+                gridLayout = new GridLayout(1, false);
+                valuesComposite.setLayout(gridLayout);
+                gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+                gridData.widthHint = 200;
+                valuesComposite.setLayoutData(gridData);
+
+                Label valuesLabel = new Label(valuesComposite, SWT.NONE);
+                valuesLabel.setText(method.getElementName() + ":"); //$NON-NLS-1$
+
+                arrayValuesTableViewer = new TableViewer(valuesComposite, SWT.BORDER | SWT.SINGLE | SWT.V_SCROLL | SWT.H_SCROLL);
+                arrayValuesTableViewer.setLabelProvider(new LabelProvider() {
+                    @Override
+                    public String getText(Object element) {
+                        if (element instanceof List<?>) {
+                            String annotationName = componentType.getElementName();
+                            annotationName += "("; //$NON-NLS-1$
+                            @SuppressWarnings("unchecked")
+                            List<Map<String, Object>> valuesList = (List<Map<String, Object>>) element;
+                            Iterator<Map<String, Object>> valuesIterator = valuesList.iterator();
+                            while (valuesIterator.hasNext()) {
+                                Map<String, Object> valuesMap = valuesIterator.next();
+                                Set<Entry<String, Object>> entrySet = valuesMap.entrySet();
+                                Iterator<Map.Entry<String, Object>> iterator = entrySet.iterator();
+                                while (iterator.hasNext()) {
+                                    Map.Entry<String, Object> entry = iterator.next();
+                                    Object value = entry.getValue();
+                                    boolean isString = value instanceof String && !value.toString().endsWith(".class"); //$NON-NLS-1$
+                                    if (isString) {
+                                        annotationName += entry.getKey() + "=\"" + value + "\""; //$NON-NLS-1$ //$NON-NLS-2$
+                                    } else {
+                                        annotationName += entry.getKey() + "=" + value; //$NON-NLS-1$
+                                    }
+                                }
+                                if (valuesIterator.hasNext()) {
+                                    annotationName += ", "; //$NON-NLS-1$
+                                }
+                            }
+                            return annotationName += ")"; //$NON-NLS-1$
+                        }
+                        return element.toString();
                     }
 
-                    if (index == 0 && itemCount > 1) {
-                        upButton.setEnabled(false);
-                        downButton.setEnabled(true);
+                    @Override
+                    public Image getImage(Object element) {
+                        try {
+                            if (componentType != null && componentType.isAnnotation()) {
+                                return JavaUI.getSharedImages().getImage(ISharedImages.IMG_OBJS_ANNOTATION);
+                            } else if (SignatureUtils.isClass(method.getReturnType())) {
+                                return JavaUI.getSharedImages().getImage(ISharedImages.IMG_OBJS_CLASS);
+                            } else {
+                                return PlatformUI.getWorkbench().getSharedImages().getImage(
+                                        org.eclipse.ui.ISharedImages.IMG_OBJ_FILE);
+                            }
+                        } catch (JavaModelException jme) {
+                            JAXWSUIPlugin.log(jme.getStatus());
+                        }
+                        return null;
                     }
+                });
 
-                    if (index > 0 && index < itemCount - 1) {
-                        upButton.setEnabled(true);
-                        downButton.setEnabled(true);
+                arrayValuesTableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+                    public void selectionChanged(SelectionChangedEvent event) {
+                        int index = arrayValuesTable.getSelectionIndex();
+                        int itemCount = arrayValuesTable.getItemCount();
+
+                        if (index == 0 && itemCount <= 1) {
+                            upButton.setEnabled(false);
+                            downButton.setEnabled(false);
+                        }
+
+                        if (index == 0 && itemCount > 1) {
+                            upButton.setEnabled(false);
+                            downButton.setEnabled(true);
+                        }
+
+                        if (index > 0 && index < itemCount - 1) {
+                            upButton.setEnabled(true);
+                            downButton.setEnabled(true);
+                        }
+
+                        if (index > 0 && index == itemCount - 1) {
+                            upButton.setEnabled(true);
+                            downButton.setEnabled(false);
+                        }
+
+                        if (index != -1) {
+                            removeButton.setEnabled(true);
+                        } else {
+                            removeButton.setEnabled(false);
+                        }
                     }
+                });
 
-                    if (index > 0 && index == itemCount - 1) {
-                        upButton.setEnabled(true);
-                        downButton.setEnabled(false);
-                    }
+                arrayValuesTableViewer.setContentProvider(new ArrayValuesContentProvider());
 
-                    if (index != -1) {
-                        removeButton.setEnabled(true);
-                    } else {
-                        removeButton.setEnabled(false);
-                    }
-                }
-            });
+                arrayValuesTable = arrayValuesTableViewer.getTable();
+                gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+                arrayValuesTable.setLayoutData(gridData);
 
-            arrayValuesTableViewer.setContentProvider(new ArrayValuesContentProvider());
+                arrayValuesTableViewer.setInput(values);
 
-            arrayValuesTable = arrayValuesTableViewer.getTable();
-            gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-            arrayValuesTable.setLayoutData(gridData);
-
-            arrayValuesTableViewer.setInput(values);
-
-            upButton.setEnabled(false);
-            downButton.setEnabled(false);
-            removeButton.setEnabled(false);
+                upButton.setEnabled(false);
+                downButton.setEnabled(false);
+                removeButton.setEnabled(false);
+            } catch (JavaModelException jme) {
+                JAXWSUIPlugin.log(jme.getStatus());
+            }
 
             return mainComposite;
         }
 
-        public void createEntryFields(Method method, Composite typeComposite) {
+        private IType getComponentType(IMethod method) throws JavaModelException {
+            String returnType = method.getReturnType();
+            if (SignatureUtils.isArray(returnType)) {
+                String elementType = Signature.getElementType(returnType);
+                IType declaringType = method.getDeclaringType();
+                IJavaProject javaProject = declaringType.getJavaProject();
+                if (javaProject != null) {
+                    return javaProject.findType(Signature.toString(elementType));
+                }
+            }
+            return null;
+        }
+
+        private void createEntryFields(IMethod method, Composite typeComposite) throws JavaModelException {
             //TODO Handle ENUMS
-            Class<?> returnType = method.getReturnType();
-            Object defaultValue = method.getDefaultValue();
-            GridData gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
+            String returnType = method.getReturnType();
+            IMemberValuePair defaultValue = method.getDefaultValue();
+            GridData gridData = new GridData(SWT.FILL, SWT.BEGINNING, true, false);
             //String or String[]
-            if (returnType.equals(String.class) || returnType.isArray() && returnType.getComponentType().equals(String.class)) {
+            if (SignatureUtils.isString(returnType) || SignatureUtils.isArray(returnType) && SignatureUtils.isString(Signature.getElementType(returnType))) {
                 Text text = new Text(typeComposite, SWT.BORDER);
                 text.setData(method);
                 gridData.horizontalSpan = 2;
                 text.setLayoutData(gridData);
                 if (defaultValue != null) {
-                    if (defaultValue instanceof String[] && ((String[]) defaultValue).length == 1) {
-                        String[] values = (String[]) defaultValue;
-                        text.setText(values[0]);
+                    Object value = defaultValue.getValue();
+                    if (value instanceof Object[]) {
+                        Object[] values = (Object[]) value;
+                        if (values.length == 1) {
+                            text.setText(values[0].toString());
+                        }
+                    } else if (value instanceof String[]) {
+                        String[] values = (String[]) value;
+                        if (values.length == 1) {
+                            text.setText(values[0]);
+                        }
                     } else {
-                        text.setText(defaultValue.toString().trim());
+                        text.setText(value.toString().trim());
                     }
                 }
-                controls.put(method.getName(), text);
+                controls.put(method.getElementName(), text);
             }
             //Class or Class[]
-            if (returnType.equals(Class.class) || returnType.isArray() && returnType.getComponentType().equals(Class.class)) {
+            if (SignatureUtils.isClass(returnType) || SignatureUtils.isArray(returnType) && SignatureUtils.isClass(Signature.getElementType(returnType))) {
                 final Text text = new Text(typeComposite, SWT.BORDER);
                 text.setData(method);
-                gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
+                gridData = new GridData(SWT.FILL, SWT.BEGINNING, true, false);
                 text.setLayoutData(gridData);
-                if (defaultValue != null) {
-                    Class<?> classValue = (Class<?>)defaultValue;
-                    text.setText(classValue.getCanonicalName() + ".class"); //$NON-NLS-1$
+                if (defaultValue != null && defaultValue.getValueKind() == IMemberValuePair.K_CLASS) {
+                    Object value = defaultValue.getValue();
+                    text.setText(value + ".class"); //$NON-NLS-1$
                 }
                 Button browseClassButton = new Button(typeComposite, SWT.PUSH);
                 browseClassButton.setText(getBrowseButtonLabel());
@@ -462,19 +498,19 @@ public class AnnotationArrayCellEditor extends DialogCellEditor {
                     }
                 });
                 browse_button_count++;
-                controls.put(method.getName(), text);
+                controls.put(method.getElementName(), text);
             }
 
             //Boolean
-            if (returnType.equals(Boolean.TYPE)) {
+            if (SignatureUtils.isBoolean(returnType)) {
                 Button checkbox = new Button(typeComposite, SWT.CHECK);
                 checkbox.setData(method);
                 gridData.horizontalSpan = 2;
                 checkbox.setLayoutData(gridData);
                 if (defaultValue != null) {
-                    checkbox.setSelection((Boolean)defaultValue);
+                    checkbox.setSelection((Boolean) defaultValue.getValue());
                 }
-                controls.put(method.getName(), checkbox);
+                controls.put(method.getElementName(), checkbox);
             }
         }
 
@@ -497,7 +533,7 @@ public class AnnotationArrayCellEditor extends DialogCellEditor {
             }
         }
 
-        public Object getSelectedElement() {
+        private Object getSelectedElement() {
             IStructuredSelection selection= (IStructuredSelection) arrayValuesTableViewer.getSelection();
             return selection.getFirstElement();
         }
@@ -506,7 +542,7 @@ public class AnnotationArrayCellEditor extends DialogCellEditor {
             return arrayValuesTableViewer;
         }
 
-        public void moveSelectedElememtUp(Object selected, TableViewer tableViewer) {
+        private void moveSelectedElememtUp(Object selected, TableViewer tableViewer) {
             int selectionIndex = tableViewer.getTable().getSelectionIndex();
             if (selectionIndex > 0) {
                 updatedValues.remove(selected);
@@ -518,7 +554,7 @@ public class AnnotationArrayCellEditor extends DialogCellEditor {
             }
         }
 
-        public void moveSelectedElememtDown(Object selected, TableViewer tableViewer) {
+        private void moveSelectedElememtDown(Object selected, TableViewer tableViewer) {
             int selectionIndex = tableViewer.getTable().getSelectionIndex();
             int itemCount = tableViewer.getTable().getItemCount();
             if (selectionIndex < itemCount - 1) {
@@ -547,7 +583,7 @@ public class AnnotationArrayCellEditor extends DialogCellEditor {
             }
         }
 
-        public SelectionDialog getClassSelectionDialog() {
+        private SelectionDialog getClassSelectionDialog() {
             try {
                 return JavaUI.createTypeDialog(getShell(), PlatformUI.getWorkbench().getProgressService(),
                         SearchEngine.createWorkspaceScope(), IJavaElementSearchConstants.CONSIDER_CLASSES,

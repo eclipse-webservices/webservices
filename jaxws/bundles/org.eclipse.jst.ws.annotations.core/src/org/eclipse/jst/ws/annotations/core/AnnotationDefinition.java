@@ -19,6 +19,11 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IMemberValuePair;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer;
 
 /**
@@ -46,8 +51,8 @@ public final class AnnotationDefinition {
     private static final String RESTRICTED_TO_INTERFACE_ONLY = "INTERFACE_ONLY";
     private static final String RESTRICTED_TO_ENUM_ONLY = "ENUM_ONLY";
 
-	private static final String ELEM_TARGET_FILTER = "targetFilter"; //$NON-NLS-1$
-	private static final String ATT_TARGET = "target"; //$NON-NLS-1$
+    private static final String ELEM_TARGET_FILTER = "targetFilter"; //$NON-NLS-1$
+    private static final String ATT_TARGET = "target"; //$NON-NLS-1$
 
     private IConfigurationElement configurationElement;
     private String category;
@@ -60,6 +65,11 @@ public final class AnnotationDefinition {
     private boolean interfaceOnly;
     private boolean classOnly;
     private boolean enumOnly;
+
+    private IType annotationType;
+    private List<ElementType> annotationTypeTargets;
+    private IJavaProject javaProject;
+    private Boolean deprecated;
 
     /**
      * Constructs an <code>AnnotationDefinition</code> using information from the
@@ -133,22 +143,50 @@ public final class AnnotationDefinition {
      * <code>annotation<annotation> element in the <code>org.eclipse.jst.ws.annotations.core.annotationDefinition</code>
      * extension point.
      *
-     * @return the annotation class
+     * @return the annotation class or null if not found.
+     * @deprecated As of 1.1 replaced by {@link #getAnnotationType()}
      */
     @SuppressWarnings("unchecked")
+    @Deprecated
     public Class<? extends java.lang.annotation.Annotation> getAnnotationClass() {
         if (annotationClass == null) {
             try {
                 Class<?> aClass = Class.forName(annotationClassName);
                 if (aClass.isAnnotation()) {
-                    annotationClass = (Class<java.lang.annotation.Annotation>)Class.forName(
-                            annotationClassName);
+                    annotationClass = (Class<java.lang.annotation.Annotation>) Class.forName(annotationClassName);
                 }
             } catch(ClassNotFoundException cnfe) {
                 AnnotationsCorePlugin.log(cnfe);
             }
         }
         return annotationClass;
+    }
+
+    /**
+     * Returns the annotation type as specified by the <code>class</code> attribute of the
+     * <code>annotation<annotation> element in the <code>org.eclipse.jst.ws.annotations.core.annotationDefinition</code>
+     * extension point.
+     * 
+     * @return the <code>org.eclipse.jdt.core.IType</code> which represents an annotation type or null if the java project
+     * has not been set, if the type cannot be found or if the type does not represent an annotation type.
+     * 
+     * @see #setJavaProject(IJavaProject)
+     * @since 1.1
+     */
+    public IType getAnnotationType() {
+        if (annotationType == null) {
+            try {
+                if (javaProject != null) {
+                    IType type = javaProject.findType(annotationClassName);
+                    if (type != null && type.isAnnotation()) {
+                        annotationType = type;
+                    }
+                }
+            } catch (JavaModelException jme) {
+                AnnotationsCorePlugin.log(jme.getStatus());
+            }
+        }
+        return annotationType;
     }
 
     /**
@@ -162,25 +200,77 @@ public final class AnnotationDefinition {
      * the annotation.
      * </p>
      * @return a list of element types.
+     * @deprecated as of 1.1 replaced by {@link #getAnnotationTypeTargets()}
      */
+    @Deprecated
     public List<ElementType> getTargets() {
         if (targets == null) {
-        	targets = new LinkedList<ElementType>();
+            targets = new LinkedList<ElementType>();
 
             Class<? extends java.lang.annotation.Annotation> annotation = getAnnotationClass();
             if (annotation != null) {
-            	Target target = annotation.getAnnotation(Target.class);
-            	if (target != null) {
-            	    targets.addAll(Arrays.asList(target.value()));
+                Target target = annotation.getAnnotation(Target.class);
+                if (target != null) {
+                    targets.addAll(Arrays.asList(target.value()));
 
                     List<ElementType> filteredTargets = getFilteredTargets(configurationElement);
                     if (targets.containsAll(filteredTargets) && filteredTargets.size() < targets.size()) {
                         targets.removeAll(filteredTargets);
                     }
-            	}
+                }
             }
         }
         return targets;
+    }
+
+    /**
+     * Returns a list of {@link ElementType} that specify the Java elements to which the annotation can be applied.
+     * <p>
+     * The element types are retrieved from the annotations
+     * {@link java.lang.annotation.Target} meta-annotation type. This list can
+     * be filtered using the <code>targetFilter</code> element on the
+     * <code>org.eclipse.jst.ws.annotations.core.annotationDefinition</code>
+     * extension point when defining the annotation.
+     * </p>
+     * @return a list of element types or null if the java project has not been set or if the annotation type cannot be
+     * found.
+     * @see #setJavaProject(IJavaProject)
+     * @since 1.1
+     */
+    public List<ElementType> getAnnotationTypeTargets() {
+        if (annotationTypeTargets == null) {
+            annotationTypeTargets = new LinkedList<ElementType>();
+            try {
+                IType type = getAnnotationType();
+                if (type != null) {
+                    IAnnotation target = type.getAnnotation(Target.class.getCanonicalName());
+                    if (!target.exists()) {
+                        target = type.getAnnotation(Target.class.getSimpleName());
+                    }
+                    if (target.exists()) {
+                        IMemberValuePair[] memberValuePairs = target.getMemberValuePairs();
+                        for (IMemberValuePair memberValuePair : memberValuePairs) {
+                            Object value = memberValuePair.getValue();
+                            if (value.getClass().isArray() && value.getClass().getComponentType().equals(String.class)) {
+                                String[] objs = (String[]) value;
+                                for (String obj : objs) {
+                                    annotationTypeTargets.add(ElementType.valueOf(obj.substring(obj.lastIndexOf('.') + 1)));
+                                }
+                            } else {
+                                annotationTypeTargets.add(ElementType.valueOf(value.toString().substring(value.toString().lastIndexOf('.') + 1)));
+                            }
+                        }
+                    }
+                    List<ElementType> filteredTargets = getFilteredTargets(configurationElement);
+                    if (annotationTypeTargets.containsAll(filteredTargets) && filteredTargets.size() < annotationTypeTargets.size()) {
+                        annotationTypeTargets.removeAll(filteredTargets);
+                    }
+                }
+            } catch (JavaModelException jme) {
+                AnnotationsCorePlugin.log(jme.getStatus());
+            }
+        }
+        return annotationTypeTargets;
     }
 
     /**
@@ -196,8 +286,7 @@ public final class AnnotationDefinition {
                 IConfigurationElement configurationElement =
                     AnnotationsManager.getAnnotationInitializerCache().get(getAnnotationClassName());
                 if (configurationElement != null) {
-                    annotationInitializer = (IAnnotationAttributeInitializer)configurationElement
-                        .createExecutableExtension(ATT_CLASS);
+                    annotationInitializer = (IAnnotationAttributeInitializer) configurationElement.createExecutableExtension(ATT_CLASS);
                 }
             } catch (CoreException ce) {
                 AnnotationsCorePlugin.log(ce.getStatus());
@@ -206,17 +295,50 @@ public final class AnnotationDefinition {
         return annotationInitializer;
     }
 
-	  private List<ElementType> getFilteredTargets(IConfigurationElement configurationElement) {
-		  List<ElementType> targets = new ArrayList<ElementType>(7);
-		  try {
-			  IConfigurationElement[] deprecatedTargets = configurationElement.getChildren(ELEM_TARGET_FILTER);
-			  for (IConfigurationElement deprecatedTargetElement : deprecatedTargets) {
-				  String target = AnnotationsManager.getAttributeValue(deprecatedTargetElement, ATT_TARGET);
-				  targets.add(ElementType.valueOf(target));
-			  }
-		  } catch (IllegalArgumentException iae) {
-			  AnnotationsCorePlugin.log(iae);
-		  }
-		  return targets;
-	  }
+    private List<ElementType> getFilteredTargets(IConfigurationElement configurationElement) {
+        List<ElementType> targets = new ArrayList<ElementType>(7);
+        try {
+            IConfigurationElement[] deprecatedTargets = configurationElement.getChildren(ELEM_TARGET_FILTER);
+            for (IConfigurationElement deprecatedTargetElement : deprecatedTargets) {
+                String target = AnnotationsManager.getAttributeValue(deprecatedTargetElement, ATT_TARGET);
+                targets.add(ElementType.valueOf(target));
+            }
+        } catch (IllegalArgumentException iae) {
+            AnnotationsCorePlugin.log(iae);
+        }
+        return targets;
+    }
+
+    boolean isDeprecated() {
+        if (deprecated == null) {
+            IType type = getAnnotationType();
+            if (type != null) {
+                IAnnotation annotation = type.getAnnotation(Deprecated.class.getCanonicalName());
+                if (!annotation.exists()) {
+                    annotation = type.getAnnotation(Deprecated.class.getSimpleName());
+                }
+                deprecated = annotation.exists();
+            } else {
+                deprecated = false;
+            }
+        }
+        return deprecated;
+    }
+
+    /**
+     * Sets the <code>org.eclipse.jdt.core.IJavaProject</code> which is used to find the
+     * annotation type.
+     * 
+     * @see {@link #getAnnotationType()}
+     * @see {@link #getAnnotationTypeTargets()}
+     * @since 1.1
+     */
+    public void setJavaProject(IJavaProject javaProject) {
+        if (this.javaProject == null || !this.javaProject.equals(javaProject)) {
+            this.javaProject = javaProject;
+            this.annotationType = null;
+            this.annotationTypeTargets = null;
+            this.deprecated = null;
+        }
+    }
 }

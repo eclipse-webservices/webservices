@@ -68,9 +68,6 @@ public final class AnnotationsManager {
     private static final String ATT_NAME = "name"; //$NON-NLS-1$
     private static final String ATT_CATEGORY = "category"; //$NON-NLS-1$
 
-    //	private static final String ELEM_TARGET_FILTER = "targetFilter"; //$NON-NLS-1$
-    //	private static final String ATT_TARGET = "target"; //$NON-NLS-1$
-
     private AnnotationsManager() {
     }
 
@@ -102,6 +99,39 @@ public final class AnnotationsManager {
     }
 
     /**
+     * Returns a list of all the contributed annotations that target the given {@link org.eclipse.jdt.core.IJavaElement}.
+     *
+     * @param element one of
+     * <li>org.eclipse.jdt.core.IPackageDeclaration</li>
+     * <li>org.eclipse.jdt.core.IType</li>
+     * <li>org.eclipse.jdt.core.IField</li>
+     * <li>org.eclipse.jdt.core.IMethod</li>
+     * <li>org.eclipse.jdt.core.ILocalVariable</li>
+     *
+     * @return a list of types which represent annotation types.
+     * @since 1.1
+     */
+    public static List<IType> getAnnotationTypes(IJavaElement javaElement) {
+        List<IType> annotations = new ArrayList<IType>();
+
+        try {
+            List<AnnotationDefinition> annotationDefinitions = getAllAnnotationsForElement(javaElement);
+
+            filterAnnotationsList(javaElement, annotationDefinitions);
+
+            for (AnnotationDefinition annotationDefinition : annotationDefinitions) {
+                IType type = annotationDefinition.getAnnotationType();
+                if (type != null) {
+                    annotations.add(type);
+                }
+            }
+        } catch (JavaModelException jme) {
+            AnnotationsCorePlugin.log(jme.getStatus());
+        }
+        return annotations;
+    }
+
+    /**
      * Returns a list of all the contributed {@link java.lang.annotation.Annotation} that target the given java element type.
      *
      * @param element one of
@@ -112,7 +142,9 @@ public final class AnnotationsManager {
      * <li>org.eclipse.jdt.core.ILocalVariable</li>
      *
      * @return a list of annotations.
+     * @deprecated As of 1.1 replaced by {@link #getAnnotationTypes(IJavaElement)}}
      */
+    @Deprecated
     public static List<Class<? extends Annotation>> getAnnotations(IJavaElement javaElement) {
         List<Class<? extends Annotation>> annotations = new ArrayList<Class<? extends Annotation>>();
 
@@ -131,17 +163,15 @@ public final class AnnotationsManager {
     }
 
     private static synchronized Map<String, AnnotationDefinition> getAnnotationToClassNameDefinitionMap() {
-
         if (annotationClassNameToDefinitionMap == null) {
             List<AnnotationDefinition> annotationDefinitions = getAnnotations();
 
             annotationClassNameToDefinitionMap = new HashMap<String, AnnotationDefinition>();
 
             for (AnnotationDefinition annotationDefinition : annotationDefinitions) {
-            	if (annotationDefinition.getAnnotationClass() != null) {
-                    annotationClassNameToDefinitionMap.put(annotationDefinition.getAnnotationClass()
-                            .getCanonicalName(), annotationDefinition);
-            	}
+                if (annotationDefinition.getAnnotationClassName() != null) {
+                    annotationClassNameToDefinitionMap.put(annotationDefinition.getAnnotationClassName(), annotationDefinition);
+                }
             }
         }
         return annotationClassNameToDefinitionMap;
@@ -192,6 +222,18 @@ public final class AnnotationsManager {
      */
     public static AnnotationDefinition getAnnotationDefinitionForClass(String canonicalName) {
         return getAnnotationToClassNameDefinitionMap().get(canonicalName);
+    }
+
+    /**
+     * Returns the {@link AnnotationDefinition} for the given {@link org.eclipse.jdt.core.IType}
+     * or null if no annotation definition can be found.
+     *
+     * @param annotationType an <code>org.eclipse.jdt.core.IType</code> which represents an annotation type.
+     * @return the annotation definition for the <code>org.eclipse.jdt.core.IType</code>.
+     * @since 1.1
+     */
+    public static AnnotationDefinition getAnnotationDefinitionForType(IType annotationType) {
+        return getAnnotationToClassNameDefinitionMap().get(annotationType.getFullyQualifiedName());
     }
 
     /**
@@ -254,7 +296,6 @@ public final class AnnotationsManager {
         if (annotationCategoryCache != null) {
             return annotationCategoryCache;
         }
-
         annotationCategoryCache = new HashMap<String, String>();
 
         IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
@@ -274,7 +315,6 @@ public final class AnnotationsManager {
         if (annotationInitializerCache != null) {
             return annotationInitializerCache;
         }
-
         annotationInitializerCache = new HashMap<String, IConfigurationElement>();
 
         IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
@@ -326,41 +366,39 @@ public final class AnnotationsManager {
         return ""; //$NON-NLS-1$
     }
 
-    private static List<AnnotationDefinition> getAllAnnotationsForElement(IJavaElement javaElement)
-    throws JavaModelException {
-
+    private static List<AnnotationDefinition> getAllAnnotationsForElement(IJavaElement javaElement) throws JavaModelException {
         if (javaElement instanceof IPackageDeclaration) {
-            return getAnnotationsForElementType(ElementType.PACKAGE);
+            return getAnnotationsForElementType(javaElement, ElementType.PACKAGE);
         }
 
         if (javaElement instanceof IType) {
             IType type = (IType) javaElement;
             if (type.isAnnotation()) {
-                return getAnnotationsForElementType(ElementType.ANNOTATION_TYPE);
+                return getAnnotationsForElementType(javaElement, ElementType.ANNOTATION_TYPE);
             }
-            return getAnnotationsForElementType(ElementType.TYPE);
+            return getAnnotationsForElementType(javaElement, ElementType.TYPE);
         }
 
         if (javaElement instanceof IField) {
-            return getAnnotationsForElementType(ElementType.FIELD);
+            return getAnnotationsForElementType(javaElement, ElementType.FIELD);
         }
 
         if (javaElement instanceof IMethod) {
-            return getAnnotationsForElementType(ElementType.METHOD);
+            return getAnnotationsForElementType(javaElement, ElementType.METHOD);
         }
 
         if (javaElement instanceof ILocalVariable) {
-            return getAnnotationsForElementType(ElementType.PARAMETER);
+            return getAnnotationsForElementType(javaElement, ElementType.PARAMETER);
         }
 
         if (javaElement instanceof IAnnotation) {
-            return getAnnotationsForElementType(ElementType.ANNOTATION_TYPE);
+            return getAnnotationsForElementType(javaElement, ElementType.ANNOTATION_TYPE);
         }
 
         return Collections.emptyList();
     }
 
-    private static List<AnnotationDefinition> getAnnotationsForElementType(ElementType elementType) {
+    private static List<AnnotationDefinition> getAnnotationsForElementType(IJavaElement javaElement, ElementType elementType) {
         List<AnnotationDefinition> annotationDefinitions = new ArrayList<AnnotationDefinition>();
 
         if (annotationCache == null) {
@@ -368,8 +406,10 @@ public final class AnnotationsManager {
         }
 
         for (AnnotationDefinition annotationDefinition : annotationCache) {
-            if (annotationDefinition.getTargets().contains(elementType) &&
-                    !isDeprecated(annotationDefinition)) {
+            annotationDefinition.setJavaProject(javaElement.getJavaProject());
+
+            if (annotationDefinition.getAnnotationTypeTargets().contains(elementType) &&
+                    !annotationDefinition.isDeprecated()) {
                 annotationDefinitions.add(annotationDefinition);
             }
         }
@@ -396,7 +436,7 @@ public final class AnnotationsManager {
                     annotationIter.remove();
                 }
                 if (method.isConstructor()
-                        && !annotationDefinition.getTargets().contains(ElementType.CONSTRUCTOR)) {
+                        && !annotationDefinition.getAnnotationTypeTargets().contains(ElementType.CONSTRUCTOR)) {
                     annotationIter.remove();
                 }
 
@@ -463,11 +503,5 @@ public final class AnnotationsManager {
             return !type.isEnum() && annotationDefinition.isEnumOnly();
         }
         return false;
-    }
-
-    //TODO Move the Deprecated option to preferences
-    private static boolean isDeprecated(AnnotationDefinition annotationDefinition) {
-        Class<?> annotationClass = annotationDefinition.getAnnotationClass();
-        return annotationClass.getAnnotation(java.lang.Deprecated.class) != null;
     }
 }

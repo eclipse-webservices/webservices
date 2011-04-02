@@ -12,6 +12,8 @@ package org.eclipse.jst.ws.annotations.core;
 
 import java.util.List;
 
+import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.BooleanLiteral;
@@ -174,8 +176,10 @@ public final class AnnotationsCore {
      * @param value an object representing the <code>enum</code> value.
      * @return a new member value pair with the given name and value.
      */
-    public static MemberValuePair createEnumMemberValuePair(AST ast, String className, String name,
-            Object value) {
+    public static MemberValuePair createEnumMemberValuePair(AST ast, String className, String name, Object value) {
+        if (value instanceof IField) {
+            return AnnotationsCore.createMemberValuePair(ast, name, createEnumLiteral(ast, className, (IField) value));
+        }
         return AnnotationsCore.createMemberValuePair(ast, name, createEnumLiteral(ast, className, value));
     }
 
@@ -241,7 +245,7 @@ public final class AnnotationsCore {
      *
      * @param ast the {@link AST} that will be used to create the qualified name.
      * @param className the fully qualified name of the enclosing class.
-     * @param value sn object representing the <code>enum</code> value.
+     * @param value an object representing the <code>enum</code> value.
      * @return a new qualified name.
      */
     public static QualifiedName createEnumLiteral(AST ast, String className, Object value) {
@@ -262,6 +266,41 @@ public final class AnnotationsCore {
         } else {
             Name qualifiedName = ast.newName(value.getClass().getCanonicalName());
             enumName = ast.newQualifiedName(qualifiedName, enumLiteral);
+        }
+        return enumName;
+    }
+
+    /**
+     * Creates a new {@link QualifiedName} to represent an <code>enum</code> literal value.
+     *
+     * @param ast the {@link AST} that will be used to create the qualified name.
+     * @param className the fully qualified name of the enclosing class.
+     * @param value a {@link org.eclipse.jdt.core.IField} where <code>isEnumConstant()</code> is <code>true</code>.
+     * @return a new qualified name.
+     * @throws JavaModelException
+     * @since 1.1
+     */
+    public static QualifiedName createEnumLiteral(AST ast, String className, IField enumConstant) {
+        QualifiedName enumName = null;
+        SimpleName enumClassName = ast.newSimpleName(enumConstant.getDeclaringType().getElementName());
+        SimpleName enumLiteral = ast.newSimpleName(enumConstant.getElementName());
+        try {
+            if (enumConstant.getDeclaringType().isMember()) {
+                Name enumEnclosingClassName = null;
+                String enclosingClassName = enumConstant.getDeclaringType().getDeclaringType().getFullyQualifiedName();
+                if (enclosingClassName.equals(className)) {
+                    enumEnclosingClassName = ast.newSimpleName(enumConstant.getDeclaringType().getDeclaringType().getElementName());
+                } else {
+                    enumEnclosingClassName = ast.newName(enclosingClassName);
+                }
+                QualifiedName qualifiedName = ast.newQualifiedName(enumEnclosingClassName, enumClassName);
+                enumName = ast.newQualifiedName(qualifiedName, enumLiteral);
+            } else {
+                Name qualifiedName = ast.newName(enumConstant.getDeclaringType().getFullyQualifiedName());
+                enumName = ast.newQualifiedName(qualifiedName, enumLiteral);
+            }
+        } catch (JavaModelException jme) {
+            AnnotationsCorePlugin.log(jme.getStatus());
         }
         return enumName;
     }

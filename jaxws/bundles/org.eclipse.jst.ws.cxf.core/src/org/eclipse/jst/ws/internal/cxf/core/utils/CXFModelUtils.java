@@ -40,6 +40,7 @@ import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jdt.core.dom.rewrite.ImportRewrite;
 import org.eclipse.jdt.ui.CodeStyleConfiguration;
 import org.eclipse.jdt.ui.SharedASTProvider;
+import org.eclipse.jst.ws.annotations.core.AnnotationDefinition;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.AnnotationsManager;
 import org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer;
@@ -124,13 +125,12 @@ public final class CXFModelUtils {
         } else {
             List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
 
-            IAnnotationAttributeInitializer annotationAttributeInitializer =
-                AnnotationsManager.getAnnotationDefinitionForClass(WebService.class).
-                getAnnotationAttributeInitializer();
+            AnnotationDefinition annotationDefinition = AnnotationsManager.getAnnotationDefinitionForClass(WebService.class.getCanonicalName());
+            IAnnotationAttributeInitializer annotationAttributeInitializer = annotationDefinition.getAnnotationAttributeInitializer();
 
+            IType annotationType = annotationDefinition.getAnnotationType();
             if (annotationAttributeInitializer != null) {
-                memberValuePairs = annotationAttributeInitializer.getMemberValuePairs(type, ast,
-                        WebService.class);
+                memberValuePairs = annotationAttributeInitializer.getMemberValuePairs(type, ast, annotationType);
             }
 
             if (model.isUseServiceEndpointInterface() && type.isClass()) {
@@ -218,11 +218,13 @@ public final class CXFModelUtils {
 
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
 
-        IAnnotationAttributeInitializer annotationAttributeInitializer = AnnotationsManager
-        .getAnnotationDefinitionForClass(annotationClass).getAnnotationAttributeInitializer();
+        AnnotationDefinition annotationDefinition = AnnotationsManager.getAnnotationDefinitionForClass(annotationClass.getCanonicalName());
+        IAnnotationAttributeInitializer annotationAttributeInitializer = annotationDefinition.getAnnotationAttributeInitializer();
+
+        IType annotationType = annotationDefinition.getAnnotationType();
 
         if (annotationAttributeInitializer != null) {
-            memberValuePairs = annotationAttributeInitializer.getMemberValuePairs(javaElement, ast, annotationClass);
+            memberValuePairs = annotationAttributeInitializer.getMemberValuePairs(javaElement, ast, annotationType);
         }
 
         return AnnotationsCore.createNormalAnnotation(ast, annotationClass.getSimpleName(), memberValuePairs);

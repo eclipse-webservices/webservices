@@ -14,7 +14,6 @@ import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.PARAMETER_
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.STYLE;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.USE;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,16 +23,16 @@ import javax.jws.soap.SOAPBinding.Style;
 import javax.jws.soap.SOAPBinding.Use;
 
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.initialization.AnnotationAttributeInitializer;
 
 public class SOAPBindingAttributeInitializer extends AnnotationAttributeInitializer {
-
+    
     @Override
-    public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast,
-            Class<? extends Annotation> annotationClass) {
+    public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast, IType annotationType) {
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
 
         MemberValuePair styleValuePair = AnnotationsCore.createEnumMemberValuePair(ast,

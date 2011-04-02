@@ -10,11 +10,13 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.ui.views;
 
-import java.lang.reflect.Method;
 import java.util.List;
 
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.BooleanLiteral;
@@ -25,6 +27,7 @@ import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
+import org.eclipse.jst.ws.internal.annotations.core.utils.SignatureUtils;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 import org.eclipse.swt.graphics.Image;
 
@@ -43,13 +46,17 @@ public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
 
     @Override
     public String getText(Object element) {
-        if (element instanceof Method) {
-            return getTextForMethod((Method)element);
+        if (element instanceof IMethod) {
+            try {
+                return getTextForMethod((IMethod) element);
+            } catch (JavaModelException jme) {
+                JAXWSUIPlugin.log(jme.getStatus());
+            }
         }
         return ""; //$NON-NLS-1$
     }
 
-    private String getTextForMethod(Method method) {
+    private String getTextForMethod(IMethod method) throws JavaModelException {
         if (annotationTreeViewer.getInput() instanceof IJavaElement) {
             IJavaElement javaElement = (IJavaElement) annotationTreeViewer.getInput();
             if (javaElement.exists()) {
@@ -59,47 +66,51 @@ public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
         return ""; //$NON-NLS-1$
     }
 
-    private String getTextForMethod(Method method, IJavaElement annotatedElement) {
+    private String getTextForMethod(IMethod method, IJavaElement annotatedElement) throws JavaModelException {
         List<Annotation> annotations = AnnotationUtils.getAnnotations(annotatedElement);
         for (Annotation annotation : annotations) {
             String annotationName = AnnotationUtils.getAnnotationName(annotation);
-            Class<?> declaringClass = method.getDeclaringClass();
-            if (annotationName.equals(declaringClass.getSimpleName())
-                    || annotationName.equals(declaringClass.getCanonicalName())) {
+            IType type = method.getDeclaringType();
+            if (type != null && annotationName.equals(type.getElementName())
+                    || annotationName.equals(type.getFullyQualifiedName())) {
                 if (annotation.isNormalAnnotation()) {
                     NormalAnnotation normalAnnotation = (NormalAnnotation) annotation;
                     @SuppressWarnings("unchecked")
                     List<MemberValuePair> memberValuePairs = normalAnnotation.values();
                     for (MemberValuePair memberValuePair : memberValuePairs) {
-                        if (memberValuePair.getName().getIdentifier().equals(method.getName())) {
-                            return getTextForMethod(method.getReturnType(), memberValuePair.getValue());
+                        if (memberValuePair.getName().getIdentifier().equals(method.getElementName())) {
+                            return getTextForMethod(method, memberValuePair.getValue());
                         }
                     }
                 } else if (annotation.isSingleMemberAnnotation()) {
                     SingleMemberAnnotation singleMemberAnnotation = (SingleMemberAnnotation) annotation;
-                    return getTextForMethod(method.getReturnType(), singleMemberAnnotation.getValue());
+                    return getTextForMethod(method, singleMemberAnnotation.getValue());
                 }
             }
         }
         return ""; //$NON-NLS-1$
     }
 
-    private String getTextForMethod(Class<?> returnType, Expression expression) {
-        if (returnType.equals(String.class)) {
+    private String getTextForMethod(IMethod method, Expression expression) throws JavaModelException {
+        String returnType = method.getReturnType();
+
+        if (SignatureUtils.isString(returnType) || SignatureUtils.isClass(returnType)) {
             return expression.toString();
         }
 
-        if (returnType.equals(Class.class)) {
-            return expression.toString() + ".class"; //$NON-NLS-1$
+        if (SignatureUtils.isEnum(method)) {
+            String enumValue = expression.toString();
+            return enumValue.substring(enumValue.lastIndexOf(".") + 1); //$NON-NLS-1$
         }
-        if (returnType.isPrimitive() && (returnType.equals(Byte.TYPE)
-                || returnType.equals(Short.TYPE) || returnType.equals(Integer.TYPE)
-                || returnType.equals(Long.TYPE)  || returnType.equals(Float.TYPE)
-                || returnType.equals(Double.TYPE))) {
+
+        if (SignatureUtils.isPrimitive(returnType) && (returnType.charAt(0) == Signature.C_BYTE
+                || returnType.charAt(0) == Signature.C_SHORT || returnType.charAt(0) == Signature.C_INT
+                || returnType.charAt(0) == Signature.C_LONG  || returnType.charAt(0) == Signature.C_FLOAT
+                || returnType.charAt(0) == Signature.C_DOUBLE)) {
             return expression.toString();
         }
 
-        if (returnType.isArray() && expression instanceof ArrayInitializer) {
+        if (SignatureUtils.isArray(returnType) && expression instanceof ArrayInitializer) {
             ArrayInitializer arrayInitializer = (ArrayInitializer) expression;
             if (arrayInitializer.expressions().size() > 0) {
                 return "[]{...}"; //$NON-NLS-1$
@@ -107,21 +118,17 @@ public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
                 return "[]{}"; //$NON-NLS-1$
             }
         }
-        if (returnType.isEnum()) {
-            String enumValue = expression.toString();
-            return enumValue.substring(enumValue.lastIndexOf(".") + 1); //$NON-NLS-1$
-        }
         return ""; //$NON-NLS-1$
     }
 
     @Override
     public Image getImage(Object element) {
         try {
-            if (element instanceof Class) {
-                return getImageForClass((Class<?>) element);
+            if (element instanceof IType) {
+                return getImageForClass((IType) element);
             }
-            if (element instanceof Method) {
-                return getImageForMethod((Method) element);
+            if (element instanceof IMethod) {
+                return getImageForMethod((IMethod) element);
             }
         } catch (JavaModelException jme) {
             JAXWSUIPlugin.log(jme.getStatus());
@@ -129,30 +136,30 @@ public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
         return null;
     }
 
-    private Image getImageForClass(Class<?> aClass) throws JavaModelException {
+    private Image getImageForClass(IType type) throws JavaModelException {
         if (annotationTreeViewer.getInput() instanceof IJavaElement) {
             IJavaElement javaElement = (IJavaElement) annotationTreeViewer.getInput();
             if (javaElement.exists()) {
-                return getImageForClass(aClass, javaElement);
+                return getImageForClass(type, javaElement);
             }
         }
         return null;
     }
 
-    private Image getImageForClass(Class<?> aClass, IJavaElement javaElement) throws JavaModelException {
+    private Image getImageForClass(IType type, IJavaElement javaElement) throws JavaModelException {
         List<Annotation> annotations = AnnotationUtils.getAnnotations(javaElement);
         for (Annotation annotation : annotations) {
             String annotationName = AnnotationUtils.getAnnotationName(annotation);
-            if (annotationName.equals(aClass.getSimpleName()) ||
-                    annotationName.equals(aClass.getCanonicalName())) {
+            if (annotationName.equals(type.getElementName()) ||
+                    annotationName.equals(type.getFullyQualifiedName())) {
                 return true_image;
             }
         }
         return false_image;
     }
 
-    private Image getImageForMethod(Method method) throws JavaModelException {
-        if (method.getReturnType().equals(Boolean.TYPE) && annotationTreeViewer.getInput() instanceof IJavaElement) {
+    private Image getImageForMethod(IMethod method) throws JavaModelException {
+        if (SignatureUtils.isBoolean(method.getReturnType()) && annotationTreeViewer.getInput() instanceof IJavaElement) {
             IJavaElement javaElement = (IJavaElement) annotationTreeViewer.getInput();
             if (javaElement.exists()) {
                 return getImageForMethod(method, javaElement);
@@ -161,19 +168,19 @@ public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
         return null;
     }
 
-    private Image getImageForMethod(Method method, IJavaElement javaElement) throws JavaModelException {
+    private Image getImageForMethod(IMethod method, IJavaElement javaElement) throws JavaModelException {
         List<Annotation> annotations = AnnotationUtils.getAnnotations(javaElement);
         for (Annotation annotation : annotations) {
             String annotationName = AnnotationUtils.getAnnotationName(annotation);
-            Class<?> declaringClass = method.getDeclaringClass();
-            if (annotationName.equals(declaringClass.getSimpleName())
-                    || annotationName.equals(declaringClass.getCanonicalName())) {
+            IType declaringType = method.getDeclaringType();
+            if (declaringType != null && annotationName.equals(declaringType.getElementName())
+                    || annotationName.equals(declaringType.getFullyQualifiedName())) {
                 if (annotation.isNormalAnnotation()) {
                     NormalAnnotation normalAnnotation = (NormalAnnotation) annotation;
                     @SuppressWarnings("unchecked")
                     List<MemberValuePair> memberValuePairs = normalAnnotation.values();
                     for (MemberValuePair memberValuePair : memberValuePairs) {
-                        if (memberValuePair.getName().getIdentifier().equals(method.getName())
+                        if (memberValuePair.getName().getIdentifier().equals(method.getElementName())
                                 && memberValuePair.getValue() instanceof BooleanLiteral) {
                             if (((BooleanLiteral) memberValuePair.getValue()).booleanValue()) {
                                 return true_image;

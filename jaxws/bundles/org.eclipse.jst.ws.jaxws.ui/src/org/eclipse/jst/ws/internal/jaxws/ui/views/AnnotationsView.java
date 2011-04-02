@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.ui.views;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,13 +133,12 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
         annotationTreeViewer.setComparator(new ViewerComparator() {
             @Override
             public int compare(Viewer viewer, Object obj1, Object obj2) {
-                if (obj1 instanceof Class<?> && ((Class<?>) obj1).isAnnotation()
-                        && obj2 instanceof Class<?> && ((Class<?>) obj2).isAnnotation()) {
-                    return ((Class<? extends java.lang.annotation.Annotation>) obj1).getCanonicalName().compareTo(
-                            ((Class<? extends java.lang.annotation.Annotation>) obj2).getCanonicalName());
+                if (obj1 instanceof IType && obj2 instanceof IType) {
+                    return ((IType) obj1).getFullyQualifiedName().compareTo(
+                            ((IType) obj2).getFullyQualifiedName());
                 }
-                if (obj1 instanceof Method && obj2 instanceof Method) {
-                    return ((Method)obj1).getName().compareTo(((Method)obj2).getName());
+                if (obj1 instanceof IMethod && obj2 instanceof IMethod) {
+                    return ((IMethod) obj1).getElementName().compareTo(((IMethod) obj2).getElementName());
                 }
                 return super.compare(viewer, obj1, obj2);
             }

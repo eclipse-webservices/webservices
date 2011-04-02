@@ -18,7 +18,6 @@ import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.SERVICE_NA
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.SERVICE_SUFFIX;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.TARGET_NAMESPACE;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,8 +39,7 @@ import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 public class WebServiceAttributeInitializer extends AnnotationAttributeInitializer {
 
     @Override
-    public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast,
-            Class<? extends Annotation> annotationClass) {
+    public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast, IType annotationType) {
         
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
         if (javaElement.getElementType() == IJavaElement.TYPE) {
