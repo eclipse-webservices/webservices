@@ -33,20 +33,20 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 public interface IAnnotationAttributeInitializer {
 
     /**
-     * Returns a list of {@link MemberValuePair} that may be added to a {@link NormalAnnotation}.
+     * Returns a list of {@link MemberValuePair} that may be added to a {@link org.eclipse.jdt.core.dom.NormalAnnotation}.
      * @param javaElement the java element on which the annotation is declared.
      * @param ast the <code>AST</code> with which to create the member value pairs.
      * @param annotationClass the {@link java.lang.annotation.Annotation} class which may be
      * used to query the declared members of the annotation type and the members default values.
      * @return a list of member value pairs.
-     * @deprecated as of 1.1 replaced by {@link IAnnotationAttributeInitializer2#getMemberValuePairs(IJavaElement, AST, IType)}
+     * @deprecated as of 1.1 replaced by {@link #getMemberValuePairs(IJavaElement, AST, IType)}
      */
     @Deprecated
     public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast,
             Class<? extends java.lang.annotation.Annotation> annotationClass);
 
     /**
-     * Returns a list of {@link MemberValuePair} that may be added to a {@link NormalAnnotation}.
+     * Returns a list of {@link MemberValuePair} that may be added to a {@link org.eclipse.jdt.core.dom.NormalAnnotation}.
      * @param javaElement the java element on which the annotation is declared.
      * @param ast the <code>AST</code> with which to create the member value pairs.
      * @param type the {@link org.eclipse.jdt.core.IType} which represents an annotation type,.

@@ -101,7 +101,7 @@ public final class AnnotationsManager {
     /**
      * Returns a list of all the contributed annotations that target the given {@link org.eclipse.jdt.core.IJavaElement}.
      *
-     * @param element one of
+     * @param javaElement one of
      * <li>org.eclipse.jdt.core.IPackageDeclaration</li>
      * <li>org.eclipse.jdt.core.IType</li>
      * <li>org.eclipse.jdt.core.IField</li>
@@ -134,7 +134,7 @@ public final class AnnotationsManager {
     /**
      * Returns a list of all the contributed {@link java.lang.annotation.Annotation} that target the given java element type.
      *
-     * @param element one of
+     * @param javaElement one of
      * <li>org.eclipse.jdt.core.IPackageDeclaration</li>
      * <li>org.eclipse.jdt.core.IType</li>
      * <li>org.eclipse.jdt.core.IField</li>
@@ -142,7 +142,7 @@ public final class AnnotationsManager {
      * <li>org.eclipse.jdt.core.ILocalVariable</li>
      *
      * @return a list of annotations.
-     * @deprecated As of 1.1 replaced by {@link #getAnnotationTypes(IJavaElement)}}
+     * @deprecated As of 1.1 replaced by {@link #getAnnotationTypes(IJavaElement)}
      */
     @Deprecated
     public static List<Class<? extends Annotation>> getAnnotations(IJavaElement javaElement) {
@@ -239,7 +239,7 @@ public final class AnnotationsManager {
     /**
      * Returns the {@link IAnnotationAttributeInitializer} for the given {@link org.eclipse.jdt.core.dom.Name}
      * or null if none can be found.
-     * @param name a {@link SimpleName} or {@link QualifiedName} for the annotation to search for.
+     * @param name a {@link org.eclipse.jdt.core.dom.SimpleName} or {@link org.eclipse.jdt.core.dom.QualifiedName} for the annotation to search for.
      * @return an <code>IAnnotationAttributeInitializer</code> for the given name.
      */
     public static IAnnotationAttributeInitializer getAnnotationAttributeInitializerForName(Name name) {

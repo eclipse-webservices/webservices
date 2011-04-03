@@ -29,7 +29,7 @@ import org.eclipse.jst.ws.annotations.core.AnnotationsCorePlugin;
 import org.eclipse.jst.ws.internal.annotations.core.utils.SignatureUtils;
 
 /**
- * Constructs {@link MemberValuePair} from the defaults found in the given {@link java.lang.annotation.Annotation}.
+ * Constructs a list of {@link MemberValuePair} using the annotation elements default values.
  * <p>
  * <strong>Provisional API:</strong> This class/interface is part of an interim API that is still under
  * development and expected to change significantly before reaching stability. It is being made available at
@@ -45,7 +45,7 @@ public class DefaultsAnnotationAttributeInitializer extends AnnotationAttributeI
     /**
      * Constructs a list of {@link MemberValuePair} using the declared method names and default values in
      * the given {@link java.lang.annotation.Annotation}.
-     *  @see org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer#getMemberValuePairs(org.eclipse.jdt.core.IJavaElement, org.eclipse.jdt.core.dom.AST, java.lang.Class)
+     * @deprecated as of 1.1 replaced by {@link #getMemberValuePairs(IJavaElement, AST, IType)}
      */
     @Override
     @Deprecated
@@ -53,6 +53,9 @@ public class DefaultsAnnotationAttributeInitializer extends AnnotationAttributeI
         return getMemberValuePairs(ast, annotationClass);
     }
 
+    /**
+     * Constructs a list of {@link MemberValuePair} from the annotation type element names and default values.
+     */
     @Override
     public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast, IType type) {
         return interalGetMemberValuePairs(javaElement, ast, type);

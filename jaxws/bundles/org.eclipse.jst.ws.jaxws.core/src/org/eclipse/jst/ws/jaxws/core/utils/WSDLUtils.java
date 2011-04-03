@@ -175,7 +175,7 @@ public final class WSDLUtils {
     /**
      * Returns the WSDL folder of the given project. The WSDL folder path is the projects web content folder
      * path appended with the 'WSDL' directory. The returned resource may not exist.
-     * @param projectName the name of the web project
+     * @param project the web project
      * @return the wsdl folder
      */
     public static IFolder getWSDLFolder(IProject project) {

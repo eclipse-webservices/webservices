@@ -31,7 +31,6 @@ import org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeIn
  * <code>org.eclipse.jst.ws.annotations.core.annotationDefinition</code>,
  * <code>org.eclipse.jst.ws.annotations.core.annotationCategory</code> and
  * <code>org.eclipse.jst.ws.annotations.core.annotationInitializer</code> extension points.
- * for a <code>java.lang.annotation.Annotation</code> class.
  * <p>
  * It supplies the annotation class name, its annotation category, the applicable targets for the annotation
  * and an <code>IAnnotationAttributeInitializer</code> to initialize the annotations element-value pairs.
@@ -83,8 +82,7 @@ public final class AnnotationDefinition {
 
         this.annotationClassName = AnnotationsManager.getAttributeValue(configurationElement, ATT_CLASS);
         this.name = AnnotationsManager.getAttributeValue(configurationElement, ATT_NAME);
-        this.restictedTo = AnnotationsManager.getAttributeValue(configurationElement,
-                ATT_RESTRICTED_TO);
+        this.restictedTo = AnnotationsManager.getAttributeValue(configurationElement, ATT_RESTRICTED_TO);
         this.classOnly = restictedTo.equals(RESTRICTED_TO_CLASS_ONLY);
         this.interfaceOnly = restictedTo.equals(RESTRICTED_TO_INTERFACE_ONLY);
         this.enumOnly = restictedTo.equals(RESTRICTED_TO_ENUM_ONLY);
@@ -224,7 +222,7 @@ public final class AnnotationDefinition {
     }
 
     /**
-     * Returns a list of {@link ElementType} that specify the Java elements to which the annotation can be applied.
+     * Returns a list of {@link java.lang.annotation.ElementType} that specify the Java elements to which the annotation can be applied.
      * <p>
      * The element types are retrieved from the annotations
      * {@link java.lang.annotation.Target} meta-annotation type. This list can
@@ -326,11 +324,10 @@ public final class AnnotationDefinition {
     }
 
     /**
-     * Sets the <code>org.eclipse.jdt.core.IJavaProject</code> which is used to find the
-     * annotation type.
+     * Sets the <code>org.eclipse.jdt.core.IJavaProject</code> which is used to find the annotation type.
      * 
-     * @see {@link #getAnnotationType()}
-     * @see {@link #getAnnotationTypeTargets()}
+     * @see #getAnnotationType()
+     * @see #getAnnotationTypeTargets()
      * @since 1.1
      */
     public void setJavaProject(IJavaProject javaProject) {

@@ -275,7 +275,7 @@ public final class AnnotationsCore {
      *
      * @param ast the {@link AST} that will be used to create the qualified name.
      * @param className the fully qualified name of the enclosing class.
-     * @param value a {@link org.eclipse.jdt.core.IField} where <code>isEnumConstant()</code> is <code>true</code>.
+     * @param enumConstant a {@link org.eclipse.jdt.core.IField} where <code>isEnumConstant()</code> is <code>true</code>.
      * @return a new qualified name.
      * @throws JavaModelException
      * @since 1.1
