@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and others.
+ * Copyright (c) 2009, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -284,7 +284,10 @@ implements IJAXRSFacetInstallDataModelProperties
 		IStatus superValidation = super.performValidation();
 		if (superValidation.isOK())
 			if (doesDDFileExist(getProject(), this.webXMLPath))
-				return validateServletInfo(servletInfoGroup.txtJAXRSServletName.getText(), servletInfoGroup.txtJAXRSServletClassName.getText());
+			  if (servletInfoGroup != null && !servletInfoGroup.isDisposed())
+				  return validateServletInfo(servletInfoGroup.txtJAXRSServletName.getText(), servletInfoGroup.txtJAXRSServletClassName.getText());
+			  else
+			    return Status.OK_STATUS; // superValidation is ok
 			else
 				return Status.OK_STATUS;
 		else {
