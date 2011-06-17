@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and others.
+ * Copyright (c) 2009, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@
  * 20100512   311032 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Property page- SWT exception when removing facet
  * 20100519   313576 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS tools- validation problems
  * 20100618   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
+ * 20110617   349715 kchong@ca.ibm.com - Keith Chong, [JAX-RS] Upon selection, the JAX-RS Configuration page is blank when Project Facets page has unapplied changes
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -284,7 +285,10 @@ implements IJAXRSFacetInstallDataModelProperties
 		IStatus superValidation = super.performValidation();
 		if (superValidation.isOK())
 			if (doesDDFileExist(getProject(), this.webXMLPath))
-				return validateServletInfo(servletInfoGroup.txtJAXRSServletName.getText(), servletInfoGroup.txtJAXRSServletClassName.getText());
+			  if (servletInfoGroup != null && !servletInfoGroup.isDisposed())
+				  return validateServletInfo(servletInfoGroup.txtJAXRSServletName.getText(), servletInfoGroup.txtJAXRSServletClassName.getText());
+			  else
+			    return Status.OK_STATUS; // superValidation is ok
 			else
 				return Status.OK_STATUS;
 		else {
