@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -114,9 +114,14 @@ public class SOAPContentGenerator implements ContentGenerator
     SOAPFactory soapFactory = SOAPFactory.eINSTANCE;
     SOAPBinding soapBinding = soapFactory.createSOAPBinding();
     soapBinding.setStyle((getStyleOption(binding) == STYLE_DOCUMENT) ? "document" : "rpc");
-    soapBinding.setTransportURI("http://schemas.xmlsoap.org/soap/http");
+    soapBinding.setTransportURI(getTransportURI());
 
     binding.addExtensibilityElement(soapBinding);
+  }
+  
+  protected String getTransportURI()
+  {
+    return "http://schemas.xmlsoap.org/soap/http";
   }
 
   public void generateBindingOperationContent(BindingOperation bindingOperation, Operation operation)
