@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 IBM Corporation and others.
+ * Copyright (c) 2007, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk, Initial coding.
  * 20080516   232603 pmoogk@ca.ibm.com - Peter Moogk, Clean up java doc
  * 20091009   277198 mahutch@ca.ibm.com - Mark Hutchinson, Remove IStartup code
+ * 20110628   350592 kchong@ca.ibm.com - Keith Chong - ForbiddenReference in wsdl UI wizard
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy.ui;
 
@@ -31,6 +32,7 @@ public class ServicePolicyActivatorUI extends Plugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.wst.ws.service.policy.ui"; //$NON-NLS-1$
+	public static final String WSI_COMPLIANCE_PROPERTY_PAGE_ID = "org.eclipse.wst.ws.internal.ui.wsi.properties.WSICompliancePropertyPage"; //$NON-NLS-1$
 
 	// The shared instance
 	private static ServicePolicyActivatorUI plugin;

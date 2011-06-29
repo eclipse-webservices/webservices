@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2010 IBM Corporation and others.
+ * Copyright (c) 2001, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071108 196997   ericdp@ca.ibm.com - Eric Peters
+ * 20110628 350592   kchong@ca.ibm.com - Keith Chong - ForbiddenReference in wsdl UI wizard
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.wizards;
 
@@ -50,7 +51,7 @@ import org.eclipse.wst.common.ui.internal.UIPlugin;
 import org.eclipse.wst.sse.core.internal.encoding.CommonEncodingPreferenceNames;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
-import org.eclipse.wst.ws.internal.service.policy.ui.properties.ServicePoliciesPropertyPage;
+import org.eclipse.wst.ws.service.policy.ui.ServicePolicyActivatorUI;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.Service;
@@ -462,7 +463,7 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 		IProject targetProject = ResourcesPlugin.getWorkspace().getRoot().getFile(newFilePage.getContainerFullPath().append(newFilePage.getFileName())).getProject();
 		//PreferencesUtil.createPropertyDialogOn(shell,targetProject,null,null,null).open();
 
-		PreferencesUtil.createPropertyDialogOn(shell,targetProject,ServicePoliciesPropertyPage.PAGE_ID ,new String[] {ServicePoliciesPropertyPage.PAGE_ID},null).open();
+		PreferencesUtil.createPropertyDialogOn(shell,targetProject,ServicePolicyActivatorUI.WSI_COMPLIANCE_PROPERTY_PAGE_ID,new String[] {ServicePolicyActivatorUI.WSI_COMPLIANCE_PROPERTY_PAGE_ID},null).open();
 	}
 	
 	  public String getWSIPreferences() {
