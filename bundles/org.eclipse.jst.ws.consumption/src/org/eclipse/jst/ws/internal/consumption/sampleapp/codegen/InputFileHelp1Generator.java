@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ *     bug 353269 - Ivan Castro Alvarez - JAX-RPC Sample JSP generator should produce Web samples that are not vulnerable to XSS
  *******************************************************************************/
 
 
@@ -70,7 +71,7 @@ public class InputFileHelp1Generator extends InputFileGenerator
      fbuffer.append("valid = false;" + StringUtils.NEWLINE);
      fbuffer.append("%>" + StringUtils.NEWLINE);
      fbuffer.append("<FORM METHOD=\"POST\" ACTION=\"" + fResultName + "\" TARGET=\"result\">" + StringUtils.NEWLINE);
-     fbuffer.append("<INPUT TYPE=\"HIDDEN\" NAME=\"method\" VALUE=\"<%=method%>\">" + StringUtils.NEWLINE);
+     fbuffer.append("<INPUT TYPE=\"HIDDEN\" NAME=\"method\" VALUE=\"<%=org.eclipse.jst.ws.util.JspUtils.markup(method)%>\">" + StringUtils.NEWLINE);
     
      // go to the next generator
      InputFileHelp2Generator inputFileHelp2Generator = new InputFileHelp2Generator(fbuffer); 
