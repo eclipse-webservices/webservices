@@ -14,11 +14,7 @@
 <plugin>
 
    <extension-point id="domruntimes" name="%DomRuntimesExtension_Name" schema="schema/runtimes.exsd"/>
-      
-   <extension point="org.eclipse.ui.startup">
-      <startup class="org.eclipse.jst.ws.jaxws.dom.runtime.WsDomStartupParticipant"/>
-   </extension>
-   
+    
    <extension point="org.eclipse.emf.ecore.generated_package">
    	<package 
        uri = "http:///org/eclipse/jst/ws/jaxws/dom/runtime/dom.ecore" 

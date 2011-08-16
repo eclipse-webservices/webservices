@@ -32,6 +32,7 @@ import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.defaults.Metho
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.defaults.ParameterPropertyDefaultsAdapterTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.defaults.SeiPropertyDefaultsAdapterTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.defaults.WsPropertyDefaultsAdapterTest;
+import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.load.WsDomObtainerTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.serializer.AbstractSerializerAdapterTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.serializer.MethodSerializerAdapterTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.serializer.ParameterSerializerAdapterTest;
@@ -122,6 +123,9 @@ public class AllTestsSuite
         suite.addTestSuite(WmValidationTest.class);
         suite.addTestSuite(WpValidationTest.class);
         suite.addTestSuite(EndpointIsSessionBeanRuleTest.class);
+        
+        // DOM load tests 
+        suite.addTestSuite(WsDomObtainerTest.class);
 
         return suite;
     }

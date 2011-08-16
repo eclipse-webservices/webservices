@@ -14,10 +14,8 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
-import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWsDOMRuntimeExtension;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.WsDOMRuntimeManager;
 import org.eclipse.jst.ws.jaxws.dom.runtime.registry.IWsDOMRuntimeInfo;
@@ -61,21 +59,6 @@ public class WsDOMRuntimeManagerTest extends TestCase
 		
 		assertNotNull(target.getDOMRuntime("supportedruntimetest"));
 		assertNotNull(target.getDOMRuntime("supportedruntimetest1"));
-	}
-	
-	public void testEarlyStartup()
-	{
-		IConfigurationElement[] confElements = Platform.getExtensionRegistry().getExtensionPoint("org.eclipse.ui.startup").getConfigurationElements();
-		
-		for(int ii=0; ii<confElements.length; ii++)
-		{
-			if("org.eclipse.jst.ws.jaxws.dom.runtime.WsDomStartupParticipant".equals(confElements[ii].getAttribute("class")))
-			{
-				return;
-			}
-		}
-		
-		fail("The early startup for DOM Model is not defined !");
 	}
 	
 	public void testReloadDOMRuntimes()

@@ -100,14 +100,14 @@ public class WsDOMRuntimeRegistryTest extends TestCase
 				assertNotNull(runtimeInfo.getProjectFacets());
 				assertEquals(runtimeInfo.getProjectFacets().size(), 2);
 				
-				assertTrue(runtimeInfo.getProjectFacets().containsKey("jst.web"));
+				assertTrue(runtimeInfo.getProjectFacets().containsKey("jst.webb"));
 				assertTrue(runtimeInfo.getProjectFacets().containsKey("test.facet"));
 				
-				assertFalse(runtimeInfo.getProjectFacets().containsKey("jst.webb"));
+				assertFalse(runtimeInfo.getProjectFacets().containsKey("jst.web"));
 				assertFalse(runtimeInfo.getProjectFacets().containsKey("test.facett"));
 				
-				assertNotNull(runtimeInfo.getProjectFacets().get("jst.web"));
-				assertEquals(runtimeInfo.getProjectFacets().get("jst.web"), "1.0.0.0");
+				assertNotNull(runtimeInfo.getProjectFacets().get("jst.webb"));
+				assertEquals(runtimeInfo.getProjectFacets().get("jst.webb"), "1.0.0.0");
 				assertNull(runtimeInfo.getProjectFacets().get("test.facet"));
 				
 				assertNull(runtimeInfo.getProjectFacets().get("dummy.facet"));

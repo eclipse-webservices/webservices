@@ -18,8 +18,6 @@ public class DomIntegrationMessages extends NLS
 
 	public static String DOMAdapterFactoryLabelProvider_JaxWsWebServicesLabel;
 
-	public static String DOMAdapterFactoryLabelProvider_LoadingCanceledLabel;
-
 	public static String DOMAdapterFactoryLabelProvider_LoadingDummyLabel;
 
 	public static String DOMAdapterFactoryLabelProvider_SeiLabel;

@@ -21,5 +21,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.apt.core
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: org.eclipse.jst.ws.jaxws.dom.integration.navigator;x-friends:="org.eclipse.jst.ws.jaxws.dom.integration.tests",
+Export-Package: org.eclipse.jst.ws.jaxws.dom.integration.internal.util;x-friends:="org.eclipse.jst.ws.jaxws.dom.integration.tests",
+ org.eclipse.jst.ws.jaxws.dom.integration.navigator;x-friends:="org.eclipse.jst.ws.jaxws.dom.integration.tests",
  org.eclipse.jst.ws.jaxws.dom.integration.navigator.actions;x-friends:="org.eclipse.jst.ws.jaxws.dom.integration.tests"

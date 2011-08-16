@@ -15,7 +15,6 @@ import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.LabelProviderChangedEvent;
 import org.eclipse.jst.ws.jaxws.dom.integration.internal.plugin.DomIntegrationMessages;
 import org.eclipse.jst.ws.jaxws.dom.integration.internal.plugin.DomIntegrationPlugin;
-import org.eclipse.jst.ws.jaxws.dom.integration.navigator.ILoadingWsProject.ILoadingCanceled;
 import org.eclipse.jst.ws.jaxws.dom.integration.navigator.ILoadingWsProject.ILoadingDummy;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IServiceEndpointInterface;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebMethod;
@@ -60,7 +59,7 @@ public class DOMAdapterFactoryLabelProvider extends AdapterFactoryLabelProvider 
 		{
 			return Images.INSTANCE.getImage(Images.IMG_DOM_WS_PROVIDER);
 		}
-		else if (element instanceof ILoadingDummy || element instanceof ILoadingCanceled) 
+		else if (element instanceof ILoadingDummy) 
 		{
 			return null;
 		}
@@ -79,10 +78,6 @@ public class DOMAdapterFactoryLabelProvider extends AdapterFactoryLabelProvider 
 		{
 			return DomIntegrationMessages.DOMAdapterFactoryLabelProvider_LoadingDummyLabel;
 		}
-		if (element instanceof ILoadingCanceled) 
-		{
-			return DomIntegrationMessages.DOMAdapterFactoryLabelProvider_LoadingCanceledLabel;
-		}		
 		else if(element instanceof IWebServiceChildList)
 		{
 			return DomIntegrationMessages.DOMAdapterFactoryLabelProvider_WebServicesLabel;
@@ -135,7 +130,7 @@ public class DOMAdapterFactoryLabelProvider extends AdapterFactoryLabelProvider 
 	@Override
 	protected Image getDefaultImage(Object object)
 	{
-		// No dfault images 
+		// No default images 
 		return null;
 	}
 }

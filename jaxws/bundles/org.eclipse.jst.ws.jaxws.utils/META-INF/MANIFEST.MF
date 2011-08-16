@@ -35,5 +35,6 @@ Export-Package: org.eclipse.jst.ws.jaxws.utils;
    org.eclipse.jst.ws.jaxws.dom.runtime.tests,
    org.eclipse.jst.ws.jaxws.dom.ui,
    org.eclipse.jst.ws.jaxws.testutils",
+ org.eclipse.jst.ws.jaxws.utils.operation;x-friends:="org.eclipse.jst.ws.jaxws.dom.runtime,org.eclipse.jst.ws.jaxws.dom.runtime.tests,org.eclipse.jst.ws.jaxws.utils.tests",
  org.eclipse.jst.ws.jaxws.utils.resources;x-friends:="org.eclipse.jst.ws.jaxws.dom.integration,org.eclipse.jst.ws.jaxws.dom.runtime.tests,org.eclipse.jst.ws.jaxws.utils.tests"
 Bundle-Activator: org.eclipse.jst.ws.jaxws.utils.internal.plugin.JaxwsUtilsPlugin

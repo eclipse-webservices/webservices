@@ -11,7 +11,6 @@
 package org.eclipse.jst.ws.jaxws.dom.integration.navigator;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +20,8 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
+import org.eclipse.jst.ws.jaxws.dom.integration.internal.util.LoadingWsProjectNodesCollector;
 import org.eclipse.jst.ws.jaxws.dom.integration.internal.util.ProjectExplorerUtil;
-import org.eclipse.jst.ws.jaxws.dom.integration.navigator.ILoadingWsProject.ILoadingCanceled;
 import org.eclipse.jst.ws.jaxws.dom.integration.navigator.ILoadingWsProject.ILoadingDummy;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IDOM;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IServiceEndpointInterface;
@@ -31,9 +30,10 @@ import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebParam;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebService;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebServiceProject;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWsDOMRuntimeExtension;
-import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWsDomLoadListener;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.WsDOMLoadCanceledException;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.WsDOMRuntimeManager;
+import org.eclipse.jst.ws.jaxws.dom.runtime.persistence.load.IWsDomCallback;
+import org.eclipse.jst.ws.jaxws.dom.runtime.persistence.load.WsDomObtainerFactory;
 import org.eclipse.jst.ws.jaxws.dom.runtime.registry.IWsDOMRuntimeInfo;
 import org.eclipse.jst.ws.jaxws.dom.runtime.registry.WsDOMRuntimeRegistry;
 import org.eclipse.jst.ws.jaxws.utils.ContractChecker;
@@ -52,8 +52,6 @@ import org.eclipse.ui.navigator.CommonViewer;
  */
 public class DOMAdapterFactoryContentProvider extends AdapterFactoryContentProvider
 {
-	private Map<IWsDOMRuntimeExtension, IWsDomLoadListener> loadListeners = new HashMap<IWsDOMRuntimeExtension, IWsDomLoadListener>(); 
-	
 	/**
 	 * Constructor
 	 */
@@ -80,7 +78,8 @@ public class DOMAdapterFactoryContentProvider extends AdapterFactoryContentProvi
 		}
 		else if(context instanceof ILoadingWsProject) 
 		{
-			return new Object[] { ((ILoadingWsProject)context).isLoadCanceled() ? new ILoadingCanceled(){} : new ILoadingDummy(){} };
+			new WsDomObtainerFactory().createAsynchronousObtainer(getSupportingRuntime(((ILoadingWsProject)context).getProject())).getDom(new LoadListener());
+			return new Object[] { new ILoadingDummy(){} };
 		}
 		else if(context instanceof IWebServiceProject)
 		{
@@ -128,7 +127,7 @@ public class DOMAdapterFactoryContentProvider extends AdapterFactoryContentProvi
 		
 		return new Object[0];
 	}
-	
+
 	protected Object[] getWsProject(final IProject project) 
 	{
 		try {
@@ -145,26 +144,11 @@ public class DOMAdapterFactoryContentProvider extends AdapterFactoryContentProvi
 				return new Object[] { wsProject };
 			}
 			
-			addRuntimeLoadListener(runtime);
-			return new Object[] { new LoadingWsProject(project, false) };
+			return new Object[] { new LoadingWsProject(project) };
 		} 
 		catch (WsDOMLoadCanceledException e) { // $JL-EXC$
-			return new Object[] { new LoadingWsProject(project, true) }; 
+			return new Object[]{ new LoadingWsProject(project) }; 
 		}
-	}
-	
-	protected IWsDomLoadListener addRuntimeLoadListener(final IWsDOMRuntimeExtension runtime) 
-	{
-		IWsDomLoadListener loadListener = loadListeners.get(runtime); 
-		if (loadListener!=null) {
-			return loadListener;
-		}
-		
-		loadListener = new LoadListener(runtime);		
-		loadListeners.put(runtime, loadListener);		
-		runtime.addLoadListener(loadListener);
-		
-		return loadListener;
 	}
 	
 	protected Object[] extractMethods(final IServiceEndpointInterface sei) 
@@ -284,87 +268,75 @@ public class DOMAdapterFactoryContentProvider extends AdapterFactoryContentProvi
 	 * 
 	 * @author Georgi Vachkov
 	 */
-	protected class LoadListener implements IWsDomLoadListener
+	protected class LoadListener implements IWsDomCallback
 	{
-		private final IWsDOMRuntimeExtension runtime;
-		
-		public LoadListener(final IWsDOMRuntimeExtension runtime) 
+		public void dom(final IDOM dom) 
 		{
-			ContractChecker.nullCheckParam(runtime, "runtime"); //$NON-NLS-1$
-			this.runtime = runtime;
-		}
-			
-		public void finished() 
-		{
-			Display.getDefault().asyncExec(new Runnable()
+			final Runnable exchangeWithDomRunnable = new ExchangeLoadingWsProjectRunnable()
 			{
-				public void run() 
+				@Override
+				protected void updateTreeItemData(final TreeItem treeItem, final CommonViewer commonViewer, final IProject relevantProject)
 				{
-					final IViewPart viewPart = ProjectExplorerUtil.INSTANCE.findProjectExplorer();
-					if (viewPart instanceof CommonNavigator) 
-					{
-						final CommonViewer commonViewer = ((CommonNavigator)viewPart).getCommonViewer();
-						for (TreeItem item : commonViewer.getTree().getItems()) {
-							exchangeDummy(item, commonViewer);
-						}
-					}
+					final IWebServiceProject wsProject = getWsProject(dom, relevantProject);
+					adapterFactory.adapt(wsProject, ITreeItemContentProvider.class);
+					treeItem.setData(wsProject);
 				}
-			});
+			};
+			Display.getDefault().asyncExec(exchangeWithDomRunnable);
 		}		
 
-		protected void exchangeDummy(final TreeItem treeItem, final CommonViewer commonViewer) 
-		{
-			if (treeItem == null || treeItem.getData() instanceof IWebServiceProject) {
-				return;
-			}
-			
-			if (treeItem.getData() instanceof ILoadingWsProject) {
-				exchangeTreeItemData(treeItem, commonViewer);
-			}
-			else {
-				for (TreeItem child : treeItem.getItems()) {
-					exchangeDummy(child, commonViewer);
-				}
-			}
-		}
-
-		private void exchangeTreeItemData(final TreeItem treeItem, final CommonViewer commonViewer) 
-		{
-			final ILoadingWsProject loadingProject = (ILoadingWsProject)treeItem.getData();
-			try {
-				final IWebServiceProject wsProject = getWsProject(runtime.getDOM(), loadingProject.getProject());
-				adapterFactory.adapt(wsProject, ITreeItemContentProvider.class);
-				treeItem.setData(wsProject);
-
-			} catch (WsDOMLoadCanceledException e) { // $JL-EXC$
-				treeItem.setData(new LoadingWsProject(loadingProject.getProject(), true));
-			}
-			
-			commonViewer.refresh(loadingProject.getProject());
-		}
-		
-		public void started() {
+		public void domLoadStarting() {
 			// nothing to do here
+		}
+
+		public void domLoadCancelled()	{
+			final Runnable exchangeWithDomRunnable = new ExchangeLoadingWsProjectRunnable()
+			{
+				@Override
+				protected void updateTreeItemData(final TreeItem treeItem, final CommonViewer commonViewer, final IProject relevantProject)
+				{
+					// DOM Load has been cancelled and therefore there is nothing to update. The next time the user expands the JSX-WS node the content provider schedules another DOM load routine 
+				}
+			};
+			Display.getDefault().asyncExec(exchangeWithDomRunnable);
+		}
+
+		public void domLoadFailed()	{
+			// TODO: Maybe add a "DOM Load Failed node"
 		}
 	}
 	
 	private class LoadingWsProject implements ILoadingWsProject
 	{
 		final IProject project;
-		final boolean isCanceled;
 		
-		public LoadingWsProject(final IProject project, final boolean isCanceled) {
+		public LoadingWsProject(final IProject project) {
 			ContractChecker.nullCheckParam(project, "project"); //$NON-NLS-1$
 			this.project = project;
-			this.isCanceled = isCanceled;
 		}
 		
 		public IProject getProject() {
 			return project;
 		}
-
-		public boolean isLoadCanceled() {
-			return isCanceled;
+	}
+	
+	private abstract class ExchangeLoadingWsProjectRunnable implements Runnable
+	{
+		public void run() 
+		{
+			final IViewPart viewPart = ProjectExplorerUtil.INSTANCE.findProjectExplorer();
+			if (viewPart instanceof CommonNavigator) 
+			{
+				final CommonViewer commonViewer = ((CommonNavigator)viewPart).getCommonViewer();
+				for(TreeItem treeItem : new LoadingWsProjectNodesCollector().getLoadingWsProjects(commonViewer.getTree().getItems()))
+				{
+					final IProject relevantProject = ((ILoadingWsProject)treeItem.getData()).getProject();					
+					updateTreeItemData(treeItem, commonViewer, relevantProject);
+					commonViewer.refresh(relevantProject);
+				}
+			}
 		}
+
+		protected abstract void updateTreeItemData(TreeItem treeItem, CommonViewer commonViewer, final IProject relevantProject);
 	}
 }

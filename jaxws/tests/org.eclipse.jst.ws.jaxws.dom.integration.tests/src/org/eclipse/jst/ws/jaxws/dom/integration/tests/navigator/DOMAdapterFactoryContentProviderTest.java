@@ -19,7 +19,6 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jst.ws.jaxws.dom.integration.navigator.DOMAdapterFactoryContentProvider;
 import org.eclipse.jst.ws.jaxws.dom.integration.navigator.ILoadingWsProject;
-import org.eclipse.jst.ws.jaxws.dom.integration.navigator.ILoadingWsProject.ILoadingCanceled;
 import org.eclipse.jst.ws.jaxws.dom.integration.navigator.ILoadingWsProject.ILoadingDummy;
 import org.eclipse.jst.ws.jaxws.dom.integration.navigator.ISEIChildList;
 import org.eclipse.jst.ws.jaxws.dom.integration.navigator.IWebServiceChildList;
@@ -250,31 +249,6 @@ public class DOMAdapterFactoryContentProviderTest extends TestCase
 		return null;
 	}
 	
-//	public void testNotifyChanged()
-//	{
-//		Object[] children = adapterFactory.getChildren(testPrj1.getProject());
-//		
-//		try
-//		{
-//			testPrj1.createType(modelSync1, "Sei3.java", "@javax.jws.WebService(name=\"Sei3Name\") public interface Sei3 {}");
-//			testPrj1.createType(modelSync1, "WS3.java", "@javax.jws.WebService(serviceName=\"WS3Name\", endpointInterface=\"org.eclipse.test.modelsync1.Sei3\") public class WS3 {}");
-//		}
-//		catch(JavaModelException e)
-//		{
-//			fail(e.toString());
-//		}
-//		
-//		children = adapterFactory.getChildren(children[0]);
-//		
-//		Object[] sEIs = adapterFactory.getChildren(children[0]);
-//		
-//		assertEquals(sEIs.length, 3);
-//		
-//		Object[] wSs = adapterFactory.getChildren(children[1]);
-//		
-//		assertEquals(wSs.length, 3);
-//	}
-	
 	public void testGetWSProject()
 	{
 		adapterFactory = new DOMAdapterFactoryContentProvider();
@@ -299,28 +273,15 @@ public class DOMAdapterFactoryContentProviderTest extends TestCase
 		assertTrue(children[0] instanceof ILoadingDummy);
 	}
 	
-	public void testGetWsProjectChildsDomLoadNotCanceled()
+	public void testGetWsProjectChildsDomNotLoaded()
 	{
 		ILoadingWsProject loadingProject = new ILoadingWsProject() {
-			public IProject getProject() { return null; }
-			public boolean isLoadCanceled() {return false;}
+			public IProject getProject() { return testPrj1.getProject(); }
 		};
 			
 		Object[] children = adapterFactory.getChildren(loadingProject);
 		assertEquals(1, children.length);
 		assertTrue(children[0] instanceof ILoadingDummy);		
-	}
-	
-	public void testGetWsProjectChildsDomLoadCanceled()
-	{
-		ILoadingWsProject loadingProject = new ILoadingWsProject() {
-			public IProject getProject() { return null; }
-			public boolean isLoadCanceled() {return true;}
-		};
-			
-		Object[] children = adapterFactory.getChildren(loadingProject);
-		assertEquals(1, children.length);
-		assertTrue(children[0] instanceof ILoadingCanceled);		
 	}
 	
 	public void testGetSupportingRuntime()

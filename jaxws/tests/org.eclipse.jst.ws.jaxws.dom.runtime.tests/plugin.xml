@@ -18,7 +18,7 @@
          point="org.eclipse.jst.ws.jaxws.dom.runtime.domruntimes">
       <implementation class="org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.TestWsDOMRuntimeExtension"/>
       <project_facet 
-      	 id="jst.web"
+      	 id="jst.webb"
       	 version="1.0.0.0"/>
       <project_facet 
       	 id="test.facet"/>

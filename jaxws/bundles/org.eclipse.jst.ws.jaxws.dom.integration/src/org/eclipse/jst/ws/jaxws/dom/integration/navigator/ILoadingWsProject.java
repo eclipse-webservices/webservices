@@ -28,17 +28,10 @@ public interface ILoadingWsProject
 	public IProject getProject();
 	
 	/**
-	 * @return if the DOM loading has been canceled
-	 */
-	public boolean isLoadCanceled();
-	
-	/**
 	 * Interface used to be added to the tree as a sub node of INotLoadedWsProject node
 	 * and displayed with text "Loading...".
 	 * 
 	 * @author Georgi Vachkov
 	 */
 	public interface ILoadingDummy {};
-	
-	public interface ILoadingCanceled {};
 }

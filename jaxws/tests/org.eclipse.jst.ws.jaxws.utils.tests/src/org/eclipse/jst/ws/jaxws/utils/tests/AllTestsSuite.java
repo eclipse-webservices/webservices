@@ -29,6 +29,7 @@ import org.eclipse.jst.ws.jaxws.utils.tests.internal.annotations.ParamValuePairI
 import org.eclipse.jst.ws.jaxws.utils.tests.internal.annotations.QualifiedNameValueImplTest;
 import org.eclipse.jst.ws.jaxws.utils.tests.internal.annotations.StringValueImplTest;
 import org.eclipse.jst.ws.jaxws.utils.tests.internal.clazz.ASTUtilsTest;
+import org.eclipse.jst.ws.jaxws.utils.tests.internal.operation.OperationInJobRunnerTest;
 
 
 public class AllTestsSuite
@@ -58,6 +59,7 @@ public class AllTestsSuite
 		suite.addTestSuite(FileUtilsUnitTest.class);
 		suite.addTestSuite(JaxWsUtilsTest.class);
 		suite.addTestSuite(StringInputStreamAdapterTest.class);
+		suite.addTestSuite(OperationInJobRunnerTest.class);
 		
 		return suite;
 	}
