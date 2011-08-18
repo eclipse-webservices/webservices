@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and others.
+ * Copyright (c) 2009, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@
  * 20100407   308401 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet wizard page - Shared-library option should be disabled
  * 20100413   307552 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS and Java EE 6 setup is incorrect
  * 20100519   313576 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS tools- validation problems
+ * 20110817   352887 kchong@ca.ibm.com - Keith Chong, [JAXRS] JAXRSFacetInstallDataModelProvider dispose method does not remove all listeners it adds 
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -51,6 +52,7 @@ public class JAXRSFacetInstallDataModelProvider extends
 
 	private String errorMessage;
     private LibraryInstallDelegate libraryInstallDelegate = null;
+    private IPropertyChangeListener propertyChangeListener = null;
 
 	@SuppressWarnings("unchecked")
 	public Set<String> getPropertyNames() {
@@ -152,25 +154,32 @@ public class JAXRSFacetInstallDataModelProvider extends
         if( this.libraryInstallDelegate == null && fpjwc != null && fv != null )
         {
             this.libraryInstallDelegate = new LibraryInstallDelegate( fpjwc, fv );
-            
-            this.libraryInstallDelegate.addListener
-            ( 
-                new IPropertyChangeListener()
+            this.propertyChangeListener = new IPropertyChangeListener()
+            {
+                public void propertyChanged( final String property,
+                                             final Object oldValue,
+                                             final Object newValue )
                 {
-                    public void propertyChanged( final String property,
-                                                 final Object oldValue,
-                                                 final Object newValue )
+                    final IDataModel dm = getDataModel();
+
+                    if( dm != null )
                     {
-                        final IDataModel dm = getDataModel();
-    
-                        if( dm != null )
-                        {
-                            dm.notifyPropertyChange( LIBRARY_PROVIDER_DELEGATE, IDataModel.VALUE_CHG );
-                        }
+                        dm.notifyPropertyChange( LIBRARY_PROVIDER_DELEGATE, IDataModel.VALUE_CHG );
                     }
                 }
-            );
+            };
+            this.libraryInstallDelegate.addListener(propertyChangeListener);
         }
+    }
+    
+    @SuppressWarnings("restriction")
+    public void dispose()
+    {
+    	if (this.libraryInstallDelegate != null)
+    	{
+    	  this.libraryInstallDelegate.removeListener(propertyChangeListener);
+    	}
+    	super.dispose(); // empty
     }
 
 	private IStatus createErrorStatus(String msg) {
