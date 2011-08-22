@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and others.
+ * Copyright (c) 2009, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@
  * 20100618   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
  * 20100820   323192 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS- Not prompted to enter servlet class when adding JAX-RS facet to a new web project
  * 20101123   330916 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS - facet install should consider Web project associated with multiple EARs
+ * 20110822   349541 atosak@ca.ibm.com - Atosa Khoddamhazrati, JAX-RS Facet assumes a project has a runtime when enabling the facet
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -490,47 +491,48 @@ private void initializeValues()
 
 					org.eclipse.wst.common.project.facet.core.runtime.IRuntime rt = ProjectFacetsManager
 							.create(webProject).getPrimaryRuntime();
-					IRuntime runtime = FacetUtil.getRuntime(rt);
-					if (runtime != null) {
-						targetRuntime = runtime;
-						IRuntimeType rtType = runtime.getRuntimeType();
-						if (rtType != null) {
-							sTargetRuntime = rtType.getId();
-						}
-
-						if (webProject != null) {
-							IProject[] referencingEARProjects = EarUtilities
-									.getReferencingEARProjects(webProject);
-							int size = referencingEARProjects.length;
-
-							if (size == 1) {
-								String earName = referencingEARProjects[0]
-										.getName();
-								// Since we do have only one EAR, let's use
-								// the existing 'support/variables' and
-								// continue as usual
-								// The two properties, ADD_TO_EAR and
-								// EARPROJECT_NAME will be set.
-								this.bAddToEAR = true;
-								this.sEARProject = earName;
-							} else if (size > 1) {
-								// On the other hand, if we have multiple
-								// ears, then we need to use the new
-								// property EARPROJECTS
-								// Perhaps we can just use this new property
-								// to handle the case for only one EAR.
-								this.bAddToEAR = true;
-								this.earProjects = new ArrayList<IProject>();
-								String earName = referencingEARProjects[0]
-										.getName();
-								this.sEARProject = earName;
-								for (int i = 0; i < size; i++) {
-									earProjects.add(referencingEARProjects[i]);
+					if (rt != null) {
+						IRuntime runtime = FacetUtil.getRuntime(rt);
+						if (runtime != null) {
+							targetRuntime = runtime;
+							IRuntimeType rtType = runtime.getRuntimeType();
+							if (rtType != null) {
+								sTargetRuntime = rtType.getId();
+							}
+	
+							if (webProject != null) {
+								IProject[] referencingEARProjects = EarUtilities
+										.getReferencingEARProjects(webProject);
+								int size = referencingEARProjects.length;
+	
+								if (size == 1) {
+									String earName = referencingEARProjects[0]
+											.getName();
+									// Since we do have only one EAR, let's use
+									// the existing 'support/variables' and
+									// continue as usual
+									// The two properties, ADD_TO_EAR and
+									// EARPROJECT_NAME will be set.
+									this.bAddToEAR = true;
+									this.sEARProject = earName;
+								} else if (size > 1) {
+									// On the other hand, if we have multiple
+									// ears, then we need to use the new
+									// property EARPROJECTS
+									// Perhaps we can just use this new property
+									// to handle the case for only one EAR.
+									this.bAddToEAR = true;
+									this.earProjects = new ArrayList<IProject>();
+									String earName = referencingEARProjects[0]
+											.getName();
+									this.sEARProject = earName;
+									for (int i = 0; i < size; i++) {
+										earProjects.add(referencingEARProjects[i]);
+									}
 								}
 							}
 						}
 					}
-
 				} else {
 					Object oAddToEAR = webAppDataModel
 							.getProperty(IJ2EEModuleFacetInstallDataModelProperties.ADD_TO_EAR);
