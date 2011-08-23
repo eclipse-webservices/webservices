@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions xmlns:tns="http://tempuri.org/NoDefaultNamespace/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="NoDefaultNamespace" targetNamespace="http://tempuri.org/NoDefaultNamespace/">
-  <wsdl:documentation>
-    <elementNoNamespace/>
-  </wsdl:documentation>    
-</wsdl:definitions>

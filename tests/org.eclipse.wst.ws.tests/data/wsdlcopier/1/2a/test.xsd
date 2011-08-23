@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<schema 
-	xmlns="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="http://www.example.org/testxsd2"
-	elementFormDefault="qualified">
-    <element name="TestString2" type="string"></element>
-</schema>
