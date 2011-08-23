@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ *     bug 353272 - Ivan Castro Alvarez - JAX-RPC Sample JSP generator should produce Web samples that are not vulnerable to XSS
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.sampleapp.codegen;
@@ -71,7 +72,7 @@ public class TestClientFileGenerator extends Generator
       fbuffer.append("resultJSP.append(resultObj.toString()).append(\"=\").append(request.getParameter(resultObj.toString())).append(\"&\");").append(StringUtils.NEWLINE);
       fbuffer.append("}").append(StringUtils.NEWLINE);
       fbuffer.append("%>").append(StringUtils.NEWLINE);
-      fbuffer.append("<FRAME SRC=\"<%=resultJSP.toString()%>\" NAME=\"result\"  MARGINWIDTH=\"1\" MARGINHEIGHT=\"1\" SCROLLING=\"yes\" FRAMEBORDER=\"1\">" + StringUtils.NEWLINE);
+      fbuffer.append("<FRAME SRC=\"<%=org.eclipse.jst.ws.util.JspUtils.markup(resultJSP.toString())%>\" NAME=\"result\"  MARGINWIDTH=\"1\" MARGINHEIGHT=\"1\" SCROLLING=\"yes\" FRAMEBORDER=\"1\">" + StringUtils.NEWLINE);
       fbuffer.append("</FRAMESET>" + StringUtils.NEWLINE);
 
 

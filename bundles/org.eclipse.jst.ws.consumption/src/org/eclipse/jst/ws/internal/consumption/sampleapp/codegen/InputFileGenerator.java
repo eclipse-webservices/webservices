@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2009 IBM Corporation and others.
+ * Copyright (c) 2000, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,7 +7,8 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *     bug 296245 - Yen Lu - yenlu@ca.ibm.com - Input.jsp produces malformed HTML 
+ *     bug 296245 - Yen Lu - yenlu@ca.ibm.com - Input.jsp produces malformed HTML
+ *     bug 353272 - Ivan Castro Alvarez - JAX-RPC Sample JSP generator should produce Web samples that are not vulnerable to XSS 
  *******************************************************************************/
 
 
@@ -96,7 +97,7 @@ public class InputFileGenerator extends Generator
       fbuffer.append("valid = false;" + StringUtils.NEWLINE);
       fbuffer.append("%>" + StringUtils.NEWLINE);
       fbuffer.append("<FORM METHOD=\"POST\" ACTION=\"" + fResultName + "\" TARGET=\"result\">" + StringUtils.NEWLINE);
-      fbuffer.append("<INPUT TYPE=\"HIDDEN\" NAME=\"method\" VALUE=\"<%=method%>\">" + StringUtils.NEWLINE);
+      fbuffer.append("<INPUT TYPE=\"HIDDEN\" NAME=\"method\" VALUE=\"<%=org.eclipse.jst.ws.util.JspUtils.markup(method)%>\">" + StringUtils.NEWLINE);
       fbuffer.append("<TABLE>" + StringUtils.NEWLINE);
       fbuffer.append("<TR>" + StringUtils.NEWLINE);
       fbuffer.append("<TD COLSPAN=\"1\" ALIGN=\"LEFT\">URLString:</TD>" + StringUtils.NEWLINE);
@@ -113,7 +114,7 @@ public class InputFileGenerator extends Generator
       fbuffer.append("valid = false;" + StringUtils.NEWLINE);
       fbuffer.append("%>" + StringUtils.NEWLINE);
       fbuffer.append("<FORM METHOD=\"POST\" ACTION=\"" + fResultName + "\" TARGET=\"result\">" + StringUtils.NEWLINE);
-      fbuffer.append("<INPUT TYPE=\"HIDDEN\" NAME=\"method\" VALUE=\"<%=method%>\">" + StringUtils.NEWLINE);
+      fbuffer.append("<INPUT TYPE=\"HIDDEN\" NAME=\"method\" VALUE=\"<%=org.eclipse.jst.ws.util.JspUtils.markup(method)%>\">" + StringUtils.NEWLINE);
       fbuffer.append("<BR>" + StringUtils.NEWLINE);
       fbuffer.append("<INPUT TYPE=\"SUBMIT\" VALUE=\"Invoke\">" + StringUtils.NEWLINE);
       fbuffer.append("<INPUT TYPE=\"RESET\" VALUE=\"Clear\">" + StringUtils.NEWLINE);
