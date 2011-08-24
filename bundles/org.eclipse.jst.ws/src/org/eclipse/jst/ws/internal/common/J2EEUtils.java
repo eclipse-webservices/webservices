@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2008, 2009 IBM Corporation and others.
+ * Copyright (c) 2000, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@
  * 20081001   243869 ericdp@ca.ibm.com - Eric D. Peters, Web Service tools allowing mixed J2EE levels
  * 20090114   261087 ericdp@ca.ibm.com - Eric D. Peters, No way to get meta-inf path for a project
  * 20100203          kchong@ca.ibm.com - Keith Chong, Java Facet change
+ * 20110824   355771 kchong@ca.ibm.com - Keith Chong, Remove unused/dead code as reported in build reports
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.common;
@@ -80,7 +81,6 @@ import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.componentcore.datamodel.properties.ICreateReferenceComponentsDataModelProperties;
 import org.eclipse.wst.common.componentcore.internal.operation.CreateReferenceComponentsDataModelProvider;
 import org.eclipse.wst.common.componentcore.internal.util.ComponentUtilities;
-import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.common.componentcore.resources.IVirtualReference;
