@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060505   139918 pmoogk@ca.ibm.com - Peter Moogk
+ * 20110824   355591 kchong@ca.ibm.com - Keith Chong, [Usability] Package to mapping table doesn't handle 'enter' key properly
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -484,6 +485,12 @@ public class TableViewerWidget extends SimpleWidgetDataContributor
                // Esc
                if (((int)e.character) == 27)
                  cancelSelection();
+               if (e.character == SWT.CR)
+               {
+            	 // Handle the carriage return and set the value
+                 internalRefresh();
+                 internalDispose();
+               }
              }
              public void keyReleased(KeyEvent e)
              {
@@ -498,6 +505,8 @@ public class TableViewerWidget extends SimpleWidgetDataContributor
                  traverseTabNext();
                else if (e.detail == SWT.TRAVERSE_TAB_PREVIOUS)
                  traverseTabPrevious();
+               else if (e.detail == SWT.TRAVERSE_RETURN)
+                 e.doit = false;
              }
            }
          );
