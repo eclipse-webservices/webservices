@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 IBM Corporation and others.
+ * Copyright (c) 2004, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@
  * 20080122   215866 trungha@ca.ibm.com - Trung Ha
  * 20080303   218696 ericdp@ca.ibm.com - Eric D. Peters, APIs using EJBArtifactEdit not able to deal with some EJB 3.0 beans properly
  * 20080626   236645 kathy@ca.ibm.com - Kathy Chan
+ * 20110824   355771 kchong@ca.ibm.com - Keith Chong, Remove unused/dead code as reported in build reports 
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.common;
 
@@ -448,9 +449,9 @@ public final class ResourceUtils {
 			EARArtifactEdit earEdit = null;
 			try {
 			  //earEdit = EARArtifactEdit.getEARArtifactEditForRead(wbcs[0]);
-			  if (earEdit!=null){
-				isEAR = true;
-			  }
+//			  if (earEdit!=null){
+//				isEAR = true;
+//			  }
 			}
 			finally{
 				if (earEdit!=null)
@@ -487,9 +488,9 @@ public final class ResourceUtils {
 			EJBArtifactEdit ejbEdit = null;
 			try {
 			  //ejbEdit = EJBArtifactEdit.getEJBArtifactEditForRead(wbcs[0]);
-			  if (ejbEdit!=null){
-				isEJB = true;
-			  }
+//			  if (ejbEdit!=null){
+//				isEJB = true;
+//			  }
 			}
 			finally{
 				if (ejbEdit!=null)
@@ -526,9 +527,9 @@ public final class ResourceUtils {
 			AppClientArtifactEdit appClientEdit = null;
 			try {
 				//appClientEdit = AppClientArtifactEdit.getAppClientArtifactEditForRead(wbcs[0]);
-			  if (appClientEdit!=null){
-				  isAppClient = true;
-			  }
+//			  if (appClientEdit!=null){
+//				  isAppClient = true;
+//			  }
 			}
 			finally{
 				if (appClientEdit!=null)
