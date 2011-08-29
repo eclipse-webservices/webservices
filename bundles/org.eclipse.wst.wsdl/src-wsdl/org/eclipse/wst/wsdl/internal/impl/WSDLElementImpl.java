@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2010 IBM Corporation and others.
+ * Copyright (c) 2001, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -1043,6 +1043,12 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
         // Try to find a locally defined namespace prefix.
 
         namespace = getNamespaceURIFromPrefix(element, prefix);
+        
+        // If the namespace is still null, then try to find it from the definition
+        if (namespace == null)
+        {
+          namespace = definition.getNamespace(prefix);
+        }
       }
 
       if (namespace != null || (allowNullNamespaceURI && prefix.length() == 0))
