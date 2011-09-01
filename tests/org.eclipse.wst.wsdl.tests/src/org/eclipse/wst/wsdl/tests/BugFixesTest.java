@@ -2054,7 +2054,7 @@ public class BugFixesTest extends TestCase
   {
     try
     {
-      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/MoveOperationstest/PortTypeWithTwoOperations.wsdl");  //$NON-NLS-1$
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/MoveOperationsTest/PortTypeWithTwoOperations.wsdl");  //$NON-NLS-1$
       
       Assert.assertNotNull(definition);
 
