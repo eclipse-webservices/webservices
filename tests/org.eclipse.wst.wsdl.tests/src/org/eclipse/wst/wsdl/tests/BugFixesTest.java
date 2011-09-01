@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 IBM Corporation and others.
+ * Copyright (c) 2006, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.BindingFault;
@@ -343,6 +344,14 @@ public class BugFixesTest extends TestCase
       }
     });
     
+    suite.addTest(new BugFixesTest("MoveOperation") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testMoveOperation();
+      }
+    });
+
     suite.addTest(new BugFixesTest("SOAPBodyForMIME") //$NON-NLS-1$
     {
       protected void runTest()
@@ -2036,7 +2045,63 @@ public class BugFixesTest extends TestCase
     String elementAttributeValue = partElement.getAttribute(WSDLConstants.ELEMENT_ATTRIBUTE);
 
     assertEquals(elementAttributeValue, responseElementDeclaration.getName());
-  }  
+  }
+  
+  /**
+   * https://bugs.eclipse.org/bugs/show_bug.cgi?id=356100 - regression
+   */
+  public void testMoveOperation()
+  {
+    try
+    {
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/MoveOperationsTest/PortTypeWithTwoOperations.wsdl");  //$NON-NLS-1$
+      
+      Assert.assertNotNull(definition);
+
+      PortType portType = (PortType)definition.getEPortTypes().get(0);
+      
+      Assert.assertNotNull(portType);
+      
+      EList list = portType.getEOperations();
+            
+      EObject eObject1 = (EObject)list.get(0);
+      EObject eObject2 = (EObject)list.get(1);
+      
+      if (eObject1 instanceof Operation &&
+          eObject2 instanceof Operation)
+      {
+        Operation op1 = (Operation)eObject1;
+        Operation op2 = (Operation)eObject2;
+        
+        // Before move
+        
+        assertEquals("operation1", op1.getName());  //$NON-NLS-1$
+        assertEquals("operation2", op2.getName());  //$NON-NLS-1$
+        
+        assertNotNull(op1.getInput().getMessage());
+        
+        // Move first operation to the end
+        portType.getEOperations().move(1, op1);
+        
+        // After move
+        
+        // Verify the second operation is now the first
+        assertEquals(op2, portType.getEOperations().get(0));
+        
+        // Verify the messages are not null.  This is the bug fix.
+        assertNotNull(op1.getInput().getMessage());
+      }
+      else
+      {
+        Assert.fail("Did not get two operations.");  //$NON-NLS-1$
+      }
+    }
+    catch (Exception e)
+    {
+      Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage());  //$NON-NLS-1$
+    }
+  }
+
   
   /**
    * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=322954

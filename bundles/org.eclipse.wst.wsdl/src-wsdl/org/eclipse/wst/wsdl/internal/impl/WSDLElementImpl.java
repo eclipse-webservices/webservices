@@ -1043,6 +1043,12 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
         // Try to find a locally defined namespace prefix.
 
         namespace = getNamespaceURIFromPrefix(element, prefix);
+        
+        // If the namespace is still null, then try to find it from the definition
+        if (namespace == null)
+        {
+          namespace = definition.getNamespace(prefix);
+        }
       }
 
       if (namespace != null || (allowNullNamespaceURI && prefix.length() == 0))
