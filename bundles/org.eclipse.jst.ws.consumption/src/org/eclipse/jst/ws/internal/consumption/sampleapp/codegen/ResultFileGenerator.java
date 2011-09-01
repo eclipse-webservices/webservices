@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * Copyright (c) 2000, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060523   142296 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20110829   355865 ivanc@mx1.ibm.com - Ivan Castro Alvarez, JAX-RPC sample generator still vulnerable to cross site scripting (XSS)
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.sampleapp.codegen;
 
@@ -117,7 +118,8 @@ public class ResultFileGenerator extends Generator
       fbuffer.append("}" + StringUtils.NEWLINE);    
       fbuffer.append("} catch (Exception e) { " + StringUtils.NEWLINE);
       fbuffer.append("%>" + StringUtils.NEWLINE);
-      fbuffer.append("exception: <%= e %>" + StringUtils.NEWLINE);
+      fbuffer.append("Exception: <%= org.eclipse.jst.ws.util.JspUtils.markup(e.toString()) %>" + StringUtils.NEWLINE);
+      fbuffer.append("Message: <%= org.eclipse.jst.ws.util.JspUtils.markup(e.getMessage()) %>"  + StringUtils.NEWLINE);
       fbuffer.append("<%" + StringUtils.NEWLINE);
       fbuffer.append("return;" + StringUtils.NEWLINE);
       fbuffer.append("}" + StringUtils.NEWLINE);
