@@ -125,7 +125,7 @@
 
 		while (iter.hasNext())
 		{
-			Part part = (Part)iter.next(); 
+			javax.wsdl.Part part = (javax.wsdl.Part)iter.next(); 
 			IXSDFragment frag = operElement.getFragment(part);  
 			org.eclipse.xsd.XSDTypeDefinition def = frag.getXSDTypeDefinition();
 			//we check the type of the operation's input message

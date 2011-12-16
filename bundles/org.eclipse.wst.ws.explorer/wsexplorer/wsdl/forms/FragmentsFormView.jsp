@@ -19,7 +19,6 @@
                                                         org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.constants.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.perspective.*,
-                                                        org.eclipse.wst.wsdl.binding.soap.SOAPHeader,
                                                         javax.wsdl.*,
                                                         java.util.*" %>
 
@@ -57,7 +56,7 @@ if (it.hasNext()) {
 	<div id="<%=headerDivId%>">
 	<%
 	while (it.hasNext()) {
-	  SOAPHeader soapHeader = (SOAPHeader) it.next();
+	  org.eclipse.wst.wsdl.binding.soap.SOAPHeader soapHeader = (org.eclipse.wst.wsdl.binding.soap.SOAPHeader) it.next();
 	  IXSDFragment frag = operElement.getHeaderFragment(soapHeader);	   
 	  fragID.delete(0, fragID.length());
 	  fragID.append(frag.getID());
@@ -96,7 +95,7 @@ if (hasInput) {
 <%
 it = operElement.getOrderedBodyParts().iterator();
 while (it.hasNext()) {
-  Part part = (Part)it.next();
+  javax.wsdl.Part part = (javax.wsdl.Part)it.next();
   IXSDFragment frag = operElement.getFragment(part);
   fragID.delete(0, fragID.length());
   fragID.append(frag.getID());

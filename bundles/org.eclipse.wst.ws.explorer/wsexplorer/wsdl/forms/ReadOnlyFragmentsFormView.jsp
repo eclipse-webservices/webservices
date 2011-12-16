@@ -27,7 +27,6 @@
                                                         org.eclipse.wst.ws.internal.explorer.platform.perspective.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.util.*,
                                                         org.eclipse.wst.ws.internal.explorer.transport.*,
-                                                        org.eclipse.wst.wsdl.binding.soap.SOAPHeader,
                                                         org.w3c.dom.*,
                                                         javax.wsdl.*,
                                                         javax.xml.parsers.*,
@@ -102,7 +101,7 @@ else
 		Iterator it = operElement.getSOAPHeaders(false).iterator();
 		int start = 0;
 		while (it.hasNext() && start < headerContent.length) {
-			SOAPHeader soapHeader = (SOAPHeader) it.next();									
+			org.eclipse.wst.wsdl.binding.soap.SOAPHeader soapHeader = (org.eclipse.wst.wsdl.binding.soap.SOAPHeader) it.next();									
 			IXSDFragment fragment = operElement.getHeaderFragment(soapHeader, false);
 			
 			if (!cached) {				
@@ -174,7 +173,7 @@ else
 	    Hashtable uriReferences = null;
 	    while (it.hasNext())
 	    {
-	      IXSDFragment fragment = operElement.getFragment((Part)it.next(), false);
+	      IXSDFragment fragment = operElement.getFragment((javax.wsdl.Part)it.next(), false);
 	      if (!cached)
 	      {
 	        if (!operElement.isUseLiteral() && (fragment instanceof ISOAPEncodingWrapperFragment))

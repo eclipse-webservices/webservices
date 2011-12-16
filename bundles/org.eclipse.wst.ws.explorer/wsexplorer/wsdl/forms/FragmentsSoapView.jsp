@@ -24,7 +24,6 @@
                                                         org.eclipse.wst.ws.internal.explorer.platform.constants.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.util.*,
                                                         org.eclipse.wst.ws.internal.explorer.transport.*,
-                                                        org.eclipse.wst.wsdl.binding.soap.SOAPHeader,
                                                         org.w3c.dom.*,
                                                         javax.wsdl.*,
                                                         javax.wsdl.extensions.ExtensibilityElement,
