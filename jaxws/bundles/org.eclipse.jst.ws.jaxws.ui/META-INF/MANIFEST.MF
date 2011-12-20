@@ -28,6 +28,6 @@ Import-Package: javax.jws,
  javax.xml.ws;version="2.1.0",
  javax.xml.ws.http;version="2.1.0",
  javax.xml.ws.soap;version="2.1.0",
- org.jdom;version="1.0.0",
- org.jdom.input;version="1.0.0"
+ org.jdom;version="1.1.1",
+ org.jdom.input;version="1.1.1"
 Export-Package: org.eclipse.jst.ws.internal.jaxws.ui.annotations.correction;x-internal:=true

@@ -56,6 +56,6 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Created-By: 1.5.0_14-b03 (Sun Microsystems Inc.)
 Bundle-ActivationPolicy: lazy
 Import-Package: javax.xml.ws;version="2.1.0",
- org.jdom;version="1.0.0",
- org.jdom.input;version="1.0.0",
- org.jdom.output;version="1.0.0"
+ org.jdom;version="1.1.1",
+ org.jdom.input;version="1.1.1",
+ org.jdom.output;version="1.1.1"
