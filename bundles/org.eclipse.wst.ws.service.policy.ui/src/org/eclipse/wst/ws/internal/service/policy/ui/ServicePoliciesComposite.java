@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 IBM Corporation and others.
+ * Copyright (c) 2007, 2012 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@
  * 20080530   234944 pmoogk@ca.ibm.com - Peter Moogk, Fixed focus problem for action controls
  * 20080716   239457 ericdp@ca.ibm.com - Eric D. Peters, Service Policy UI Restore defaults does not refresh validation error
  * 20090306   224632 ericdp@ca.ibm.com - Eric D. Peters, Fix Service Policies preference page UI
+ * 20120111   357580 kchong@ca.ibm.com - Keith Chong, Service Policies preference page tree view pane doesn't expand to show fully the tree items
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.service.policy.ui;
 
@@ -341,7 +342,7 @@ public class ServicePoliciesComposite extends Composite implements
 		masterLayout.numColumns = 1;
 		masterLayout.horizontalSpacing = 0;
 		masterComposite.setLayout(masterLayout);
-		masterComposite.setLayoutData(new GridData(GridData.FILL_VERTICAL));
+		masterComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		detailsComposite = new Composite(this, SWT.NONE);
 		GridLayout detailsLayout = new GridLayout();
@@ -350,7 +351,7 @@ public class ServicePoliciesComposite extends Composite implements
 		detailsComposite.setLayout(detailsLayout);
 		detailsComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		masterPolicyTree = new Tree(masterComposite, SWT.BORDER | SWT.MULTI);
-		masterPolicyTree.setLayoutData(new GridData(GridData.FILL_VERTICAL));
+		masterPolicyTree.setLayoutData(new GridData(GridData.FILL_BOTH));
 		masterPolicyTree.setToolTipText(WstSPUIPluginMessages.TOOLTIP_PSP_TREE);
 
 		Composite othersComposite = createDetailsScrollPageContent(detailsComposite);
