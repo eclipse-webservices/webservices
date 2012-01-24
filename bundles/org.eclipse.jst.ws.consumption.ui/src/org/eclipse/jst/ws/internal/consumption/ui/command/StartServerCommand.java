@@ -26,6 +26,7 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
+import org.eclipse.jst.ws.internal.consumption.command.common.ServerPublishOperationListener;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.EnvironmentService;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -129,7 +130,9 @@ public class StartServerCommand extends AbstractDataModelOperation
 	{
   		public void run(IProgressMonitor shellMonitor) throws InvocationTargetException, InterruptedException
 		{
-  			istatus[0] = server.publish(kind, shellMonitor);
+  			ServerPublishOperationListener publishListener = new ServerPublishOperationListener();
+  			server.publish(IServer.PUBLISH_INCREMENTAL, null, null, publishListener);  			
+  			istatus[0] = publishListener.getPublishStatus();
 		}  		
 	};
 	
