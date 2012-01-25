@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 IBM Corporation and others.
+ * Copyright (c) 2005, 2012 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070426   162287 makandre@ca.ibm.com - Andrew Mak, Server publish cancel button unavailable
  * 20080509   165327 kathy@ca.ibm.com - Kathy Chan, Use API from IServer to call shouldPublish and shouldRestart
+ * 20120124   369472 yenlu@ca.ibm.com - Yen Lu, Intermittent publishing issues
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.command;
@@ -26,6 +27,7 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
+import org.eclipse.jst.ws.internal.consumption.command.common.ServerPublishOperationListener;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.EnvironmentService;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -129,7 +131,9 @@ public class StartServerCommand extends AbstractDataModelOperation
 	{
   		public void run(IProgressMonitor shellMonitor) throws InvocationTargetException, InterruptedException
 		{
-  			istatus[0] = server.publish(kind, shellMonitor);
+  			ServerPublishOperationListener publishListener = new ServerPublishOperationListener();
+  			server.publish(IServer.PUBLISH_INCREMENTAL, null, null, publishListener);  			
+  			istatus[0] = publishListener.getPublishStatus();
 		}  		
 	};
 	

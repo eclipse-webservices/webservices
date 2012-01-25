@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2012 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,9 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20120124   369472 yenlu@ca.ibm.com - Yen Lu, Intermittent publishing issues
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
@@ -85,9 +88,11 @@ public void StartServer (IProject project, IServer server, IProgressMonitor moni
 protected void publishProject(IServer server) throws CoreException
 {
       monitor.subTask( ConsumptionMessages.PROGRESS_INFO_PUBLISHING_SERVER );
-      IStatus status = server.publish(IServer.PUBLISH_INCREMENTAL, monitor);
-      if (status.getSeverity() != IStatus.OK)
-      	throw new CoreException(status);
+      ServerPublishOperationListener publishListener = new ServerPublishOperationListener();
+      server.publish(IServer.PUBLISH_INCREMENTAL,null,null,publishListener);
+      IStatus publishStatus = publishListener.getPublishStatus();
+      if (publishStatus.getSeverity() != IStatus.OK)
+    	  throw new CoreException(publishStatus);
       log_.log(ILog.INFO, 5051, this, "publishProject", "IServer="+server+", Publish command completed");
  }
 
