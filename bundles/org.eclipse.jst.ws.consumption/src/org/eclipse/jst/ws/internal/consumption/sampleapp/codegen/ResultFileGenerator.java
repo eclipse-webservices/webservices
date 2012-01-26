@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * Copyright (c) 2000, 2012 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -117,7 +117,8 @@ public class ResultFileGenerator extends Generator
       fbuffer.append("}" + StringUtils.NEWLINE);    
       fbuffer.append("} catch (Exception e) { " + StringUtils.NEWLINE);
       fbuffer.append("%>" + StringUtils.NEWLINE);
-      fbuffer.append("exception: <%= e %>" + StringUtils.NEWLINE);
+      fbuffer.append("Exception: <%= org.eclipse.jst.ws.util.JspUtils.markup(e.toString()) %>" + StringUtils.NEWLINE);
+      fbuffer.append("Message: <%= org.eclipse.jst.ws.util.JspUtils.markup(e.getMessage()) %>"  + StringUtils.NEWLINE);
       fbuffer.append("<%" + StringUtils.NEWLINE);
       fbuffer.append("return;" + StringUtils.NEWLINE);
       fbuffer.append("}" + StringUtils.NEWLINE);
