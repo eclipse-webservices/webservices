@@ -41,6 +41,9 @@ import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
 import org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaDataModel;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.jst.ws.jaxws.core.utils.WSDLUtils;
+import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EnvironmentUtils;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.sse.core.internal.format.IStructuredFormatProcessor;
 import org.eclipse.wst.sse.ui.internal.FormatProcessorsExtensionReader;
 
@@ -56,29 +59,29 @@ public final class FileUtils {
         return ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
     }
     
-    public static void copyFolder(String source, String destination) {
+    public static void copyFolder(String source, String destination, IEnvironment environment) {
         File sourceFolder = new File(source);
 
         String[] files = sourceFolder.list();
         for (int i = 0; i < files.length; i++) {
             File file = new File(sourceFolder + File.separator + files[i]);
             if (file.isDirectory()) {
-                copyFolder(source, destination, files[i]);
+                copyFolder(source, destination, files[i], environment);
             } else {
-                copyFile(source, destination, files[i]);
+                copyFile(source, destination, files[i], environment);
             }
         }
     }
 
-    private static void copyFolder(String sourceFolder, String targetFolder, String name) {
+    private static void copyFolder(String sourceFolder, String targetFolder, String name, IEnvironment environment) {
         File target = new File(targetFolder + File.separator + name);
         if (!target.exists()) {
             target.mkdir();
         }
-        copyFolder(sourceFolder + File.separator + name, targetFolder + File.separator + name);
+        copyFolder(sourceFolder + File.separator + name, targetFolder + File.separator + name, environment);
     }
 
-    public static void copyFile(String sourceFolder, String targetFolder, String fileName) {
+    public static void copyFile(String sourceFolder, String targetFolder, String fileName, IEnvironment environment) {
         File sourceFile = new File(sourceFolder + File.separator + fileName);
         File targetFile = new File(targetFolder + File.separator + fileName);
         if (!targetFile.exists()) {
@@ -115,10 +118,22 @@ public final class FileUtils {
         } else {
             if (sourceFile.getName().indexOf(".java") != -1) { //$NON-NLS-1$
                 MergeUtils.merge(sourceFile, targetFile);
+            } else if (environment != null) {
+            	try {
+					FileResourceUtils.createFileAtLocation(EnvironmentUtils.getResourceContext(environment),
+							new Path(targetFile.getAbsolutePath()),
+							new FileInputStream(sourceFile),
+							new NullProgressMonitor(),
+							environment.getStatusHandler());
+				} catch (FileNotFoundException fnfe) {
+					CXFCorePlugin.log(fnfe);
+				} catch (CoreException ce) {
+					CXFCorePlugin.log(ce);
+				}
             }
         }
     }
-
+	
     public static String getTmpFolderName() {
         return TMP_FOLDER_NAME;
     }
@@ -157,12 +172,12 @@ public final class FileUtils {
         return tmpFolder.getLocation().toOSString();
     }
 
-    public static void copyW2JFilesFromTmp(WSDL2JavaDataModel model) {
+    public static void copyW2JFilesFromTmp(WSDL2JavaDataModel model, IEnvironment environment) {
         IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
 
         IProject project = workspaceRoot.getProject(model.getProjectName());
         IFolder srcFolder = workspaceRoot.getFolder(new Path(model.getJavaSourceFolder()));
-        FileUtils.copyFolder(getTmpFolder(project) + "/src", srcFolder.getLocation().toOSString()); //$NON-NLS-1$
+        FileUtils.copyFolder(getTmpFolder(project) + "/src", srcFolder.getLocation().toOSString(), environment); //$NON-NLS-1$
 
         try {
             srcFolder.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
@@ -172,7 +187,7 @@ public final class FileUtils {
         deleteTmpFolder(project);
     }
 
-    public static void copyJ2WFilesFromTmp(Java2WSDataModel model) {
+    public static void copyJ2WFilesFromTmp(Java2WSDataModel model, IEnvironment environment) {
         String projectName = model.getProjectName();
         IProject project = FileUtils.getProject(projectName);
 
@@ -182,13 +197,13 @@ public final class FileUtils {
         if (javaElementResource instanceof IFolder) {
             try {
                 IFolder srcDirectory = (IFolder) javaElementResource;
-                FileUtils.copyFolder(getTmpFolder(project) + "/src", srcDirectory.getLocation().toOSString()); //$NON-NLS-1$
+                FileUtils.copyFolder(getTmpFolder(project) + "/src", srcDirectory.getLocation().toOSString(), environment); //$NON-NLS-1$
                 srcDirectory.refreshLocal(IResource.DEPTH_INFINITE,  new NullProgressMonitor());
                 
                 if (model.isGenerateWSDL()) {
                     IFolder wsdlFolder = WSDLUtils.getWSDLFolder(projectName);
                     FileUtils.copyFolder(getTmpFolder(project) + "/wsdl", wsdlFolder.getLocation() //$NON-NLS-1$
-                            .toOSString());
+                            .toOSString(), environment);
                     model.setConfigWsdlLocation(wsdlFolder.getName() + "/"  //$NON-NLS-1$
                             + model.getWsdlFileName());
                     wsdlFolder.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());

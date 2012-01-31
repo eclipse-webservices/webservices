@@ -69,7 +69,7 @@ public class WSDL2JavaClientCommand extends AbstractDataModelOperation {
 
             IJavaProject javaProject = JDTUtils.getJavaProject(projectName);
             LaunchUtils.launch(javaProject, WSDL2JavaClientCommand.CXF_TOOL_CLASS_NAME, progArgs);
-            FileUtils.copyW2JFilesFromTmp(this.model);
+            FileUtils.copyW2JFilesFromTmp(model, getEnvironment());
         } catch (CoreException ce) {
             status = ce.getStatus();
             CXFConsumptionCorePlugin.log(status);

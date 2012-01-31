@@ -79,7 +79,7 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
         try {
             IJavaProject javaProject = JDTUtils.getJavaProject(projectName);
             LaunchUtils.launch(javaProject, CXF_TOOL_CLASS_NAME, progArgs);
-            FileUtils.copyW2JFilesFromTmp(model);
+            FileUtils.copyW2JFilesFromTmp(model, getEnvironment());
 
             if (model.isGenerateImplementation()) {
                 SpringUtils.createConfigurationFromWSDL(model);

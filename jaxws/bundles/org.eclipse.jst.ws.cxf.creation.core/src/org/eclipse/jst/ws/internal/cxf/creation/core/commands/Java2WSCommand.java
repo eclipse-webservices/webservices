@@ -88,7 +88,7 @@ public class Java2WSCommand extends AbstractDataModelOperation {
             IProject project = FileUtils.getProject(projectName);
             IJavaProject javaProject = JavaCore.create(project);
             LaunchUtils.launch(javaProject, CXF_TOOL_CLASS_NAME, progArgs);
-            FileUtils.copyJ2WFilesFromTmp(model);
+            FileUtils.copyJ2WFilesFromTmp(model, getEnvironment());
 
             if (model.isGenerateWSDL()) {
                 SpringUtils.loadSpringConfigInformationFromWSDL(model);

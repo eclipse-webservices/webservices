@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.jst.ws.cxf.ui;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.200.qualifier
 Bundle-Activator: org.eclipse.jst.ws.internal.cxf.ui.CXFUIPlugin
 Bundle-Vendor: %pluginProvider
 Bundle-Localization: plugin
@@ -10,7 +10,7 @@ Export-Package: org.eclipse.jst.ws.internal.cxf.ui;x-internal:=true,
  org.eclipse.jst.ws.internal.cxf.ui.dialogs;x-internal:=true,
  org.eclipse.jst.ws.internal.cxf.ui.viewers;x-friends:="org.eclipse.jst.ws.cxf.consumption.ui,org.eclipse.jst.ws.cxf.creation.ui",
  org.eclipse.jst.ws.internal.cxf.ui.widgets;x-friends:="org.eclipse.jst.ws.cxf.consumption.ui,org.eclipse.jst.ws.cxf.creation.ui"
-Require-Bundle: org.eclipse.jst.ws.cxf.core;bundle-version="[1.0.0,1.1.0)",
+Require-Bundle: org.eclipse.jst.ws.cxf.core;bundle-version="[1.0.0,1.2.0)",
  org.eclipse.core.resources;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.ui.ide;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.jdt.core;bundle-version="[3.4.0,4.0.0)",
