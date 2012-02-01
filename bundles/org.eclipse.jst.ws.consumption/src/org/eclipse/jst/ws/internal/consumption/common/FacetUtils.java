@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 IBM Corporation and others.
+ * Copyright (c) 2007, 2012 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@
  * 20080507   229532 kathy@ca.ibm.com - Kathy Chan
  * 20090303   242635 mahutch@ca.ibm.com - Mark Hutchinson, Remove unnecessary UI dependencies from org.eclipse.jst.ws.consumption
  * 20100203          kchong@ca.ibm.com - Keith Chong, Java Facet change
+ * 20120127   369959 kchong@ca.ibm.com - Yen Lu, Keith Chong - JavaFacetUtil needs to be updated to include Java 7
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.common;
@@ -1022,6 +1023,10 @@ public class FacetUtils
     else if (jdkComplianceLevel.equals("1.6"))
     {
       javaFacetVersion = JavaFacet.JAVA_60;
+    }
+    else if (jdkComplianceLevel.equals("1.7"))
+    {
+      javaFacetVersion = JavaFacet.VERSION_1_7;
     }
     else
     {
