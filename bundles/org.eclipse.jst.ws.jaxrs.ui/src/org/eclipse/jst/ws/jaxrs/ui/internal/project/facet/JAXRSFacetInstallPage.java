@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 IBM Corporation and others.
+ * Copyright (c) 2009, 2012 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@
  * 20100820   323192 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS- Not prompted to enter servlet class when adding JAX-RS facet to a new web project
  * 20101123   330916 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS - facet install should consider Web project associated with multiple EARs
  * 20110822   355434 atosak@ca.ibm.com - Atosa Khoddamhazrati, JAX-RS Facet assumes a project has a runtime when enabling the facet
+ * 20120206   365103 jenyoung@ca.ibm.com - Jennifer Young, JAX-RS configuration UI should have the Update Deployment descriptor check box available
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -43,6 +44,7 @@ import org.eclipse.jst.j2ee.project.EarUtilities;
 import org.eclipse.jst.j2ee.project.WebUtilities;
 import org.eclipse.jst.j2ee.project.facet.IJ2EEModuleFacetInstallDataModelProperties;
 import org.eclipse.jst.server.core.FacetUtil;
+import org.eclipse.jst.ws.jaxrs.core.internal.IJAXRSCoreConstants;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryproviderconfig.JAXRSLibraryProviderUtil;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrssharedlibraryconfig.SharedLibraryConfiguratorUtil;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.IJAXRSFacetInstallDataModelProperties;
@@ -191,13 +193,14 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements IJAXRS
 
 private void updateUpdateDDState(String libraryProviderID) {
 	boolean bUserLibrary = libraryProviderID.equals(IJAXRSUIConstants.USER_LIBRARY_ID);
-	if (bUserLibrary) {
+	boolean nOopLibrary = libraryProviderID.equals(IJAXRSCoreConstants.NO_OP_LIBRARY_ID);
+	if (bUserLibrary || nOopLibrary) {
 		updateDDCheckBox.setVisible(isJEE6orGreater());
 	}  else
 		updateDDCheckBox.setVisible(showUpdateDDCheckBox(libraryProviderID));
     if (updateDDCheckBox.getVisible()) {
     		boolean selected;
-    		if (!bUserLibrary)
+    		if (!bUserLibrary && !nOopLibrary)
     			selected = getUpdateDDCheckBoxSelected(libraryProviderID);
     		else 
     			selected = true;
