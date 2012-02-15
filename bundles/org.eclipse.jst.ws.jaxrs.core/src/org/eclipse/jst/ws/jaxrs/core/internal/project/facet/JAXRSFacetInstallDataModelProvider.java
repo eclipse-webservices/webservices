@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 IBM Corporation and others.
+ * Copyright (c) 2009, 2012 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,8 @@
  * 20100407   308401 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet wizard page - Shared-library option should be disabled
  * 20100413   307552 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS and Java EE 6 setup is incorrect
  * 20100519   313576 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS tools- validation problems
- * 20110817   355026 kchong@ca.ibm.com - Keith Chong, [JAXRS] JAXRSFacetInstallDataModelProvider dispose method does not remove all listeners it adds 
+ * 20110817   355026 kchong@ca.ibm.com - Keith Chong, [JAXRS] JAXRSFacetInstallDataModelProvider dispose method does not remove all listeners it adds
+ * 20120214   371661 jenyoung@ca.ibm.com - Jennifer Young, [JAXRS] Performance issue since dispose method is not being called
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -178,6 +179,7 @@ public class JAXRSFacetInstallDataModelProvider extends
     	if (this.libraryInstallDelegate != null)
     	{
     	  this.libraryInstallDelegate.removeListener(propertyChangeListener);
+    	  this.libraryInstallDelegate.dispose();
     	}
     	super.dispose(); // empty
     }
