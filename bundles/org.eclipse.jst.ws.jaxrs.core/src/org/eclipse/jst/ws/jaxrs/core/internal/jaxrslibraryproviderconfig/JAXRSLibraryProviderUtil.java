@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 IBM Corporation and others.
+ * Copyright (c) 2010, 2012 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20100413   307552 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS and Java EE 6 setup is incorrect
  * 20100618   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
+ * 20120206   365103 jenyoung@ca.ibm.com - Jennifer Young, JAX-RS configuration UI should have the Update Deployment descriptor check box available
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryproviderconfig;
 
@@ -18,17 +19,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.InvalidRegistryObjectException;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jst.ws.jaxrs.core.internal.IJAXRSCoreConstants;
 import org.eclipse.jst.ws.jaxrs.core.internal.JAXRSCorePlugin;
 import org.eclipse.jst.ws.jaxrs.core.internal.Messages;
-import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.IJAXRSFacetInstallDataModelProperties;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 /**
  * A singleton maintains lists of Library Providers
@@ -114,7 +112,7 @@ public class JAXRSLibraryProviderUtil {
 	}	
 	public static String getServletClassName(String libraryID) {
 		String toReturn = "";
-		if (libraryID == null || libraryID.length() == 0)
+		if (libraryID == null || libraryID.length() == 0 || libraryID.equals(IJAXRSCoreConstants.NO_OP_LIBRARY_ID))
 			return toReturn;
 
 		JAXRSLibraryProviderUtil.getInstance();
