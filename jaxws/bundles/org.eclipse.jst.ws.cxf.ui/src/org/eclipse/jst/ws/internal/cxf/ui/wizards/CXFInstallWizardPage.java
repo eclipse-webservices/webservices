@@ -306,10 +306,82 @@ public class CXFInstallWizardPage extends WizardPage {
                 cxfRuntimeVersion = cxfToolVersion.substring(start, end);
             }
 
+            Version version = parseVersion(cxfRuntimeVersion);
+            cxfRuntimeVersion = version.toString();
             cxfVersionText.setText(cxfRuntimeVersion);
             cxfTypeText.setText(cxfRuntimeType);
-            CXFCorePlugin.getDefault().setCurrentRuntimeVersion(new Version(cxfRuntimeVersion));
+            CXFCorePlugin.getDefault().setCurrentRuntimeVersion(version);
         }
+    }
+
+    private Version parseVersion(String version) {
+    	if (version.trim().length() == 0) {
+    		return new Version(0, 0, 0);
+    	}
+    	String major = null;
+    	String minor = null;
+    	String micro = null;
+        String qualifier = null;
+        int segments = 0;
+    	for (int index = 0; index < version.length(); index++) {
+    	    if (!Character.isDigit(version.charAt(index))) {
+    	    	if (version.charAt(index) == '.') { //$NON-NLS-1$
+    	    		segments++;
+    	    	} else {
+    	    		if (major == null) {
+    	    			major = "0"; //$NON-NLS-1$
+    	    		}
+    	    		if (minor == null) {
+    	    			minor = "0"; //$NON-NLS-1$
+    	    		}
+    	    		if (micro == null) {
+    	    			micro = "0"; //$NON-NLS-1$
+    	    		}
+    	    		if (qualifier == null) {
+    	    			qualifier = version.substring(index);
+    	    		}
+    	    	}
+    	    } else {
+    	    	if (segments == 0) {
+    	    		major = findSegment(version, index);
+    	    		index += major.length() - 1;
+        		} else if (segments == 1) {
+    	    		minor = findSegment(version, index);
+    	    		index += minor.length() - 1;
+        		} else if (segments == 2) {
+        			micro = findSegment(version, index);
+        			index += micro.length();
+        			
+        			if (index < version.length() && version.charAt(index) == '.') {
+    				    while (index < version.length() - 1 && version.charAt(index) == '.') {
+    					    index++;
+    				    }
+    			    }
+        		}
+        	}
+    	    if (major != null && minor != null && micro != null) {
+    	    	if (qualifier == null && index < version.length() - 1) {
+    	    		qualifier = version.substring(index);
+    	    	}
+    	    	if (qualifier != null && qualifier.indexOf('.') != -1) { //$NON-NLS-1$
+        	    	qualifier = qualifier.replace('.', '_'); //$NON-NLS-1$
+    	    	}
+    	    	break;
+    	    }
+        }
+    	return new Version(Integer.parseInt(major), Integer.parseInt(minor), Integer.parseInt(micro), qualifier);
+    }
+    
+    private String findSegment(String version, int beginIndex) {
+		int endIndex = beginIndex;
+		while (endIndex < version.length() && Character.isDigit(version.charAt(endIndex))) {
+			endIndex++;
+		}
+		if (endIndex == beginIndex) {
+			return Character.toString(version.charAt(beginIndex));
+		} else {
+			return version.substring(beginIndex, endIndex);
+		}
     }
 
     public boolean finish() {
