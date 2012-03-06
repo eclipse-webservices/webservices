@@ -19,6 +19,7 @@ import java.util.Map.Entry;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
@@ -69,6 +70,7 @@ public final class CXFModelUtils {
     public static final String WEB_PARAM = "WebParam"; //$NON-NLS-1$
     public static final String REQUEST_WRAPPER = "RequestWrapper"; //$NON-NLS-1$
     public static final String RESPONSE_WRAPPER = "ResponseWrapper"; //$NON-NLS-1$
+    public static final String WEB_RESULT = "WebResult"; //$NON-NLS-1$
 
     private static final String ENDPOINT_INTERFACE = "endpointInterface"; //$NON-NLS-1$
 
@@ -89,7 +91,7 @@ public final class CXFModelUtils {
         ANNOTATION_TYPENAME_MAP.put(WEB_METHOD, "javax.jws.WebMethod"); //$NON-NLS-1$
         ANNOTATION_TYPENAME_MAP.put("Oneway", "javax.jws.OneWay"); //$NON-NLS-1$ //$NON-NLS-2$
         ANNOTATION_TYPENAME_MAP.put(WEB_PARAM, "javax.jws.WebParam"); //$NON-NLS-1$
-        ANNOTATION_TYPENAME_MAP.put("WebResult", "javax.jws.WebResult"); //$NON-NLS-1$ //$NON-NLS-2$
+        ANNOTATION_TYPENAME_MAP.put(WEB_RESULT, "javax.jws.WebResult"); //$NON-NLS-1$
         ANNOTATION_TYPENAME_MAP.put("SOAPBinding", "javax.jws.SOAPBinding"); //$NON-NLS-1$ //$NON-NLS-2$
         ANNOTATION_TYPENAME_MAP.put("HandlerChain", "javax.jws.HandlerChain"); //$NON-NLS-1$ //$NON-NLS-2$
     }
@@ -200,6 +202,18 @@ public final class CXFModelUtils {
         textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
     }
 
+    public static void getWebResultAnnotationChange(IType type, IMethod method,
+            TextFileChange textFileChange) throws CoreException {
+        ICompilationUnit source = type.getCompilationUnit();
+        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
+
+        AST ast = compilationUnit.getAST();
+
+        Annotation annotation = getAnnotation(method, ast, WebResult.class);
+
+        textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
+    }
+
     public static void getWebParamAnnotationChange(IType type, final IMethod method,
             ILocalVariable parameter, TextFileChange textFileChange)
     throws CoreException {
@@ -288,6 +302,8 @@ public final class CXFModelUtils {
         annotationdMap.put(CXFModelUtils.WEB_PARAM, model.isGenerateWebParamAnnotation());
         annotationdMap.put(CXFModelUtils.REQUEST_WRAPPER, model.isGenerateRequestWrapperAnnotation());
         annotationdMap.put(CXFModelUtils.RESPONSE_WRAPPER, model.isGenerateResponseWrapperAnnotation());
+        annotationdMap.put(CXFModelUtils.WEB_RESULT, model.isGenerateWebResultAnnotation());
+
         return annotationdMap;
     }
 

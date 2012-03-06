@@ -107,6 +107,9 @@ public class Java2WSPersistentContext extends CXFPersistentContext implements Ja
     public static final String PREFERENCE_GENERATE_RESPONSE_WRAPPER_ANNOTATION
     = "cxfJ2WSGenerateResponseWrapperAnnotation"; //$NON-NLS-1$
 
+    public static final String PREFERENCE_GENERATE_WEB_RESULT_ANNOTATION
+    = "cxfJ2WSGenerateWebResultAnnotation"; //$NON-NLS-1$
+
     public Java2WSPersistentContext() {
         super(CXFCorePlugin.getDefault());
     }
@@ -266,4 +269,12 @@ public class Java2WSPersistentContext extends CXFPersistentContext implements Ja
     public void setGenerateResponseWrapperAnnotation(boolean generateResponseWrapperAnnotation) {
         setValue(PREFERENCE_GENERATE_RESPONSE_WRAPPER_ANNOTATION, generateResponseWrapperAnnotation);
     }
+
+	public boolean isGenerateWebResultAnnotation() {
+        return getValueAsBoolean(PREFERENCE_GENERATE_WEB_RESULT_ANNOTATION);
+	}
+
+	public void setGenerateWebResultAnnotation(boolean generateWebResultAnnotation) {
+        setValue(PREFERENCE_GENERATE_WEB_RESULT_ANNOTATION, generateWebResultAnnotation);
+	}
 }

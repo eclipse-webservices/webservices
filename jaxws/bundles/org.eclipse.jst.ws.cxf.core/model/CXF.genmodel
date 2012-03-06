@@ -23,9 +23,9 @@
     </genDataTypes>
     <genDataTypes ecoreDataType="CXF.ecore#//IMethod"/>
     <genClasses image="false" ecoreClass="CXF.ecore#//CXFContext">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/cxfRuntimeLocation"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/cxfRuntimeEdition"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/cxfRuntimeVersion"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/defaultRuntimeLocation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/defaultRuntimeType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/defaultRuntimeVersion"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/verbose"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/generateAntBuildFile"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/generateClient"/>
@@ -34,7 +34,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/frontend"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/useSpringApplicationContext"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/exportCXFClasspathContainer"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/cxfInstallLocations"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/installations"/>
     </genClasses>
     <genClasses image="false" ecoreClass="CXF.ecore#//CXFDataModel">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFDataModel/projectName"/>
@@ -62,6 +62,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSContext/generateWebParamAnnotation"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSContext/generateRequestWrapperAnnotation"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSContext/generateResponseWrapperAnnotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSContext/generateWebResultAnnotation"/>
     </genClasses>
     <genClasses ecoreClass="CXF.ecore#//Java2WSDataModel">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSDataModel/classpath"/>
@@ -100,6 +101,11 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaDataModel/excludedNamespaces"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaDataModel/catalogFile"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaDataModel/javaSourceFolder"/>
+    </genClasses>
+    <genClasses ecoreClass="CXF.ecore#//CXFInstall">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFInstall/version"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFInstall/location"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFInstall/type"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

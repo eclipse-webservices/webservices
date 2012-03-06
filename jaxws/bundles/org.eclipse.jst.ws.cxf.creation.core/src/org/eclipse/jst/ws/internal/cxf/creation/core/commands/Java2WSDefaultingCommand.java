@@ -55,6 +55,7 @@ public class Java2WSDefaultingCommand extends AbstractDataModelOperation {
             model.setGenerateWebParamAnnotation(context.isGenerateWebParamAnnotation());
             model.setGenerateRequestWrapperAnnotation(context.isGenerateRequestWrapperAnnotation());
             model.setGenerateResponseWrapperAnnotation(context.isGenerateResponseWrapperAnnotation());
+            model.setGenerateWebResultAnnotation(context.isGenerateWebResultAnnotation());
             model.setAnnotationMap(CXFModelUtils.getAnnotationMap(model));
             model.setMethodMap(CXFModelUtils.getMethodMap(startingPointType, model));
 

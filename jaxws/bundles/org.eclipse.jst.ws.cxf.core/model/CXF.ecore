@@ -70,6 +70,8 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="generateResponseWrapperAnnotation"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="generateWebResultAnnotation"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Java2WSDataModel" eSuperTypes="#//CXFDataModel #//Java2WSContext">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="classpath" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

@@ -111,6 +111,10 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
                 CXFModelUtils.getResponseWrapperAnnotationChange(javaInterfaceType, method,
                         textFileChange);
             }
+            if (methodAnnotationMap.get(CXFModelUtils.WEB_RESULT)) {
+                CXFModelUtils.getWebResultAnnotationChange(javaInterfaceType, method,
+                        textFileChange);
+            }
             if (methodAnnotationMap.get(CXFModelUtils.WEB_PARAM)) {
                 List<SingleVariableDeclaration> parameters = AnnotationUtils.getSingleVariableDeclarations(method);
                 for (SingleVariableDeclaration parameter : parameters) {
@@ -153,6 +157,10 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
             }
             if (methodAnnotationMap.get(CXFModelUtils.RESPONSE_WRAPPER)) {
                 CXFModelUtils.getResponseWrapperAnnotationChange(javaClassType, method,
+                        textFileChange);
+            }
+            if (methodAnnotationMap.get(CXFModelUtils.WEB_RESULT)) {
+                CXFModelUtils.getWebResultAnnotationChange(javaClassType, method,
                         textFileChange);
             }
             if (methodAnnotationMap.get(CXFModelUtils.WEB_PARAM)) {

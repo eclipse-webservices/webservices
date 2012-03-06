@@ -90,6 +90,7 @@ public class CXFUIMessages extends NLS {
     public static String JAXWS_GENERATE_WEB_PARAM;
     public static String JAXWS_GENERATE_REQUEST_WRAPPER;
     public static String JAXWS_GENERATE_RESPONSE_WRAPPER;
+    public static String JAXWS_GENERATE_WEB_RESULT;
     public static String JAXWS_ANNOTATIONS_PROCESSING_GROUP_LABEL;
     public static String JAXWS_ENABLE_ANNOTATION_PROCESSING;
     public static String JAXWS_ENABLE_ANNOTATION_PROCESSING_TOOLTIP;

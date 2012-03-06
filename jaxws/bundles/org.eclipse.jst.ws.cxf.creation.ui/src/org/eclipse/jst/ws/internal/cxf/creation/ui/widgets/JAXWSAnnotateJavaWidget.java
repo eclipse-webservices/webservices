@@ -91,6 +91,7 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
     private TreeViewerColumn webParamViewerColumn;
     private TreeViewerColumn requestWrapperViewerColumn;
     private TreeViewerColumn responceWrapperViewerColumn;
+    private TreeViewerColumn webResultViewerColumn;
 
     public JAXWSAnnotateJavaWidget() {
     }
@@ -273,6 +274,7 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
         createWebParamViewerColumn(javaTreeViewer);
         createRequestWrapperViewerColumn(javaTreeViewer);
         createResponseWrapperViewerColumn(javaTreeViewer);
+        createWebResultViewerColumn(javaTreeViewer);
 
         javaTreeViewer.setAutoExpandLevel(TreeViewer.ALL_LEVELS);
         javaTreeViewer.expandAll();
@@ -384,6 +386,19 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
         return responceWrapperViewerColumn;
     }
 
+    private TreeViewerColumn createWebResultViewerColumn(TreeViewer treeViewer) {
+        webResultViewerColumn = new TreeViewerColumn(treeViewer, SWT.CENTER);
+        TreeColumn webResultColumn = webResultViewerColumn.getColumn();
+        webResultColumn.setText("@" + CXFModelUtils.WEB_RESULT); //$NON-NLS-1$
+        webResultColumn.setWidth(100);
+        webResultColumn.setMoveable(false);
+        webResultViewerColumn.setLabelProvider(new AnnotationColumnLabelProvider(model,
+                CXFModelUtils.WEB_RESULT, getType()));
+        webResultViewerColumn.setEditingSupport(new AnnotationEditingSupport(treeViewer,
+                CXFModelUtils.WEB_RESULT));
+        return webResultViewerColumn;
+    }
+
     private void updateLabelProviders() {
         webMethodViewerColumn.setLabelProvider(new AnnotationColumnLabelProvider(model,
                 CXFModelUtils.WEB_METHOD, getType()));
@@ -393,6 +408,8 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
                 CXFModelUtils.REQUEST_WRAPPER, getType()));
         responceWrapperViewerColumn.setLabelProvider(new AnnotationColumnLabelProvider(model,
                 CXFModelUtils.RESPONSE_WRAPPER, getType()));
+        webResultViewerColumn.setLabelProvider(new AnnotationColumnLabelProvider(model,
+                CXFModelUtils.WEB_RESULT, getType()));
     }
 
     private void handleAnnotation(IType type) {
@@ -423,6 +440,9 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
                 }
                 if (methodAnnotationMap.get(CXFModelUtils.RESPONSE_WRAPPER)) {
                     CXFModelUtils.getResponseWrapperAnnotationChange(type, method, textFileChange);
+                }
+                if (methodAnnotationMap.get(CXFModelUtils.WEB_RESULT)) {
+                    CXFModelUtils.getWebResultAnnotationChange(type, method, textFileChange);
                 }
                 if (methodAnnotationMap.get(CXFModelUtils.WEB_PARAM)) {
 					List<SingleVariableDeclaration> parameters = AnnotationUtils.getSingleVariableDeclarations(method);
