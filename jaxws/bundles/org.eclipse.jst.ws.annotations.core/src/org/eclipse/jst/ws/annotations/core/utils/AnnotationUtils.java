@@ -36,7 +36,9 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
+import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.Annotation;
@@ -64,7 +66,6 @@ import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ImportRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
 import org.eclipse.jdt.ui.CodeStyleConfiguration;
-import org.eclipse.jdt.ui.SharedASTProvider;
 import org.eclipse.jst.ws.annotations.core.AnnotationDefinition;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCorePlugin;
 import org.eclipse.jst.ws.annotations.core.AnnotationsManager;
@@ -286,7 +287,7 @@ public final class AnnotationUtils {
      * @throws CoreException the exception is thrown if the import rewrite fails.
      */
     public static TextEdit createAddImportTextEdit(IJavaElement javaElement, String qualifiedName) throws CoreException {
-        CompilationUnit compilationUnit = SharedASTProvider.getAST(getCompilationUnitFromJavaElement(javaElement), SharedASTProvider.WAIT_YES, null);
+        CompilationUnit compilationUnit = getAST(getCompilationUnitFromJavaElement(javaElement), false);
         ImportRewrite importRewrite = CodeStyleConfiguration.createImportRewrite(compilationUnit, true);
         importRewrite.addImport(qualifiedName);
         return importRewrite.rewriteImports(null);
@@ -312,7 +313,7 @@ public final class AnnotationUtils {
      */
     @SuppressWarnings("unchecked")
     public static TextEdit createRemoveImportTextEdit(IJavaElement javaElement, String qualifiedName) throws CoreException {
-        CompilationUnit compilationUnit = SharedASTProvider.getAST(getCompilationUnitFromJavaElement(javaElement), SharedASTProvider.WAIT_YES, null);
+        CompilationUnit compilationUnit = getAST(getCompilationUnitFromJavaElement(javaElement), false);
         ImportRewrite importRewrite = CodeStyleConfiguration.createImportRewrite(compilationUnit, true);
         final String annotationSimpleName = qualifiedName.substring(qualifiedName.lastIndexOf(".") + 1);
         final List<String> occurences = new ArrayList<String>();
@@ -493,7 +494,7 @@ public final class AnnotationUtils {
     private static TextEdit createAddAnnotationTextEdit(IPackageDeclaration packageDeclaration, Annotation annotation) throws JavaModelException {
         if (packageDeclaration != null && !isAnnotationPresent(packageDeclaration, AnnotationUtils.getAnnotationName(annotation))) {
             ICompilationUnit source = getCompilationUnitFromJavaElement(packageDeclaration);
-            CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
+            CompilationUnit compilationUnit = getAST(source, false);
             ASTRewrite rewriter = ASTRewrite.create(compilationUnit.getAST());
 
             ListRewrite listRewrite = rewriter.getListRewrite(compilationUnit.getPackage(), PackageDeclaration.ANNOTATIONS_PROPERTY);
@@ -508,14 +509,14 @@ public final class AnnotationUtils {
     private static TextEdit createRemoveAnnotationTextEdit(IPackageDeclaration packageDeclaration, Annotation annotation) throws JavaModelException {
         if (packageDeclaration != null && isAnnotationPresent(packageDeclaration, getAnnotationName(annotation))) {
             ICompilationUnit source = getCompilationUnitFromJavaElement(packageDeclaration);
-            CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
+            CompilationUnit compilationUnit = getAST(source, false);
             ASTRewrite rewriter = ASTRewrite.create(compilationUnit.getAST());
 
             PackageDeclaration pkgDeclaration = compilationUnit.getPackage();
 
             ListRewrite listRewrite = rewriter.getListRewrite(pkgDeclaration, PackageDeclaration.ANNOTATIONS_PROPERTY);
 
-            @SuppressWarnings("unchecked")
+            @SuppressWarnings("rawtypes")
             List originalList = listRewrite.getOriginalList();
             for (Object object : originalList) {
                 if (object instanceof Annotation && compareAnnotationNames((Annotation) object, annotation)) {
@@ -548,7 +549,7 @@ public final class AnnotationUtils {
 
             ListRewrite listRewrite = rewriter.getListRewrite(typeDeclaration, getChildListPropertyDescriptorForType(typeDeclaration));
 
-            @SuppressWarnings("unchecked")
+            @SuppressWarnings("rawtypes")
             List originalList = listRewrite.getOriginalList();
             for (Object object : originalList) {
                 if (object instanceof Annotation && compareAnnotationNames((Annotation)object, annotation)) {
@@ -581,7 +582,7 @@ public final class AnnotationUtils {
 
             ListRewrite listRewrite = rewriter.getListRewrite(methodDeclaration,  MethodDeclaration.MODIFIERS2_PROPERTY);
 
-            @SuppressWarnings("unchecked")
+            @SuppressWarnings("rawtypes")
             List originalList = listRewrite.getOriginalList();
             for (Object object : originalList) {
                 if (object instanceof Annotation && compareAnnotationNames((Annotation) object, annotation)) {
@@ -615,7 +616,7 @@ public final class AnnotationUtils {
 
             ListRewrite listRewrite = rewriter.getListRewrite(fieldDeclaration, FieldDeclaration.MODIFIERS2_PROPERTY);
 
-            @SuppressWarnings("unchecked")
+            @SuppressWarnings("rawtypes")
             List originalList = listRewrite.getOriginalList();
             for (Object object : originalList) {
                 if (object instanceof Annotation && compareAnnotationNames((Annotation) object, annotation)) {
@@ -648,7 +649,7 @@ public final class AnnotationUtils {
 
             ListRewrite listRewrite = rewriter.getListRewrite(parameter, SingleVariableDeclaration.MODIFIERS2_PROPERTY);
 
-            @SuppressWarnings("unchecked")
+            @SuppressWarnings("rawtypes")
             List originalList = listRewrite.getOriginalList();
             for (Object object : originalList) {
                 if (object instanceof Annotation && compareAnnotationNames((Annotation)object, annotation)) {
@@ -694,7 +695,7 @@ public final class AnnotationUtils {
 
         ListRewrite listRewrite = rewriter.getListRewrite(annotation, NormalAnnotation.VALUES_PROPERTY);
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         List originalList = listRewrite.getOriginalList();
         for (Object object : originalList) {
             if (object instanceof MemberValuePair) {
@@ -785,7 +786,7 @@ public final class AnnotationUtils {
      */
     @SuppressWarnings("unchecked")
     public static AbstractTypeDeclaration getTypeDeclaration(IType type) {
-        CompilationUnit compilationUnit = SharedASTProvider.getAST(type.getCompilationUnit(), SharedASTProvider.WAIT_YES, null);
+        CompilationUnit compilationUnit = getAST(type.getCompilationUnit(), false);
         List<TypeDeclaration> types = compilationUnit.types();
         for (AbstractTypeDeclaration abstractTypeDeclaration : types) {
             if (compareTypeNames(abstractTypeDeclaration, type)) {
@@ -1066,10 +1067,9 @@ public final class AnnotationUtils {
      */
     @SuppressWarnings("unchecked")
     public static List<Annotation> getAnnotations(IJavaElement javaElement) {
-        ICompilationUnit source = AnnotationUtils.getCompilationUnitFromJavaElement(javaElement);
-        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
-
         if (javaElement.getElementType() == IJavaElement.PACKAGE_DECLARATION) {
+        	ICompilationUnit source = AnnotationUtils.getCompilationUnitFromJavaElement(javaElement);
+            CompilationUnit compilationUnit = getAST(source, false);
             PackageDeclaration packageDeclaration = compilationUnit.getPackage();
             return packageDeclaration.annotations();
         }
@@ -1127,7 +1127,7 @@ public final class AnnotationUtils {
     @SuppressWarnings("unchecked")
     public static List<SingleVariableDeclaration> getSingleVariableDeclarations(final IMethod method) {
         ICompilationUnit source = method.getCompilationUnit();
-        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
+        CompilationUnit compilationUnit = getAST(source, true);
         final List<SingleVariableDeclaration> parameters = new ArrayList<SingleVariableDeclaration>();
         compilationUnit.accept(new ASTVisitor() {
             @Override
@@ -1441,4 +1441,12 @@ public final class AnnotationUtils {
         }
         return null;
     }
+
+    private static CompilationUnit getAST(ICompilationUnit source, boolean resolveBindings) {
+        final ASTParser parser = ASTParser.newParser(AST.JLS3);
+        parser.setResolveBindings(resolveBindings);
+        parser.setSource(source);
+        return (CompilationUnit) parser.createAST(null);
+    }
+
 }
