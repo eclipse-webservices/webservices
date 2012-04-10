@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 IBM Corporation and others.
+ * Copyright (c) 2006, 2012 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@
  * 20080603   235367 makandre@ca.ibm.com - Andrew Mak, "IWAB0014E Unexpected exception occurred" from ant task for web service client generation
  * 20080626   229867 makandre@ca.ibm.com - Andrew Mak, Missing method in generated proxy class
  * 20080709   240225 kathy@ca.ibm.com - Kathy Chan
+ * 20120409   376345 yenlu@ca.ibm.com, kchong@ca.ibm.com - Stability improvements to web services commands/operations
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
@@ -26,6 +27,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.plugin.WebServiceAxisConsumptionUIPlugin;
+import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -59,18 +62,57 @@ public class ClientCodeGenOperation extends AbstractDataModelOperation {
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) {
 
 		IEnvironment env = getEnvironment();
-		ClientWSModifyOperation buOperation = new ClientWSModifyOperation(info, env);
+		ClientWSModifyOperation clientOperation = new ClientWSModifyOperation(info, env);
 		try {
-			buOperation.execute(monitor);
+			clientOperation.run(monitor);
+			
+			//project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor);
+			BuildProjectCommand buildCommand = new BuildProjectCommand();
+			buildCommand.setProject(project);
+			buildCommand.setEnvironment(env);
+			buildCommand.setForceBuild(true);
+			buildCommand.execute(monitor, info);
+			
+			GenProxyBeanOperation genProxyBeanOperation = new GenProxyBeanOperation(info, env);
+			genProxyBeanOperation.run(monitor);
+
 		}
-		catch(CoreException ce){
-			IStatus status = ce.getStatus();
+		catch(Exception e){
+			IStatus status = new Status(IStatus.ERROR, WebServiceAxisConsumptionUIPlugin.ID, e.getMessage(), e);
 			return status;
 		}
 		return Status.OK_STATUS;
 
 	}
 
+	private class GenProxyBeanOperation extends WorkspaceModifyOperation
+	{
+		private IAdaptable info = null;
+		private IEnvironment env = null;
+		
+		protected GenProxyBeanOperation(IAdaptable adaptable, IEnvironment environment)
+		{
+			//super(project);
+			info = adaptable;
+			env = environment;
+		}
+		
+		protected void execute(IProgressMonitor monitor) throws CoreException
+		{
+			// Stub2BeanCommand
+			stub2BeanCommand.setEnvironment(env);
+			stub2BeanCommand.setWebServicesParser(webServicesParser);
+			stub2BeanCommand.setOutputFolder(outputFolder);
+			stub2BeanCommand.setJavaWSDLParam(javaWSDLParam);
+			stub2BeanCommand.setClientProject(project);
+			IStatus status = stub2BeanCommand.execute(monitor, info);
+			if (status.getSeverity() == Status.ERROR) {
+				throw new CoreException(status);
+			}
+			proxyBean = stub2BeanCommand.getProxyBean();
+			proxyEndpoint = stub2BeanCommand.getProxyEndpoint();			
+		}
+	}
 	
 	private class ClientWSModifyOperation extends WorkspaceModifyOperation {
 		
@@ -103,20 +145,7 @@ public class ClientCodeGenOperation extends AbstractDataModelOperation {
 				if (status.getSeverity() == Status.ERROR) {
 					throw new CoreException(status);
 				}
-								
-				// Stub2BeanCommand
-				stub2BeanCommand.setEnvironment(env);
-				stub2BeanCommand.setWebServicesParser(webServicesParser);
-				stub2BeanCommand.setOutputFolder(outputFolder);
-				stub2BeanCommand.setJavaWSDLParam(javaWSDLParam);
-				stub2BeanCommand.setClientProject(project);
-				status = stub2BeanCommand.execute(monitor, info);
-				if (status.getSeverity() == Status.ERROR) {
-					throw new CoreException(status);
-				}
-				proxyBean = stub2BeanCommand.getProxyBean();
-				proxyEndpoint = stub2BeanCommand.getProxyEndpoint();
-			  
+
 				// RefreshProjectCommand
 				refreshProjectCommand.setEnvironment(env);
 				refreshProjectCommand.setProject(project);
