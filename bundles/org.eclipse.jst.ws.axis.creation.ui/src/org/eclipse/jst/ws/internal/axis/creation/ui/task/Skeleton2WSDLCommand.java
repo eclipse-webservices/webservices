@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2012 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@
  * 20070112   165721 makandre@ca.ibm.com - Andrew Mak, WSDL import cannot use relative import with to parent directories
  * 20070125   171071 makandre@ca.ibm.com - Andrew Mak, Create public utility method for copying WSDL files
  * 20070409   181635 makandre@ca.ibm.com - Andrew Mak, WSDLCopier utility should create target folder
+ * 20120409   376345 yenlu@ca.ibm.com, kchong@ca.ibm.com - Stability improvements to web services commands/operations
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
@@ -33,6 +34,7 @@ import javax.wsdl.extensions.soap.SOAPAddress;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
@@ -185,7 +187,7 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
      copier.setTargetFolderURI(folder);
      copier.setTargetFilename(filename);
 	
-     ResourceUtils.getWorkspace().run(copier, monitor);
+     ResourceUtils.getWorkspace().run(copier, serverProject, IWorkspace.AVOID_UPDATE, monitor);
 	
      String newPath = outputFile.getParent().getLocation().append(copier.getRelativePath()).toString();
      javaWSDLParam.setOutputWsdlLocation(newPath);     

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 IBM Corporation and others.
+ * Copyright (c) 2006, 2012 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@
  * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20060517   142327 kathy@ca.ibm.com - Kathy Chan
  * 20100420   307152 kchong@ca.ibm.com - Keith Chong, Web Service deployment fails without web.xml
+ * 20120409   376345 yenlu@ca.ibm.com, kchong@ca.ibm.com - Stability improvements to web services commands/operations
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
@@ -28,6 +29,7 @@ import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaComman
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CopyAxisJarCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.RefreshProjectCommand;
+import org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.UpdateAxisWSDDFileTask;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -83,10 +85,11 @@ public class BUCodeGenOperation extends AbstractDataModelOperation {
 		IEnvironment env = getEnvironment();
 		BottomUpWSModifyOperation buOperation = new BottomUpWSModifyOperation(info, env);
 		try {
-			buOperation.execute(monitor);
+			buOperation.run(monitor);
 		}
-		catch(CoreException ce){
-			IStatus status = ce.getStatus();
+		catch (Exception e)
+		{
+			IStatus status = new Status(IStatus.ERROR, WebServiceAxisCreationUIPlugin.ID, e.getMessage(), e);
 			return status;
 		}
 		return Status.OK_STATUS;
