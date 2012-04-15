@@ -167,6 +167,9 @@ public class WebServiceWSDLLocationRule extends AbstractAnnotationProcessor {
                             JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_NO_SERVICE_NAME,
                             new Object[] {serviceQName.getLocalPart(), wsdlLocation}));
                 }
+            } else {
+                printWarning(wsdlLocationValue.getPosition(), JAXWSCoreMessages.bind(
+                        JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_UNABLE_TO_LOCATE, wsdlLocation));
             }
         } catch (MalformedURLException murle) {
             printError(wsdlLocationValue.getPosition(), murle.getLocalizedMessage());
@@ -176,7 +179,6 @@ public class WebServiceWSDLLocationRule extends AbstractAnnotationProcessor {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void validateBinding(Binding binding, ClassDeclaration classDeclaration,
             AnnotationMirror webService, String wsdlLocation) {
         String style = javax.jws.soap.SOAPBinding.Style.DOCUMENT.name();
@@ -189,11 +191,11 @@ public class WebServiceWSDLLocationRule extends AbstractAnnotationProcessor {
             }
         }
 
-        List extensibilityElements =  binding.getExtensibilityElements();
+        List<?> extensibilityElements =  binding.getExtensibilityElements();
         for (Object elementExtensible : extensibilityElements) {
             if (elementExtensible instanceof SOAPBinding) {
                 SOAPBinding soapBinding = (SOAPBinding) elementExtensible;
-                if (style.compareToIgnoreCase(soapBinding.getStyle()) != 0) {
+                if (soapBinding.getStyle() != null && style.compareToIgnoreCase(soapBinding.getStyle()) != 0) {
                     printError(soapBindingAnnotation == null ? webService.getPosition()
                             : soapBindingAnnotation.getPosition(),
                             JAXWSCoreMessages.bind(JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_SOAP_BINDING_STYLE,
@@ -202,7 +204,7 @@ public class WebServiceWSDLLocationRule extends AbstractAnnotationProcessor {
             }
             if (elementExtensible instanceof SOAP12Binding) {
                 SOAP12Binding soap12Binding = (SOAP12Binding) elementExtensible;
-                if (style.compareToIgnoreCase(soap12Binding.getStyle()) != 0) {
+                if (soap12Binding.getStyle() != null && style.compareToIgnoreCase(soap12Binding.getStyle()) != 0) {
                     printError(soapBindingAnnotation == null ? webService.getPosition()
                             : soapBindingAnnotation.getPosition(),
                             JAXWSCoreMessages.bind(JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_SOAP_BINDING_STYLE,
@@ -262,7 +264,7 @@ public class WebServiceWSDLLocationRule extends AbstractAnnotationProcessor {
         return methodDeclaration.getSimpleName();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private Service getService(Definition definition, QName serviceQName) {
         Map servicesMap = definition.getServices();
         Set<Map.Entry> servicesSet = servicesMap.entrySet();
@@ -275,7 +277,7 @@ public class WebServiceWSDLLocationRule extends AbstractAnnotationProcessor {
         return null;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private Port getPort(Service service, String portName) {
         Map portsMap = service.getPorts();
         Set<Map.Entry> portsSet = portsMap.entrySet();
