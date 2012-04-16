@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2012 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,9 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20120409   376345 yenlu@ca.ibm.com, kchong@ca.ibm.com - Stability improvements to web services commands/operations
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
@@ -23,6 +26,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.InputFileGenerator;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.MethodFileGenerator;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.ResultFileGenerator;
@@ -66,7 +70,11 @@ public class GSTCGenerateCommand extends AbstractDataModelOperation
 	if (status.getSeverity() == Status.ERROR) return status;
 	status = generatePages(env);
 	if (status.getSeverity() == Status.ERROR) return status;
-	return status;   
+	BuildProjectCommand buildProjectCommand = new BuildProjectCommand();
+	buildProjectCommand.setEnvironment(env);
+	buildProjectCommand.setForceBuild(true);
+	buildProjectCommand.setProject(ResourcesPlugin.getWorkspace().getRoot().getProject(testInfo.getGenerationProject()));
+	return buildProjectCommand.execute(monitor, adaptable);
   }
 
   private void setJSPFolder(){

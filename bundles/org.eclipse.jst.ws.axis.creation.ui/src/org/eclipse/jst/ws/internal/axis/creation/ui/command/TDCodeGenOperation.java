@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 IBM Corporation and others.
+ * Copyright (c) 2006, 2012 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@
  * 20060517   142327 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20061004   159356 kathy@ca.ibm.com - Kathy Chan, Get correct module root URL based on server chosen
  * 20100420   307152 kchong@ca.ibm.com - Keith Chong, Web Service deployment fails without web.xml
+ * 20120409   376345 yenlu@ca.ibm.com, kchong@ca.ibm.com - Stability improvements to web services commands/operations
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
@@ -27,8 +28,10 @@ import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaComman
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CopyAxisJarCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.RefreshProjectCommand;
+import org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.BackupSkelImplCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.Skeleton2WSDLCommand;
+import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -91,16 +94,79 @@ public class TDCodeGenOperation extends AbstractDataModelOperation {
 		IEnvironment env = getEnvironment();
 		TopDownWSModifyOperation tdOperation = new TopDownWSModifyOperation(info, env);
 		try {
-			tdOperation.execute(monitor);
+			tdOperation.run(monitor);
+			
+			//serverProject.build(IncrementalProjectBuilder.INCREMENTAL_BUILD,monitor);
+			BuildProjectCommand buildCommand = new BuildProjectCommand();
+			buildCommand.setProject(serverProject);
+			buildCommand.setEnvironment(env);
+			buildCommand.setForceBuild(true);
+			buildCommand.execute(monitor, info);			
+			
+			GenSkeletonAndUpdateDDOperation genSkeletonAndUpdateDDOperation = new GenSkeletonAndUpdateDDOperation(info, env);
+			genSkeletonAndUpdateDDOperation.run(monitor);
 		}
-		catch(CoreException ce){
-			IStatus status = ce.getStatus();
+		catch(Exception e){
+			IStatus status = new Status(IStatus.ERROR, WebServiceAxisCreationUIPlugin.ID, e.getMessage(), e);
 			return status;
 		}
 		return Status.OK_STATUS;
 	}
 	
-	
+	private class GenSkeletonAndUpdateDDOperation extends WorkspaceModifyOperation
+	{
+		private IAdaptable info = null;
+		private IEnvironment env = null;
+		
+		protected GenSkeletonAndUpdateDDOperation(IAdaptable adaptable, IEnvironment environment)
+		{
+			//super(serverProject);
+			info = adaptable;
+			env = environment;
+		}
+
+		@Override
+		protected void execute(IProgressMonitor monitor) throws CoreException
+		{
+			// Skeleton2WSDLCommand
+			skeleton2WSDLCommand.setEnvironment(env);
+			skeleton2WSDLCommand.setWebServicesParser(webServicesParser);
+			skeleton2WSDLCommand.setJavaWSDLParam(javaWSDLParam);
+			skeleton2WSDLCommand.setServerProject(serverProject);
+			skeleton2WSDLCommand.setServiceServerTypeID(serviceServerTypeID);
+			skeleton2WSDLCommand.setServiceExistingServer(serviceExistingServer);
+			IStatus status = skeleton2WSDLCommand.execute(monitor, info);
+			if (status.getSeverity() == Status.ERROR) {
+				throw new CoreException(status);
+			}
+			wsdlURI = skeleton2WSDLCommand.getWsdlURI();
+
+			// create the deployment descriptor if it doesn't exist
+			createDDCommand.setEnvironment(env);
+			createDDCommand.setServerProject(serverProject);
+			status = createDDCommand.execute(monitor, info);
+			if (status.getSeverity() == Status.ERROR) {
+				throw new CoreException(status);
+			}
+
+			// UpdateWebXMLCommand
+			updateWebXMLCommand.setEnvironment(env);
+			updateWebXMLCommand.setServerProject(serverProject);
+			status = updateWebXMLCommand.execute(monitor, info);
+			if (status.getSeverity() == Status.ERROR) {
+				throw new CoreException(status);
+			}
+			
+			// RefreshProjectCommand
+			refreshProjectCommand.setEnvironment(env);
+			refreshProjectCommand.setProject(serverProject);
+			status = refreshProjectCommand.execute(monitor, info);
+			if (status.getSeverity() == Status.ERROR) {
+				throw new CoreException(status);
+			}			
+			
+		}
+	}
 	
 	private class TopDownWSModifyOperation extends WorkspaceModifyOperation {
 
@@ -108,6 +174,7 @@ public class TDCodeGenOperation extends AbstractDataModelOperation {
 		private IEnvironment env = null;
 		
 		protected TopDownWSModifyOperation(IAdaptable adaptable, IEnvironment environment){
+			//super(serverProject);
 			info = adaptable;
 			env = environment;
 		}
@@ -144,45 +211,7 @@ public class TDCodeGenOperation extends AbstractDataModelOperation {
 			if (status.getSeverity() == Status.ERROR) {
 				throw new CoreException(status);
 			}
-			javaWSDLParam = wsdl2JavaCommand.getJavaWSDLParam();
-			
-			// Skeleton2WSDLCommand
-			skeleton2WSDLCommand.setEnvironment(env);
-			skeleton2WSDLCommand.setWebServicesParser(webServicesParser);
-			skeleton2WSDLCommand.setJavaWSDLParam(javaWSDLParam);
-			skeleton2WSDLCommand.setServerProject(serverProject);
-			skeleton2WSDLCommand.setServiceServerTypeID(serviceServerTypeID);
-			skeleton2WSDLCommand.setServiceExistingServer(serviceExistingServer);
-			status = skeleton2WSDLCommand.execute(monitor, info);
-			if (status.getSeverity() == Status.ERROR) {
-				throw new CoreException(status);
-			}
-			wsdlURI = skeleton2WSDLCommand.getWsdlURI();
-
-			// create the deployment descriptor if it doesn't exist
-			createDDCommand.setEnvironment(env);
-			createDDCommand.setServerProject(serverProject);
-			status = createDDCommand.execute(monitor, info);
-			if (status.getSeverity() == Status.ERROR) {
-				throw new CoreException(status);
-			}
-
-			// UpdateWebXMLCommand
-			updateWebXMLCommand.setEnvironment(env);
-			updateWebXMLCommand.setServerProject(serverProject);
-			status = updateWebXMLCommand.execute(monitor, info);
-			if (status.getSeverity() == Status.ERROR) {
-				throw new CoreException(status);
-			}
-			
-			// RefreshProjectCommand
-			refreshProjectCommand.setEnvironment(env);
-			refreshProjectCommand.setProject(serverProject);
-			status = refreshProjectCommand.execute(monitor, info);
-			if (status.getSeverity() == Status.ERROR) {
-				throw new CoreException(status);
-			}
-			
+			javaWSDLParam = wsdl2JavaCommand.getJavaWSDLParam();			
 		}
 	
 	}
