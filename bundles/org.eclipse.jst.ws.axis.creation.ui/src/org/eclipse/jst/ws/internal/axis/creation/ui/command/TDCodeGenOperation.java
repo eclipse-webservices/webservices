@@ -155,6 +155,14 @@ public class TDCodeGenOperation extends AbstractDataModelOperation {
 			status = updateWebXMLCommand.execute(monitor, info);
 			if (status.getSeverity() == Status.ERROR) {
 				throw new CoreException(status);
+			}
+			
+			// RefreshProjectCommand
+			refreshProjectCommand.setEnvironment(env);
+			refreshProjectCommand.setProject(serverProject);
+			status = refreshProjectCommand.execute(monitor, info);
+			if (status.getSeverity() == Status.ERROR) {
+				throw new CoreException(status);
 			}			
 			
 		}
@@ -203,16 +211,7 @@ public class TDCodeGenOperation extends AbstractDataModelOperation {
 			if (status.getSeverity() == Status.ERROR) {
 				throw new CoreException(status);
 			}
-			javaWSDLParam = wsdl2JavaCommand.getJavaWSDLParam();
-			
-			// RefreshProjectCommand
-			refreshProjectCommand.setEnvironment(env);
-			refreshProjectCommand.setProject(serverProject);
-			status = refreshProjectCommand.execute(monitor, info);
-			if (status.getSeverity() == Status.ERROR) {
-				throw new CoreException(status);
-			}
-			
+			javaWSDLParam = wsdl2JavaCommand.getJavaWSDLParam();			
 		}
 	
 	}
