@@ -76,6 +76,7 @@ public class JAXWSCoreMessages extends NLS {
     public static String WEBSERVICE_DEFAULT_PACKAGE_TARGET_NAMESPACE;
 
     public static String WEBSERVICE_WSDL_LOCATION_UNABLE_TO_LOCATE;
+    public static String WEBSERVICE_WSDL_LOCATION_UNABLE_TO_READ;
     public static String WEBSERVICE_WSDL_LOCATION_NO_PORT_NAME;
     public static String WEBSERVICE_WSDL_LOCATION_NO_SERVICE_NAME;
     public static String WEBSERVICE_WSDL_LOCATION_NO_OPERTATION_NAME;

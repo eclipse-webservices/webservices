@@ -21,8 +21,11 @@ import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.STYLE;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.TARGET_NAMESPACE;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.WSDL_LOCATION;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
@@ -85,7 +88,7 @@ public class WebServiceWSDLLocationRule extends AbstractAnnotationProcessor {
         if (wsdlLocationValue != null) {
             String wsdlLocation = wsdlLocationValue.getValue().toString().trim();
             if (wsdlLocation.length() > 0) {
-                if (wsdlLocation.endsWith(".wsdl")) { //$NON-NLS-1$
+                if (!wsdlLocation.startsWith("file:/") && wsdlLocation.endsWith(".wsdl")) { //$NON-NLS-1$
                     URL relativeURL = getRelativeURL(classDeclaration, wsdlLocation);
                     if (relativeURL != null) {
                         validateWSDL(relativeURL.toString(), webService, classDeclaration, wsdlLocationValue);
@@ -168,8 +171,7 @@ public class WebServiceWSDLLocationRule extends AbstractAnnotationProcessor {
                             new Object[] {serviceQName.getLocalPart(), wsdlLocation}));
                 }
             } else {
-                printWarning(wsdlLocationValue.getPosition(), JAXWSCoreMessages.bind(
-                        JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_UNABLE_TO_LOCATE, wsdlLocation));
+                printWarning(wsdlLocationValue.getPosition(), getMessage(wsdlURL, wsdlLocation));
             }
         } catch (MalformedURLException murle) {
             printError(wsdlLocationValue.getPosition(), murle.getLocalizedMessage());
@@ -179,6 +181,22 @@ public class WebServiceWSDLLocationRule extends AbstractAnnotationProcessor {
         }
     }
 
+    private String getMessage(URL wsdlURL, String wsdlLocation) {
+        String message = JAXWSCoreMessages.bind(JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_UNABLE_TO_LOCATE, wsdlLocation);
+        try {
+            URI uri = wsdlURL.toURI();
+            if (uri.getScheme().equals("file")) {
+                File file = new File(uri);
+                if (file.exists()) {
+                    message = JAXWSCoreMessages.bind(JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_UNABLE_TO_READ, wsdlLocation);
+                }
+            }
+        } catch (URISyntaxException urise) {
+            JAXWSCorePlugin.log(urise);
+        }
+        return message;
+    }
+    
     private void validateBinding(Binding binding, ClassDeclaration classDeclaration,
             AnnotationMirror webService, String wsdlLocation) {
         String style = javax.jws.soap.SOAPBinding.Style.DOCUMENT.name();

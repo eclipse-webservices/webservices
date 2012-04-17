@@ -133,11 +133,66 @@ public class WsValidationTest extends ValidationTestsSetUp
 	{
 		final IFolder webInf = testProject.getProject().getFolder("WebContent").getFolder("WEB-INF");
 		IFile file = webInf.getFile("Test.wsdl");
-		file.create(new StringInputStreamAdapter(""), true, null);
+		file.create(new StringInputStreamAdapter(getWsdlContent()), true, null);
 		
 		setContents(wsType.getCompilationUnit(), "@javax.jws.WebService(name=\"Test\", wsdlLocation=\"WEB-INF/Test.wsdl\") public class Ws {}");
 		assertNoValidationErrors(wsType.getResource(), VALIDATION_PROBLEM_MARKER_ID);
 	}
+
+    private String getWsdlContent()
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+        builder.append("<wsdl:definitions name=\"WsService\" targetNamespace=\"http://test/\"\n");
+        builder.append("  xmlns:wsdl=\"http://schemas.xmlsoap.org/wsdl/\" xmlns:tns=\"http://test/\"\n");
+        builder.append("  xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/wsdl/soap/\">\n");
+        builder.append("  <wsdl:portType name=\"Ws\">\n");
+        builder.append("  </wsdl:portType>\n");
+        builder.append("  <wsdl:binding name=\"WsServiceSoapBinding\" type=\"tns:Ws\">\n");
+        builder.append("    <soap:binding style=\"document\" transport=\"http://schemas.xmlsoap.org/soap/http\"/>\n");
+        builder.append("  </wsdl:binding>\n");
+        builder.append("  <wsdl:service name=\"WsService\">\n");
+        builder.append("    <wsdl:port name=\"WsPort\" binding=\"tns:WsServiceSoapBinding\">\n");
+        builder.append("      <soap:address location=\"http://localhost:9090/WsPort\"/>\n");
+        builder.append("    </wsdl:port>\n");
+        builder.append("  </wsdl:service>\n");
+        builder.append("</wsdl:definitions>\n");
+        return builder.toString();
+    }
+
+    public void testWarningReadingWsdlLocation() throws CoreException
+    {
+        final IFolder webInf = testProject.getProject().getFolder("WebContent").getFolder("WEB-INF");
+        IFile file = webInf.getFile("Test.wsdl");
+        file.create(new StringInputStreamAdapter(""), true, null);
+        
+        setContents(wsType.getCompilationUnit(), "@javax.jws.WebService(name=\"Test\", wsdlLocation=\"WEB-INF/Test.wsdl\") public class Ws {}");
+
+        final Map<String, Object> markerAttributes = new HashMap<String, Object>();
+        markerAttributes.put(IMarker.CHAR_START, 62);
+        markerAttributes.put(IMarker.CHAR_END, 81);
+        markerAttributes.put(IMarker.SEVERITY, IMarker.SEVERITY_WARNING);
+        markerAttributes.put(IMarker.MESSAGE, MessageFormat.format(JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_UNABLE_TO_READ, file.getLocationURI().toString()));
+        final MarkerData markerData =  new MarkerData(wsType.getResource(), VALIDATION_PROBLEM_MARKER_ID, markerAttributes);
+        validateResourceMarkers(wsType.getResource(), markerData);
+    }
+
+    public void testWarningLocatingWsdlLocation() throws CoreException
+    {
+        final IFolder webInf = testProject.getProject().getFolder("WebContent").getFolder("WEB-INF");
+        IFile file = webInf.getFile("Test.wsdl");
+        file.create(new StringInputStreamAdapter(""), true, null);
+        
+        setContents(wsType.getCompilationUnit(), "@javax.jws.WebService(name=\"Test\", wsdlLocation=\"WEB-INF/Test3.wsdl\") public class Ws {}");
+
+        final Map<String, Object> markerAttributes = new HashMap<String, Object>();
+        markerAttributes.put(IMarker.CHAR_START, 62);
+        markerAttributes.put(IMarker.CHAR_END, 82);
+        markerAttributes.put(IMarker.SEVERITY, IMarker.SEVERITY_WARNING);
+        markerAttributes.put(IMarker.MESSAGE, MessageFormat.format(JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_UNABLE_TO_LOCATE, "WEB-INF/Test3.wsdl"));
+        final MarkerData markerData =  new MarkerData(wsType.getResource(), VALIDATION_PROBLEM_MARKER_ID, markerAttributes);
+        validateResourceMarkers(wsType.getResource(), markerData);
+    }
 	
 	public void testWsdlLocationEmpty() throws CoreException
 	{
