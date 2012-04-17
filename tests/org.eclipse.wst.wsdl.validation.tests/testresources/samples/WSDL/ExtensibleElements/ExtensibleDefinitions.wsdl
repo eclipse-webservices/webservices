@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions name="ExtensibleDefinitions"
-	targetNamespace="http://www.example.org/ExtensibleDefinitions/"
-	xmlns:tns="http://www.example.org/ExtensibleDefinitions/" 
-	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-	xmlns:ext="http://org.eclipse.wst.wsdl.validation.tests/Extensions">
-	<wsdl:documentation>Testing the validation of definitions level extensibility elements.</wsdl:documentation>
-	<ext:testExtension testAttribute="10">test</ext:testExtension>
-</wsdl:definitions>
