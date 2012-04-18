@@ -1,8 +1,0 @@
-number of errors      : 1
-number of warnings    : 0
-
-------------error list-------------------------------------------
-The 'BadExtensibleElements' port type specified for the 'BadExtensibleElementsSOAP' binding is undefined. Check the 'BadExtensibleElements' port type name and ensure it is defined. [40, 82]
-------------warning list-----------------------------------------
-(none)
------------------------------------------------------------------
