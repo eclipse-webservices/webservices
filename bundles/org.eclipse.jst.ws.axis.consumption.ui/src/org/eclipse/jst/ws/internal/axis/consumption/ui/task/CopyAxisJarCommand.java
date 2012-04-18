@@ -21,6 +21,7 @@
  * 20080326   224148 makandre@ca.ibm.com - Andrew Mak, Web service scenarios broke in latest builds with Equinox p2
  * 20100304   304385 mahutch@ca.ibm.com - Mark Hutchinson, Allow users to disable copying axis jars
  * 20100414   309040 mahutch@ca.ibm.com - Mark Hutchinson, update jar sizes
+ * 20120418   364026 lippert@acm.org - Martin Lippert, saaj.jar deployment fails when multiple javax.xml.soap bundles are installed 
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
@@ -60,6 +61,7 @@ import org.eclipse.wst.command.internal.env.core.context.TransientResourceContex
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.common.BundleUtils;
+import org.osgi.framework.Version;
 
 
 public class CopyAxisJarCommand extends AbstractDataModelOperation {
@@ -71,6 +73,8 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 	public static String JAVAX_XML_RPC_PLUGIN_ID = "javax.xml.rpc"; //$NON-NLS-1$
 	public static String JAVAX_XML_RPC_JAR = "jaxrpc.jar"; //$NON-NLS-1$
 	public static String JAVAX_XML_SOAP_PLUGIN_ID = "javax.xml.soap"; //$NON-NLS-1$
+	public static Version JAVAX_XML_SOAP_PLUGIN_VERSION = Version.parseVersion("1.2.0");
+	private static Version JAVAX_XML_SOAP_PLUGIN_UPPER_VERSION = Version.parseVersion("1.3.0");
 	public static String JAVAX_XML_SOAP_JAR = "saaj.jar"; //$NON-NLS-1$
 	public static String JAVAX_WSDL_PLUGIN_ID = "javax.wsdl"; //$NON-NLS-1$
 	public static String JAVAX_WSDL_JAR = "wsdl4j.jar"; //$NON-NLS-1$
@@ -150,19 +154,19 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 		deleteObsoleteJars(webModulePath);
 
 
-		copyIFile(AXIS_RUNTIME_PLUGIN_ID, "lib/" + AXIS_JAR, webModulePath, "WEB-INF/lib/" + AXIS_JAR, status, env, monitor);
+		copyIFile(AXIS_RUNTIME_PLUGIN_ID, null, null, "lib/" + AXIS_JAR, webModulePath, "WEB-INF/lib/" + AXIS_JAR, status, env, monitor);
 		if (status.getSeverity() == Status.ERROR) {
 			return;
 		}
-		copyIFile(COMMON_DISCOVERY_PLUGIN_ID, "lib/" + COMMON_DISCOVERY_JAR, webModulePath, "WEB-INF/lib/" + COMMON_DISCOVERY_JAR, status, env, monitor);
+		copyIFile(COMMON_DISCOVERY_PLUGIN_ID, null, null, "lib/" + COMMON_DISCOVERY_JAR, webModulePath, "WEB-INF/lib/" + COMMON_DISCOVERY_JAR, status, env, monitor);
 		if (status.getSeverity() == Status.ERROR) {
 			return;
 		}
-		copyIFile(JAVAX_XML_RPC_PLUGIN_ID, "lib/" + JAVAX_XML_RPC_JAR, webModulePath, "WEB-INF/lib/" + JAVAX_XML_RPC_JAR, status, env, monitor);
+		copyIFile(JAVAX_XML_RPC_PLUGIN_ID, null, null, "lib/" + JAVAX_XML_RPC_JAR, webModulePath, "WEB-INF/lib/" + JAVAX_XML_RPC_JAR, status, env, monitor);
 		if (status.getSeverity() == Status.ERROR) {
 			return;
 		}
-		copyIFile(JAVAX_XML_SOAP_PLUGIN_ID, "lib/" + JAVAX_XML_SOAP_JAR, webModulePath, "WEB-INF/lib/" + JAVAX_XML_SOAP_JAR, status, env, monitor);
+		copyIFile(JAVAX_XML_SOAP_PLUGIN_ID, JAVAX_XML_SOAP_PLUGIN_VERSION, JAVAX_XML_SOAP_PLUGIN_UPPER_VERSION, "lib/" + JAVAX_XML_SOAP_JAR, webModulePath, "WEB-INF/lib/" + JAVAX_XML_SOAP_JAR, status, env, monitor);
 		if (status.getSeverity() == Status.ERROR) {
 			return;
 		}
@@ -181,7 +185,7 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 	/**
 	 * 
 	 */
-	private void copyIFile(String pluginId, String source, IPath targetPath, String targetFile, IStatus status, IEnvironment env, IProgressMonitor monitor) {
+	private void copyIFile(String pluginId, Version pluginVersion, Version upperVersion, String source, IPath targetPath, String targetFile, IStatus status, IEnvironment env, IProgressMonitor monitor) {
 		IPath target = targetPath.append(new Path(targetFile));
 		ProgressUtils.report(monitor, ConsumptionMessages.PROGRESS_INFO_COPYING_FILE);
 
@@ -190,7 +194,15 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 			context.setOverwriteFilesEnabled(true);
 			context.setCreateFoldersEnabled(true);
 			context.setCheckoutFilesEnabled(true);
-			URL sourceURL = BundleUtils.getURLFromBundle(pluginId, source);
+
+			URL sourceURL = null;
+			if (pluginVersion != null) {
+				sourceURL = BundleUtils.getURLFromBundle(pluginId, pluginVersion, upperVersion, source);
+			}
+			else {
+				sourceURL = BundleUtils.getURLFromBundle(pluginId, source);
+			}
+
 			IFile resource = ResourceUtils.getWorkspaceRoot().getFile(target);
 			if (!resource.exists()) {
 				IFile file = FileResourceUtils.createFile(context, target, sourceURL.openStream(), monitor, env.getStatusHandler());

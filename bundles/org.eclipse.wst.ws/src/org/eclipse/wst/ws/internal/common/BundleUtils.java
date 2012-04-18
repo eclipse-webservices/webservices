@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2008 IBM Corporation and others.
+ * Copyright (c) 2003, 2012 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070501   184505 kathy@ca.ibm.com - Kathy Chan
  * 20080326   224148 makandre@ca.ibm.com - Andrew Mak, Web service scenarios broke in latest builds with Equinox p2
+ * 20120418   364026 lippert@acm.org - Martin Lippert, saaj.jar deployment fails when multiple javax.xml.soap bundles are installed
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.common;
 
@@ -30,11 +31,33 @@ public class BundleUtils
 {
 	static public URL getURLFromBundle( String bundleId, String path ) throws MalformedURLException
 	{
-		Bundle      bundle     = Platform.getBundle( bundleId );
+		Bundle      bundle     = Platform.getBundle(bundleId);
 		URL         installURL = bundle.getEntry("/");
 		URL         fileURL    = new URL(installURL, path );
 
 		return fileURL;
+	}
+
+	static public URL getURLFromBundle( String bundleId, Version bundleVersion, Version upperVersion, String path ) throws MalformedURLException
+	{
+		Bundle      bundle     = getBundleWithinVersionRange(bundleId, bundleVersion, upperVersion);
+		URL         installURL = bundle.getEntry("/");
+		URL         fileURL    = new URL(installURL, path );
+
+		return fileURL;
+	}
+
+	private static Bundle getBundleWithinVersionRange(String bundleId,
+			Version bundleVersion, Version upperVersion) {
+		Bundle[] bundles = Platform.getBundles(bundleId, bundleVersion.toString());
+		for(Bundle bundle : bundles) {
+			Version aVersion = bundle.getVersion();
+			if (aVersion.compareTo(bundleVersion) >= 0 && aVersion.compareTo(upperVersion) < 0) {
+				return bundle;
+			}
+		}
+		
+		return null;
 	}
 
 	/**
