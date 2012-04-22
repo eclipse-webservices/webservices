@@ -31,7 +31,6 @@ import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
 import org.eclipse.jdt.internal.corext.codemanipulation.CodeGenerationSettings;
 import org.eclipse.jdt.internal.corext.codemanipulation.StubUtility2;
 import org.eclipse.jdt.internal.ui.preferences.JavaPreferencesSettings;
-import org.eclipse.jdt.ui.SharedASTProvider;
 import org.eclipse.jdt.ui.text.java.IInvocationContext;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
@@ -102,7 +101,7 @@ public class AddUnimplementedMethodCorrectionProposal extends AbstractJavaCorrec
                     
                     if (seiType != null) {
                         ICompilationUnit sei = seiType.getCompilationUnit();
-                        CompilationUnit seiCompilationUnit = SharedASTProvider.getAST(sei, SharedASTProvider.WAIT_YES, null);
+                        CompilationUnit seiCompilationUnit = getAST(sei);
                         
                         List<MethodDeclaration> implementationMethods = getMethodDeclarations(
                                 implementationCompilationUnit);

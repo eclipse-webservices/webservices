@@ -15,6 +15,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.ui.text.java.IInvocationContext;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jface.text.IDocument;
@@ -108,6 +111,13 @@ public abstract class AbstractJavaCorrectionPropsoal implements IJavaCompletionP
 
     public Point getSelection(IDocument document) {
         return null;
+    }
+    
+    protected CompilationUnit getAST(ICompilationUnit source) {
+        final ASTParser parser = ASTParser.newParser(AST.JLS3);
+        parser.setResolveBindings(true);
+        parser.setSource(source);
+        return (CompilationUnit) parser.createAST(null);
     }
 
 }

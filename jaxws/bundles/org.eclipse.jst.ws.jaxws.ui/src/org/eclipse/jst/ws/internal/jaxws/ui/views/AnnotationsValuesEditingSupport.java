@@ -35,6 +35,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -42,7 +43,6 @@ import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
-import org.eclipse.jdt.ui.SharedASTProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
@@ -375,7 +375,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
     private void setValueForClass(IType type, Boolean annotate, IJavaElement javaElement,
             IAnnotationAttributeInitializer annotationAttributeInitializer) throws CoreException {
         ICompilationUnit source = AnnotationUtils.getCompilationUnitFromJavaElement(javaElement);
-        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
+        CompilationUnit compilationUnit = getAST(source);
         AST ast = compilationUnit.getAST();
 
         List<MemberValuePair> memberValuePairs = getMemberValuePairs(annotationAttributeInitializer, javaElement,
@@ -442,7 +442,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
 
     private void setValueForMethod(IMethod method, Object value, IJavaElement javaElement) throws CoreException {
         ICompilationUnit source = AnnotationUtils.getCompilationUnitFromJavaElement(javaElement);
-        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
+        CompilationUnit compilationUnit = getAST(source);
         AST ast = compilationUnit.getAST();
 
         TextFileChange change = new TextFileChange("Add/Update Annotation Value", (IFile) source.getResource());
@@ -701,6 +701,12 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
             }
         }
         return arrayInitializer;
+    }
+
+    private CompilationUnit getAST(ICompilationUnit source) {
+        final ASTParser parser = ASTParser.newParser(AST.JLS3);
+        parser.setSource(source);
+        return (CompilationUnit) parser.createAST(null);
     }
 
 }

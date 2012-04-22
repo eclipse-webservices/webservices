@@ -19,10 +19,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
-import org.eclipse.jdt.ui.SharedASTProvider;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.PerformChangeOperation;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
@@ -45,7 +45,7 @@ public abstract class AbstractAnnotationTest extends TestCase {
 
         source = testJavaProject.createCompilationUnit(getPackageName(), getClassName(), getClassContents());
 
-        compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
+        compilationUnit = getAST(source);
         ast = compilationUnit.getAST();
         rewriter = ASTRewrite.create(ast);
         annotation = getAnnotation();
@@ -103,5 +103,11 @@ public abstract class AbstractAnnotationTest extends TestCase {
     			Thread.sleep(1);
     		}
     	}
+    }
+    
+    private CompilationUnit getAST(ICompilationUnit source) {
+        final ASTParser parser = ASTParser.newParser(AST.JLS3);
+        parser.setSource(source);
+        return (CompilationUnit) parser.createAST(null);
     }
 }
