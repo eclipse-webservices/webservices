@@ -169,7 +169,7 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
             public void widgetSelected(SelectionEvent event) {
                 enableSelectSEIControls(selectSEIButton.getSelection());
                 enableExtractSEIControls(!selectSEIButton.getSelection());
-                if (selectSEIButton.getSelection() && selectSEICombo.getText().trim().length() > 0) {
+                if (selectSEIButton.getSelection()) {
                     updateSEISelectionStatus();
                     statusListener.handleEvent(null);
                 }
@@ -244,6 +244,9 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
                 model.setExtractInterface(extract);
                 enableExtractSEIControls(extract);
                 enableSelectSEIControls(!extract);
+                if (extract) {
+                    updateExtractSEIInfo();
+                }
                 updateSEISelectionStatus();
                 statusListener.handleEvent(null);
             }
@@ -259,17 +262,7 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
 
             public void modifyText(ModifyEvent event) {
                 if (extractSEIButton.getSelection()) {
-                    String interfaceName = seiInterfaceNameText.getText();
-                    String seiName = interfaceName;
-                    String packageName = startingPointType.getPackageFragment().getElementName();
-                    if (packageName.length() > 0) {
-                        seiName = packageName + "." + interfaceName;
-                    }
-                    model.setServiceEndpointInterfaceName(seiName);
-
-                    String compilationUnitName = interfaceName + ".java"; //$NON-NLS-1$
-                    JAVA_TYPE_NAME_STATUS = JDTUtils.validateJavaTypeName(model.getProjectName(), interfaceName);
-                    JAVA_TYPE_EXISTS_STATUS = checkTypeExists(startingPointType, compilationUnitName);
+                    updateExtractSEIInfo();
                     updateSEISelectionStatus();
                     statusListener.handleEvent(null);
                 }
@@ -396,6 +389,26 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
         return this;
     }
 
+    private void updateExtractSEIInfo() {
+        String interfaceName = seiInterfaceNameText.getText().trim();
+        if (!interfaceName.isEmpty()) {
+            String packageName = startingPointType.getPackageFragment().getElementName();
+            if (packageName.length() > 0) {
+                interfaceName = packageName + "." + interfaceName;
+            }
+            model.setServiceEndpointInterfaceName(interfaceName);
+            model.setFullyQualifiedJavaInterfaceName(interfaceName);
+
+            Object[] checkedMethods = seiMembersToExtractTableViewer.getCheckedElements();
+
+            Map<IMethod, Map<String, Boolean>> methodMap = new HashMap<IMethod, Map<String, Boolean>>();
+            for (int i = 0; i < checkedMethods.length; i++) {
+                methodMap.put((IMethod)checkedMethods[i], model.getAnnotationMap());
+            }
+            model.setMethodMap(methodMap);
+        }
+    }
+    
     private void validateSEISelection() {
         if (!useSEIButton.getSelection()) {
             SEI_SELECTION_STATUS = Status.OK_STATUS;
@@ -412,9 +425,10 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
                                 CXFCreationUIMessages.bind(CXFCreationUIMessages.WEBSERVICE_ENPOINTINTERFACE_MUST_IMPLEMENT,
                                         getImplementsMessage(seiType, seiMethod)));
                         break;
-                    } else {
-                        SEI_SELECTION_STATUS = validateSEIAddition();
                     }
+                }
+                if (SEI_SELECTION_STATUS.isOK()) {
+                    SEI_SELECTION_STATUS = validateSEIAddition();
                 }
                 model.setServiceEndpointInterfaceName(selectSEICombo.getText());
                 model.setFullyQualifiedJavaInterfaceName(selectSEICombo.getText());
@@ -494,29 +508,36 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
             if (!selectSEIButton.getSelection() && !extractSEIButton.getSelection()) {
                 SEI_SELECTION_STATUS = new Status(IStatus.ERROR, CXFCreationUIPlugin.PLUGIN_ID,
                         CXFCreationUIMessages.JAVA2WS_SELECT_SEI_OPTION);
-            }
-
-            if (selectSEIButton.getSelection() && selectSEICombo.getText().length() == 0) {
-                SEI_SELECTION_STATUS = new Status(IStatus.ERROR, CXFCreationUIPlugin.PLUGIN_ID,
-                        CXFCreationUIMessages.JAVA2WS_SELECT_SEI_MESSAGE);
-            } else if (selectSEIButton.getSelection() && selectSEICombo.getText().length() > 0) {
-                validateSEISelection();
-            }
-
-            if (extractSEIButton.getSelection() && seiInterfaceNameText.getText().trim().length() == 0) {
-                SEI_SELECTION_STATUS = new Status(IStatus.ERROR, CXFCreationUIPlugin.PLUGIN_ID,
-                        CXFCreationUIMessages.JAVA2WS_ENTER_SEI_NAME);
-            } else if (extractSEIButton.getSelection() && NUMBER_OF_PUBLIC_METHODS > 0
-                    && NUMBER_OF_CHECKED_METHODS == 0) {
-                SEI_SELECTION_STATUS = new Status(IStatus.ERROR, CXFCreationUIPlugin.PLUGIN_ID,
-                        CXFCreationUIMessages.bind(
-                                CXFCreationUIMessages.JAVA2WS_SELECT_SEI_EXTRACTED_METHODS,
-                                startingPointType.getElementName()));
-            } else if (extractSEIButton.getSelection() && seiInterfaceNameText.getText().trim().length() > 0
-                    && NUMBER_OF_PUBLIC_METHODS > 0 && NUMBER_OF_CHECKED_METHODS > 0) {
+            } else if (selectSEIButton.getSelection()) {
                 SEI_SELECTION_STATUS = Status.OK_STATUS;
+                JAVA_TYPE_NAME_STATUS = Status.OK_STATUS;
+                JAVA_TYPE_EXISTS_STATUS = Status.OK_STATUS;
+                if (selectSEICombo.getText().length() > 0) {
+                    validateSEISelection();
+                } else {
+                    SEI_SELECTION_STATUS = new Status(IStatus.ERROR, CXFCreationUIPlugin.PLUGIN_ID,
+                            CXFCreationUIMessages.JAVA2WS_SELECT_SEI_MESSAGE);
+                }
+            } else if (extractSEIButton.getSelection()) {
+                if (seiInterfaceNameText.getText().trim().length() > 0) {
+                    String interfaceName = seiInterfaceNameText.getText().trim(); 
+                    JAVA_TYPE_NAME_STATUS = JDTUtils.validateJavaTypeName(model.getProjectName(), interfaceName);
+                    String compilationUnitName = interfaceName + ".java"; //$NON-NLS-1$
+                    JAVA_TYPE_EXISTS_STATUS = checkTypeExists(startingPointType, compilationUnitName);
+                    
+                    if (NUMBER_OF_PUBLIC_METHODS > 0 && NUMBER_OF_CHECKED_METHODS == 0) {
+                        SEI_SELECTION_STATUS = new Status(IStatus.INFO, CXFCreationUIPlugin.PLUGIN_ID,
+                                CXFCreationUIMessages.bind(
+                                        CXFCreationUIMessages.JAVA2WS_SELECT_SEI_EXTRACTED_METHODS,
+                                        startingPointType.getElementName()));
+                    } else {
+                        SEI_SELECTION_STATUS = Status.OK_STATUS;
+                    }
+                } else {
+                    SEI_SELECTION_STATUS = new Status(IStatus.ERROR, CXFCreationUIPlugin.PLUGIN_ID,
+                            CXFCreationUIMessages.JAVA2WS_ENTER_SEI_NAME);
+                }
             }
-
         } else {
             SEI_SELECTION_STATUS = Status.OK_STATUS;
             JAVA_TYPE_NAME_STATUS = Status.OK_STATUS;
