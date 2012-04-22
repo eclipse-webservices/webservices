@@ -391,7 +391,7 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
 
     private void updateExtractSEIInfo() {
         String interfaceName = seiInterfaceNameText.getText().trim();
-        if (!interfaceName.isEmpty()) {
+        if (interfaceName.length() > 0) {
             String packageName = startingPointType.getPackageFragment().getElementName();
             if (packageName.length() > 0) {
                 interfaceName = packageName + "." + interfaceName;
