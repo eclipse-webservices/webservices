@@ -23,6 +23,7 @@
  * 20101123   330916 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS - facet install should consider Web project associated with multiple EARs
  * 20110822   355434 atosak@ca.ibm.com - Atosa Khoddamhazrati, JAX-RS Facet assumes a project has a runtime when enabling the facet
  * 20120206   365103 jenyoung@ca.ibm.com - Jennifer Young, JAX-RS configuration UI should have the Update Deployment descriptor check box available
+ * 20120425   377578 jenyoung@ca.ibm.com - Jennifer Young, The JAX-RS install operation config should be updated whenever there are provider set changes
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -611,9 +612,11 @@ private void initializeValues()
       }
       else if (propertyName.equals(IJAXRSFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE))
       {
+      	LibraryInstallDelegate librariesInstallDelegate = (LibraryInstallDelegate) getDataModel().getProperty(LIBRARY_PROVIDER_DELEGATE);
+		LibraryProviderOperationConfig config = librariesInstallDelegate.getLibraryProviderOperationConfig();
+
         if (event.getProperty() != null) {
 
-        	LibraryInstallDelegate librariesInstallDelegate = (LibraryInstallDelegate) getDataModel().getProperty(LIBRARY_PROVIDER_DELEGATE);
        		String libraryProviderID = librariesInstallDelegate.getLibraryProvider().getId();
        		ILibraryProvider thisProvider = librariesInstallDelegate.getLibraryProvider();
 			try {
@@ -624,14 +627,19 @@ private void initializeValues()
 					currentlySelectedLibraryType = thisProvider;
 					updateUpdateDDState(libraryProviderID);
 					updateServletClassName(libraryProviderID);
-				} 
+				}
 			} catch (Exception e) {
 				//TODO exception as we are notified in non-UI thread and Invalid thread access exception,
 				//should find another way to get notified when library provider changes
-
 			}
-        	
         }
+		if (config instanceof JAXRSUserLibraryProviderInstallOperationConfig) {
+		  JAXRSUserLibraryProviderInstallOperationConfig customConfig = (JAXRSUserLibraryProviderInstallOperationConfig) config;
+		  customConfig.setModel(getDataModel());
+		} else if (config instanceof JAXRSSharedLibraryProviderInstallOperationConfig) {
+		  JAXRSSharedLibraryProviderInstallOperationConfig customConfig = (JAXRSSharedLibraryProviderInstallOperationConfig) config;
+		  customConfig.setModel(getDataModel());
+		}
       }
     }
     super.propertyChanged(event);
@@ -653,6 +661,8 @@ private void initializeValues()
     if (webAppDataModel != null)
       webAppDataModel.removeListener(this);
 
+    if (model != null)
+      model.removeListener(this);
 // jaxrsLibCfgComp.dispose();
     super.dispose();
   }
