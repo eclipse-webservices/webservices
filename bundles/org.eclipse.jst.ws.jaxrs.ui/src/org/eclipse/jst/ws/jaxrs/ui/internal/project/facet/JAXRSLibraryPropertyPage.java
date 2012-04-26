@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and others.
+ * Copyright (c) 2009, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,10 @@
  * 20100325   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
  * 20100408   308565 kchong@ca.ibm.com - Keith Chong, JAX-RS: Servlet name and class not updated
  * 20100413   307552 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS and Java EE 6 setup is incorrect
+ * 20100512   311032 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Property page- SWT exception when removing facet
+ * 20100519   313576 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS tools- validation problems
+ * 20100618   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
+ * 20110617   349715 kchong@ca.ibm.com - Keith Chong, [JAX-RS] Upon selection, the JAX-RS Configuration page is blank when Project Facets page has unapplied changes
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -27,8 +31,10 @@ import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.common.project.facet.ui.libprov.LibraryFacetPropertyPage;
@@ -38,14 +44,18 @@ import org.eclipse.jst.javaee.web.Servlet;
 import org.eclipse.jst.javaee.web.ServletMapping;
 import org.eclipse.jst.javaee.web.WebApp;
 import org.eclipse.jst.ws.jaxrs.core.internal.IJAXRSCoreConstants;
+import org.eclipse.jst.ws.jaxrs.core.internal.Messages;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.IJAXRSFacetInstallDataModelProperties;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSJ2EEUtils;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSJEEUtils;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSUtils;
 import org.eclipse.jst.ws.jaxrs.ui.internal.IJAXRSUIConstants;
+import org.eclipse.jst.ws.jaxrs.ui.internal.JAXRSUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -96,6 +106,18 @@ implements IJAXRSFacetInstallDataModelProperties
     	this.webAppObj = provider.getModelObject();
 	if (doesDDFileExist(getProject(), this.webXMLPath)) {
 	    servletInfoGroup = new ServletInformationGroup((Composite) c, SWT.NONE);
+			servletInfoGroup.txtJAXRSServletName.addListener(SWT.Modify,
+					new Listener() {
+						public void handleEvent(Event arg0) {
+							updateValidation();
+						}
+					});
+			servletInfoGroup.txtJAXRSServletClassName.addListener(SWT.Modify,
+					new Listener() {
+						public void handleEvent(Event arg0) {
+							updateValidation();
+						}
+					});
 	    initializeValues();
 	}
     return c;
@@ -114,21 +136,32 @@ implements IJAXRSFacetInstallDataModelProperties
 	List<ServletMapping> servletMappings = new ArrayList<ServletMapping>();
     if (webAppObj != null)
     {	
+    	servletInfoGroup.lstJAXRSServletURLPatterns.removeAll();
+    	//set defaults- in the rare case we do not find the servlet we will create another servlet entry
     	String servletName = JAXRSUtils.JAXRS_DEFAULT_SERVLET_NAME; 
-    	String servletClass = ""; //$NON-NLS-1$
+    	String servletClass = JAXRSUtils.JAXRS_SERVLET_CLASS; 
+    	//get id ofthe library provider being used
+	    LibraryInstallDelegate installDelegate = super.getLibraryInstallDelegate();
+		ILibraryProvider libraryProvider = installDelegate.getLibraryProvider();
+		String id = "";
+		if (libraryProvider != null) 
+			id = libraryProvider.getId();
 		if (JAXRSJEEUtils.isWebApp25or30(webAppObj)) {
 			WebApp webApp = (WebApp) webAppObj;
-			Servlet servlet = JAXRSJEEUtils.findJAXRSServlet(webApp);
+			Servlet servlet = JAXRSJEEUtils.findJAXRSServlet(webApp, id);
 			if (servlet != null) {
 				servletMappings = webApp.getServletMappings();
 				servletName = (servlet.getServletName() == null)  ?  servletName : servlet.getServletName();
 				servletClass =(servlet.getServletClass() == null) ? servletClass : servlet.getServletClass();
+			} else {
+				//we did not find the servlet entry, set default value
+				servletInfoGroup.lstJAXRSServletURLPatterns.add(JAXRSUtils.JAXRS_DEFAULT_URL_MAPPING);
 			}
 		} else {
 			// 2.3 or 2.4 web app
 			org.eclipse.jst.j2ee.webapplication.WebApp webApp = (org.eclipse.jst.j2ee.webapplication.WebApp) webAppObj;
 			org.eclipse.jst.j2ee.webapplication.Servlet servlet = JAXRSJ2EEUtils
-					.findJAXRSServlet(webApp);
+					.findJAXRSServlet(webApp, id);
 			if (servlet != null) {
 				this.j2eeServlet = servlet;
 				servletMappings = webApp.getServletMappings();
@@ -136,6 +169,9 @@ implements IJAXRSFacetInstallDataModelProperties
 				if (servlet.getServletClass() != null) {
 					servletClass =(servlet.getServletClass().getQualifiedName() == null) ? servletClass : servlet.getServletClass().getQualifiedName();
 				}
+			} else {
+				//we did not find the servlet entry, set default value
+				servletInfoGroup.lstJAXRSServletURLPatterns.add(JAXRSUtils.JAXRS_DEFAULT_URL_MAPPING);
 			}
 
 		}
@@ -143,7 +179,6 @@ implements IJAXRSFacetInstallDataModelProperties
         servletInfoGroup.txtJAXRSServletClassName.setText(servletClass);
       // Find the servletMapping that corresponds to the servletName
         if (JAXRSJEEUtils.isWebApp25or30(webAppObj)) {
-            servletInfoGroup.lstJAXRSServletURLPatterns.removeAll();
 
       for (Iterator<ServletMapping> i = servletMappings.iterator(); i.hasNext();)
       {
@@ -163,7 +198,6 @@ implements IJAXRSFacetInstallDataModelProperties
         }
       }
     } else {
-    	servletInfoGroup.lstJAXRSServletURLPatterns.removeAll();
         for (Iterator<ServletMapping> i = servletMappings.iterator(); i.hasNext();)
         {
           Object o = i.next();
@@ -188,17 +222,19 @@ implements IJAXRSFacetInstallDataModelProperties
   public boolean performOk()
   {
 	    LibraryInstallDelegate installDelegate = super.getLibraryInstallDelegate();
-	    if ( installDelegate != null ) {
-	    	ILibraryProvider libraryProvider = installDelegate.getLibraryProvider();
-	    	if (libraryProvider != null) {
-	    		String id = libraryProvider.getId();
-	    		if (!initialInstallDelegateLibraryProviderID.equals(id) || IJAXRSUIConstants.USER_LIBRARY_ID.equals(id)) {
-	    			// This will update the libraries by calling the library provider delegate
-	    			  super.performOk();
-	    		}
-	    	}
-	    }
-
+	    if (installDelegate == null)
+	    	//if null user has uninstalled the facet, no reason to update the project properties
+	    	return true;
+		ILibraryProvider libraryProvider = installDelegate.getLibraryProvider();
+		if (libraryProvider != null) {
+			String id = libraryProvider.getId();
+			if (!initialInstallDelegateLibraryProviderID.equals(id)
+					|| IJAXRSUIConstants.USER_LIBRARY_ID.equals(id)) {
+				// This will update the libraries by calling the library
+				// provider delegate
+				super.performOk();
+			}
+		}
 	  
     // Update the servlet properties
 	if (doesDDFileExist(getProject(), webXMLPath)) {
@@ -212,7 +248,7 @@ implements IJAXRSFacetInstallDataModelProperties
     List<String> listOfMappings = Arrays.asList(servletInfoGroup.lstJAXRSServletURLPatterns.getItems());
     if (JAXRSJEEUtils.isWebApp25or30(webAppObj))
     {
-      provider.modify(new UpdateWebXMLForJavaEE(project, servletInfoGroup.txtJAXRSServletName.getText(), servletInfoGroup.txtJAXRSServletClassName.getText(), listOfMappings),
+      provider.modify(new UpdateWebXMLForJavaEE(project, initialInstallDelegateLibraryProviderID , servletInfoGroup.txtJAXRSServletName.getText(), servletInfoGroup.txtJAXRSServletClassName.getText(), listOfMappings),
           IModelProvider.FORCESAVE);
     }
     else
@@ -231,4 +267,32 @@ implements IJAXRSFacetInstallDataModelProperties
 		IPath modulePath = component.getRootFolder().getWorkspaceRelativePath();
 		return modulePath;
   }
+	private IStatus validateServletInfo(String servletName, String ServletClassName) {
+		if (servletName == null || servletName.trim().length() == 0) {
+			String errorMessage = Messages.JAXRSFacetInstallDataModelProvider_ValidateServletName;
+			return createErrorStatus(errorMessage);
+		}
+		if (ServletClassName == null || ServletClassName.trim().length() == 0) {
+			String errorMessage = Messages.JAXRSFacetInstallDataModelProvider_ValidateServletClassName;
+			return createErrorStatus(errorMessage);
+		}
+		return Status.OK_STATUS;
+	}
+	private IStatus createErrorStatus(String msg) {
+		return new Status(IStatus.ERROR, JAXRSUIPlugin.PLUGIN_ID, msg);
+	}
+	protected IStatus performValidation() {
+		IStatus superValidation = super.performValidation();
+		if (superValidation.isOK())
+			if (doesDDFileExist(getProject(), this.webXMLPath))
+			  if (servletInfoGroup != null && !servletInfoGroup.isDisposed())
+				  return validateServletInfo(servletInfoGroup.txtJAXRSServletName.getText(), servletInfoGroup.txtJAXRSServletClassName.getText());
+			  else
+			    return Status.OK_STATUS; // superValidation is ok
+			else
+				return Status.OK_STATUS;
+		else {
+			return superValidation;
+		}
+	}
 }
