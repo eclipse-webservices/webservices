@@ -32,7 +32,7 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
  * Adds the CXF classpath container to the project.
  * <p>
  * Also sets up the web projects application deployment descriptor (web.xml file)
- * to use cxf-servlet or the Spring Application context (WEB-INF/beans.xml) for
+ * to use cxf-servlet or the Spring Application context (WEB-INF/cxf-beans.xml) for
  * endpoint configuration. Depends on a setting in the CXF preferences.
  * 
  */

@@ -70,7 +70,7 @@ public final class SpringUtils {
 
             IPath webINFPath = webContentPath.append(new Path("WEB-INF/")); //$NON-NLS-1$
             IFolder webINFFolder = ResourcesPlugin.getWorkspace().getRoot().getFolder(webINFPath);
-            beansFile = webINFFolder.getFile("beans.xml"); //$NON-NLS-1$
+            beansFile = webINFFolder.getFile("cxf-beans.xml"); //$NON-NLS-1$
             if (!beansFile.exists()) {
                 try {
                     IProgressMonitor progressMonitor = new NullProgressMonitor();
@@ -259,7 +259,7 @@ public final class SpringUtils {
         return ""; //$NON-NLS-1$
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public static void createConfigurationFromWSDL(WSDL2JavaDataModel model) throws IOException {
         String targetNamespace = model.getTargetNamespace();
         String packageName = model.getIncludedNamespaces().get(targetNamespace);
@@ -286,7 +286,7 @@ public final class SpringUtils {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static void loadSpringConfigInformationFromWSDL(CXFDataModel model) {
         IFile wsdlFile = WSDLUtils.getWSDLFolder(model.getProjectName()).getFile(model.getWsdlFileName());
         if (wsdlFile.exists()) {

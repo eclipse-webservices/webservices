@@ -122,7 +122,7 @@ public class CreateDeploymentDescriptorCommand extends AbstractDataModelOperatio
         return status;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     private void addSpringApplicationContextWeb25(IProject webProject,
             org.eclipse.jst.javaee.web.WebApp webapp) {
         List contextParams = webapp.getContextParams();
@@ -147,7 +147,7 @@ public class CreateDeploymentDescriptorCommand extends AbstractDataModelOperatio
 
         ParamValue configLocationParam = javaeeFactory.createParamValue();
         configLocationParam.setParamName("contextConfigLocation"); //$NON-NLS-1$
-        configLocationParam.setParamValue("WEB-INF/beans.xml"); //$NON-NLS-1$
+        configLocationParam.setParamValue("WEB-INF/cxf-beans.xml"); //$NON-NLS-1$
 
         webapp.getContextParams().add(configLocationParam);
 
@@ -157,7 +157,7 @@ public class CreateDeploymentDescriptorCommand extends AbstractDataModelOperatio
         webapp.getListeners().add(contextLoaderListener);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     private void addCXFJSTWEB25Servlet(IProject webProject, org.eclipse.jst.javaee.web.WebApp webapp) {
         List servlets = webapp.getServlets();
         for (int i = 0; i < servlets.size(); i++) {
