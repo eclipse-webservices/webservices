@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2012 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -64,11 +64,15 @@
  * 20090313   268567 ericdp@ca.ibm.com - Eric D. Peters, persisted wizard settings gone unless launching on object
  * 20090326   269097 kchong@ca.ibm.com - Keith Chong, [Accessibility] Web services wizard dialog should be selected after canceling the Browse for class dialog
  * 20100511   309395 mahutch@ca.ibm.com - Mark Hutchinson, WS Wizard Converting Java Project into Utility Project without any warning
+ * 20120501   378160 jenyoung@ca.ibm.com - Jennifer Young, Service project and service project type need to be refreshed when web service target runtime changes
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
 
+import java.util.Set;
+
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
@@ -76,10 +80,16 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.common.ServerUtils;
+import org.eclipse.jst.ws.internal.consumption.common.FacetMatcher;
+import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
+import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.common.DefaultingUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
+import org.eclipse.jst.ws.internal.consumption.ui.preferences.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.IObjectSelectionLaunchable;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.IPackable;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ProjectSelectionDialog;
@@ -91,6 +101,8 @@ import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelection
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.Timer;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ProjectSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.RuntimeServerSelectionDialog;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.FacetMatchCache;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.ServiceRuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceImpl;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
@@ -734,7 +746,8 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 			if (!currentServiceTRS.equals(newServiceTRS))
 			{
 				setServiceTypeRuntimeServer(newServiceTRS);	
-				refreshClientServerRuntimeSelection();	
+				refreshServiceProjectSettings();
+				refreshClientServerRuntimeSelection();				
 				validationState_ = (new ValidationUtils()).getNewValidationState(validationState_, ValidationUtils.VALIDATE_SERVER_RUNTIME_CHANGES);
 				clientWidget_.setValidationState(ValidationUtils.VALIDATE_SERVER_RUNTIME_CHANGES);
 				statusListener_.handleEvent(null); //Revalidate the page since server/runtime selections changed.
@@ -742,6 +755,179 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 			
 		}		
 	}	
+	
+	/**
+	 * Update the service project name, service project type, and service ear 
+	 * project name
+	 */
+	private void refreshServiceProjectSettings(){
+			
+		setServiceProjectName(getDefaultServiceProjectName());	
+		IProject serviceProject = ResourcesPlugin.getWorkspace().getRoot().getProject(getServiceProjectName());
+		if (!serviceProject.exists())
+		{
+			// Set the project template
+			setServiceComponentType(getDefaultServiceProjectTemplate());
+		}
+		else
+		{
+			//Set it to an empty String
+			setServiceComponentType("");
+		}
+		setServiceEarProjectName(getDefaultServiceEarProjectName());
+    }
+	
+	/*
+	 * Computes the default service project name based on the current
+	 * projects in the workspace and whether or not they support
+	 * the currently selected runtime
+	 * @return A default value for the service project name
+	 */
+	private String getDefaultServiceProjectName()
+	  {
+	    IProject[] projects = FacetUtils.getAllProjects();
+	    String[] runtimes = null;
+
+	    String serviceRuntimeId = getServiceTypeRuntimeServer().getRuntimeId();
+	    String serviceTypeId = getServiceTypeRuntimeServer().getTypeId();
+	    String serviceServerId = getServiceTypeRuntimeServer().getServerId();
+	    runtimes = WebServiceRuntimeExtensionUtils2.getServiceRuntimesByServiceType(serviceTypeId, serviceServerId);
+	    
+	    for (int k=0; k<runtimes.length; k++ )
+	    {
+	     
+	      String descRuntimeId = null;
+	      ServiceRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(runtimes[k]);
+	      descRuntimeId = desc.getRuntime().getId();
+	      if (descRuntimeId.equals(serviceRuntimeId)){
+		      RequiredFacetVersion[] rfv = null;
+		      rfv = WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(runtimes[k]).getRequiredFacetVersions();
+		      	      	    
+		      //Check each project for compatibility with the serviceRuntime
+		      for (int i=0; i<projects.length; i++)
+		      {
+		    	  Set facetVersions = FacetUtils.getFacetsForProject(projects[i].getName());
+		    	  org.eclipse.wst.common.project.facet.core.runtime.IRuntime fRuntime = null;
+		    	  String fRuntimeName = null;
+		    	  fRuntime = FacetUtils.getFacetRuntimeForProject(projects[i].getName());
+			      if (fRuntime != null)
+			      {
+			        fRuntimeName = fRuntime.getName();        
+			      }              
+			      
+			      if (facetVersions != null)
+			      {
+			        FacetMatcher fm = FacetMatchCache.getInstance().getMatchForProject(false, runtimes[k], projects[i].getName());
+			        boolean facetRuntimeMatches = true;
+			        if (fRuntimeName != null)
+			        {
+			          facetRuntimeMatches = FacetUtils.isFacetRuntimeSupported(rfv, fRuntimeName);  
+			        }
+			        
+			        if (fm.isMatch() && facetRuntimeMatches)
+			        {
+			          return projects[i].getName();
+			        }                    
+			      }
+			    }
+	      }
+	    }
+	    //No project was suitable, return a new project name
+	    return ResourceUtils.getDefaultWebProjectName();
+	    
+	  }  
+	
+	 /*
+	  * Computes a default value for the service ear project name
+	  * @return A default value for the service ear project name
+	  */
+	  private String getDefaultServiceEarProjectName()
+	  {
+	    //Don't need an ear if this is a Java project, or if the selected template is jst.utility
+	    IProject serviceProject = ResourcesPlugin.getWorkspace().getRoot().getProject(getServiceProjectName());
+	    if (serviceProject.exists())
+	    {
+	    	needEar_ = !(FacetUtils.isJavaProject(serviceProject));
+	    }
+	    else
+	    {
+	    	needEar_ = !(FacetUtils.isUtilityTemplate(getServiceComponentType()));  
+	    }    
+	    
+	    //If serviceNeedEAR_ is still true, it means that we're not dealing with a Java project
+	    //or Java project type. Check the server.
+	    
+	    
+	    if (needEar_)
+	    {
+	      
+	      // Determine if an ear selection is needed based on the server type.      
+	      String serverId = getServiceTypeRuntimeServer().getServerId();
+	      if (serverId != null)
+	      {
+	        // Use the server type
+	        String serverTargetId = ServerUtils.getRuntimeTargetIdFromFactoryId(serverId);
+	        if (serverTargetId != null && serverTargetId.length() > 0)
+	        {
+	          if (!ServerUtils.isTargetValidForEAR(serverTargetId, "13"))
+	          {
+	            // Default the EAR selection to be empty
+	        	  needEar_ = false;
+	          }
+	        }
+	      } else { // serverId == null, assume that it does not need EAR
+	    	  needEar_ = false;
+	      }
+	    }
+	    
+	    if (needEar_)
+	    {
+	      return DefaultingUtils.getDefaultEARProjectName(getServiceProjectName());
+	    }
+	    else
+	    {
+	      return "";
+	    }   
+	  }
+	
+	  /*
+	   * Computes an acceptable value for the service project type based on the 
+	   * current runtime
+	   * @return A default value for the service project type
+	   */
+	  private String getDefaultServiceProjectTemplate()
+	  {
+		String serviceTypeId = getServiceTypeRuntimeServer().getTypeId();  
+		String serviceRuntimeId = getServiceTypeRuntimeServer().getRuntimeId();
+		String serviceServerId = getServiceTypeRuntimeServer().getServerId();
+	    String[] templates = WebServiceRuntimeExtensionUtils2.getServiceProjectTemplates(serviceTypeId, serviceRuntimeId, serviceServerId);
+	    
+	    //Walk the list of service project types in the project topology preference
+	    ProjectTopologyContext ptc= WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();
+	    String[] preferredTemplateIds = ptc.getServiceTypes();
+	    for (int j = 0; j < preferredTemplateIds.length; j++)
+	    {
+	      for (int i = 0; i < templates.length; i++)
+	      {
+	        String templateId = templates[i];
+	        if (templateId.equals(preferredTemplateIds[j]))
+	        {
+	          boolean matches = WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportTemplate(serviceRuntimeId, templateId);
+	          if (matches)
+	          {
+	            return templates[i];
+	          }
+	        }
+	      }
+	    }
+	    //Since the preferredTemplateIds contains the union of all project types for all service runtimes, we are
+	    //guaranteed to have returned by now, so the code below will never be executed under normal
+	    //circumstances. Just return something to satisfy the compiler.
+	    if (templates.length > 0)
+	      return templates[0];
+	    
+	    return "";   
+	  }
 	
 	public void setClientTypeRuntimeServer(TypeRuntimeServer ids) {
 		clientWidget_.setTypeRuntimeServer( ids );
@@ -1585,7 +1771,7 @@ private void handleTypeChange()
 		clientTypeRuntimeserver.setServerId(getServiceTypeRuntimeServer().getServerId());
 		clientTypeRuntimeserver.setServerInstanceId(getServiceTypeRuntimeServer().getServerInstanceId());
 		setClientTypeRuntimeServer(clientTypeRuntimeserver);
-	}	
+	}
 		
 	
 	private void callObjectTransformation(IStructuredSelection objectSelection,
