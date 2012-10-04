@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2012 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@
  * 20060711   150301 pmoogk@ca.ibm.com - Peter Moogk
  * 20060818   154393 pmoogk@ca.ibm.com - Peter Moogk
  * 20060906   156420 pmoogk@ca.ibm.com - Peter Moogk
+ * 20121004   385354 kchong@ca.ibm.com - Keith Chong
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.parser.wsil;
@@ -228,7 +229,7 @@ public class WebServicesParser
       ByteArrayInputStream bais = new ByteArrayInputStream(b);
       WSDLFactory factory = WSDLPlugin.INSTANCE.createWSDL4JFactory();
       WSDLReader wsdlReader = factory.newWSDLReader();
-      definition = wsdlReader.readWSDL(wsdlURI, new InputSource(bais));
+      definition = wsdlReader.readWSDL(wsdlURI.replace('\\', '/'), new InputSource(bais));
       wsEntity.setType(WebServiceEntity.TYPE_WSDL);
       wsEntity.setModel(definition);
     }

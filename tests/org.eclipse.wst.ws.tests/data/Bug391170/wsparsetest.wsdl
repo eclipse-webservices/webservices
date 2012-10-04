@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://tempuri.org/AreaService/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="AreaService" targetNamespace="http://tempuri.org/AreaService/">
+<wsdl:import namespace="http://tempuri.org/AreaService/" location="wsparsecommonbindings.wsdl"/>
+  <wsdl:service name="AreaService">
+    <wsdl:port binding="tns:AreaServiceSOAP" name="AreaServiceSOAP">
+      <soap:address location="http://tempuri.org"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
