@@ -9,11 +9,12 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20120531   xxxxxx jenyoung@ca.ibm.com - Jennifer Young
+ * 20120531   391170 jenyoung@ca.ibm.com - Jennifer Young
  *******************************************************************************/
 
 package org.eclipse.wst.ws.tests.unittest;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
@@ -34,7 +35,7 @@ import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 
 public class Bug391170ParserTest extends TestCase {
 	
-	private final String ACTUAL_TESTFILEPATH = "data\\Bug391170\\wsparsetest.wsdl";
+	private final String ACTUAL_TESTFILEPATH = "data/Bug391170/wsparsetest.wsdl";
 
 	public static Test suite(){
 		return new TestSuite(Bug391170ParserTest.class);
@@ -53,8 +54,12 @@ public class Bug391170ParserTest extends TestCase {
 	 */
 	public void testGetWSDLDefinition(){
 		
-		String wsdlPath = getInstallURL() + ACTUAL_TESTFILEPATH;		
-		wsdlPath=wsdlPath.replace('/', '\\');
+		String wsdlPath = getInstallURL() + ACTUAL_TESTFILEPATH;
+		// On Unix/Linux systems, the backward slash is invalid anyway
+		if (File.separator.equals("\\"))
+		{
+		  wsdlPath=wsdlPath.replace('/', '\\');
+		}
 		wsdlPath = "file:/" + wsdlPath.substring(1);
 		WebServicesParser webServicesParser = new WebServicesParserExt();
         Definition definition = webServicesParser.getWSDLDefinition(wsdlPath);
