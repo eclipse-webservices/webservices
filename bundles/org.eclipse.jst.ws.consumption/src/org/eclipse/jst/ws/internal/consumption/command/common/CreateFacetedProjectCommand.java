@@ -23,6 +23,7 @@
  * 20081001   243869 ericdp@ca.ibm.com - Eric D. Peters, Web Service tools allowing mixed J2EE levels
  * 20091123   242615 mahutch@ca.ibm.com - Mark Hutchinson, Use project creation operations to create projects
  * 20100211   302631 mahutch@ca.ibm.com - Mark Hutchinson, NullPointerException creating utility projects via CreateFacetedProjectCommand
+ * 20121211   327158 ivanc@mx1.ibm.com - Ivan Castro, WS Client Generation - Application Clients added to multiple EARs
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
@@ -124,11 +125,13 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
 	  else if (templateId.equals(IJ2EEModuleConstants.JST_APPCLIENT_TEMPLATE)) {
 		  dm = DataModelFactory.createDataModel(new AppClientFacetProjectCreationDataModelProvider());
 		  dm.setProperty(IJ2EEFacetProjectCreationDataModelProperties.FACET_PROJECT_NAME, projectName);
+		  dm.setBooleanProperty(IJ2EEFacetProjectCreationDataModelProperties.ADD_TO_EAR, false);
 		  dm.setProperty(IJ2EEFacetProjectCreationDataModelProperties.FACET_RUNTIME, facetRuntime);		  
 	  }
 	  else if (templateId.equals(IJ2EEModuleConstants.JST_UTILITY_TEMPLATE)) {
 		  dm = DataModelFactory.createDataModel(new UtilityProjectCreationDataModelProvider());
 		  dm.setProperty(IJ2EEFacetProjectCreationDataModelProperties.FACET_PROJECT_NAME, projectName);
+		  dm.setBooleanProperty(IJ2EEFacetProjectCreationDataModelProperties.ADD_TO_EAR, false);
 		  dm.setProperty(IJ2EEFacetProjectCreationDataModelProperties.FACET_RUNTIME, facetRuntime);
 	  }
 	  else if (templateId.equals(IJ2EEModuleConstants.JST_WEB_TEMPLATE) || containsWebFacet(requiredFixedFacets)) {
