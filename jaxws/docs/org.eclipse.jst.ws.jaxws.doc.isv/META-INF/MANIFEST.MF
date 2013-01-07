@@ -3,5 +3,5 @@ Bundle-ManifestVersion: 2
 Bundle-Localization: plugin
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.jst.ws.jaxws.doc.isv;singleton:=true
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 1.1.100.qualifier
 Bundle-Vendor: %pluginProvider
