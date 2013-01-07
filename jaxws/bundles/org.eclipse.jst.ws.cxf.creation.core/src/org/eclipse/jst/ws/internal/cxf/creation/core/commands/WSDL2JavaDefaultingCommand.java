@@ -68,7 +68,7 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
     }
 
     @Override
-    @SuppressWarnings({ "unchecked", "deprecation" })
+    @SuppressWarnings({ "unchecked", "deprecation", "rawtypes" })
     public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
         IStatus status = Status.OK_STATUS;
 
@@ -114,6 +114,7 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
             IProject project = workspace.getRoot().getProject(projectName);
             URL wsdlUrl = new URL(inputURL);
             model.setWsdlURL(wsdlUrl);
+            model.setWsdlLocation(inputURL);
             if (wsdlUrl.getProtocol().equals("file")) { //$NON-NLS-1$
                 if (!FileUtils.isFileInWebContentFolder(project, new Path(wsdlUrl.getPath()))) {
                     IFolder wsdlFolder = WSDLUtils.getWSDLFolder(project);
@@ -132,7 +133,6 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
                 definition = WSDLUtils.readWSDL(model.getWsdlURL());
                 if (definition != null) {
                     setTNSOnModel(definition);
-                    setWSDLLocation(definition);
                 }
             } else {
                 String filename = ""; //$NON-NLS-1$
@@ -141,7 +141,6 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
                     Map servicesMap = definition.getServices();
                     Set<Map.Entry> servicesSet = servicesMap.entrySet();
                     setTNSOnModel(definition);
-                    setWSDLLocation(definition);
 
                     for (Map.Entry serviceEntry : servicesSet) {
                         Service service = (Service) serviceEntry.getValue();
@@ -198,13 +197,6 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
     public String getWSDLFileNameFromURL(URL wsdlURL) {
         IPath wsdlPath = new Path(wsdlURL.toExternalForm());
         return wsdlPath.lastSegment();
-    }
-
-    private void setWSDLLocation(Definition definition) throws MalformedURLException {
-        String wsdlLocation = WSDLUtils.getWSDLLocation(definition);
-        if (wsdlLocation != null) {
-            model.setWsdlLocation(wsdlLocation);
-        }
     }
 
     private void setTNSOnModel(Definition definition) {
