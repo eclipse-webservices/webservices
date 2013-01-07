@@ -13,8 +13,10 @@ package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.ENDPOINT_INTERFACE;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.NAME;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.jws.Oneway;
 import javax.jws.WebMethod;
@@ -39,6 +41,7 @@ import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.Modifier;
 import com.sun.mirror.declaration.ParameterDeclaration;
 import com.sun.mirror.declaration.TypeDeclaration;
+import com.sun.mirror.type.ClassType;
 
 public class WebServiceSEIRestrictionsRule extends AbstractAnnotationProcessor {
 
@@ -98,7 +101,7 @@ public class WebServiceSEIRestrictionsRule extends AbstractAnnotationProcessor {
 
             if (!classDeclaration.getSuperinterfaces().contains(typeDeclaration)) {
                 Collection<? extends MethodDeclaration> seiMethods = typeDeclaration.getMethods();
-                Collection<? extends MethodDeclaration> implMethods = classDeclaration.getMethods();
+                Collection<? extends MethodDeclaration> implMethods = getAllMethods(classDeclaration);
 
                 for (MethodDeclaration seiMethod : seiMethods) {
                     boolean implemented = false;
@@ -138,6 +141,23 @@ public class WebServiceSEIRestrictionsRule extends AbstractAnnotationProcessor {
         }
     }
 
+    private Collection<MethodDeclaration> getAllMethods(ClassDeclaration classDeclaration) {
+        List<MethodDeclaration> allMethods = new ArrayList<MethodDeclaration>();
+        collectAllMethodDeclarations(classDeclaration, allMethods);
+    	return allMethods;
+    }
+    
+    private void collectAllMethodDeclarations(ClassDeclaration classDeclaration, Collection<MethodDeclaration> methods) {
+    	if (classDeclaration != null) {
+    		methods.addAll(classDeclaration.getMethods());
+    		
+    		ClassType classType = classDeclaration.getSuperclass();
+    		if (classType != null && classType.getDeclaration() != null) {
+    			collectAllMethodDeclarations(classType.getDeclaration(), methods);
+    		}
+    	}
+    }
+    
     private String getImplementsMessage(TypeDeclaration typeDeclaration, MethodDeclaration seiMethod) {
         StringBuilder message = new StringBuilder(typeDeclaration.getSimpleName());
         message.append("."); //$NON-NLS-1$

@@ -60,11 +60,10 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
-import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 
 @SuppressWarnings("restriction")
-public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
+public class Java2WSClassConfigWidget extends Java2WSTypeConfigWidget {
     private IStatus JAVA_TYPE_NAME_STATUS = Status.OK_STATUS;
     private IStatus JAVA_TYPE_EXISTS_STATUS = Status.OK_STATUS;
     private IStatus SEI_SELECTION_STATUS = Status.OK_STATUS;
@@ -419,8 +418,7 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
             try {
                 IMethod[] seiMethods = seiType.getMethods();
                 for (IMethod seiMethod : seiMethods) {
-                    IMethod[] implMethods = startingPointType.findMethods(seiMethod);
-                    if (implMethods == null) {
+                    if (!isMethodImplemented(startingPointType, seiMethod)) {
                         SEI_SELECTION_STATUS = new Status(IStatus.ERROR, CXFCreationUIPlugin.PLUGIN_ID,
                                 CXFCreationUIMessages.bind(CXFCreationUIMessages.WEBSERVICE_ENPOINTINTERFACE_MUST_IMPLEMENT,
                                         getImplementsMessage(seiType, seiMethod)));

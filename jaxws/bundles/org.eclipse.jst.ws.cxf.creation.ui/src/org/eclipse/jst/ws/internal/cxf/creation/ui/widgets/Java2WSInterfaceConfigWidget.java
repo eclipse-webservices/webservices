@@ -39,11 +39,10 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
-import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 
 @SuppressWarnings("restriction")
-public class Java2WSInterfaceConfigWidget extends SimpleWidgetDataContributor {
+public class Java2WSInterfaceConfigWidget extends Java2WSTypeConfigWidget {
     private IStatus IMPL_SELECTION_STATUS = Status.OK_STATUS;
 
     private Java2WSDataModel model;
@@ -134,8 +133,7 @@ public class Java2WSInterfaceConfigWidget extends SimpleWidgetDataContributor {
             try {
                 IMethod[] seiMethods = startingPointType.getMethods();
                 for (IMethod seiMethod : seiMethods) {
-                    IMethod[] implMethod = implType.findMethods(seiMethod);
-                    if (implMethod == null) {
+                    if (!isMethodImplemented(implType, seiMethod)) {
                     	IMPL_SELECTION_STATUS = new Status(IStatus.ERROR, CXFCreationUIPlugin.PLUGIN_ID,
                     	    CXFCreationUIMessages.bind(CXFCreationUIMessages.WEBSERVICE_ENPOINTINTERFACE_MUST_IMPLEMENT,
                                     getImplementsMessage(startingPointType, seiMethod)));
