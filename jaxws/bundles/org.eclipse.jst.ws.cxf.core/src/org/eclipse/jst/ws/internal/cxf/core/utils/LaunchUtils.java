@@ -26,6 +26,7 @@ import org.eclipse.jdt.launching.IVMInstall2;
 import org.eclipse.jdt.launching.IVMRunner;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
+import org.eclipse.jst.ws.internal.cxf.core.CXFCoreMessages;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 import org.eclipse.jst.ws.internal.cxf.core.model.CXFInstall;
 import org.eclipse.ui.IWorkbench;
@@ -79,7 +80,12 @@ public final class LaunchUtils {
     }
 
     public static void launch(IJavaProject javaProject, String className, String[] programArgs) throws CoreException {
-        IVMInstall vmInstall = JavaRuntime.getVMInstall(javaProject);
+        if (CXFCorePlugin.getDefault().getJava2WSContext().getDefaultRuntimeLocation().equals("")) { //$NON-NLS-1$
+            throw new CoreException(new Status(Status.ERROR, CXFCorePlugin.PLUGIN_ID,
+                    CXFCoreMessages.CXF_FACET_INSTALL_DELEGATE_RUNTIME_LOCATION_NOT_SET));
+        }
+        
+    	IVMInstall vmInstall = JavaRuntime.getVMInstall(javaProject);
         if (vmInstall == null) {
             vmInstall = JavaRuntime.getDefaultVMInstall();
         }
