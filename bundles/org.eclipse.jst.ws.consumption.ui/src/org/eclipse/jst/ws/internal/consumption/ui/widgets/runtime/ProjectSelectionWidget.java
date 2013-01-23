@@ -289,13 +289,14 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     listenersOff();
     String selectedModuleProject = moduleProject_.getText();    
     String runtimeId = trsIds_.getRuntimeId();
+    String serverId = trsIds_.getServerId();
     String typeId = trsIds_.getTypeId();
     
     //Get all the projects that are compatible with the type and runtime
     String[] projectNames = null;
     if (isClient_)
     {
-      projectNames = WebServiceRuntimeExtensionUtils2.getProjectsForClientTypeAndRuntime(typeId, runtimeId);
+      projectNames = WebServiceRuntimeExtensionUtils2.getProjectsForClientTypeAndRuntime(typeId, runtimeId, serverId);
     }
     else
     {
