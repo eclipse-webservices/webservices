@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2013 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -64,11 +64,14 @@
  * 20090313   268567 ericdp@ca.ibm.com - Eric D. Peters, persisted wizard settings gone unless launching on object
  * 20090326   269097 kchong@ca.ibm.com - Keith Chong, [Accessibility] Web services wizard dialog should be selected after canceling the Browse for class dialog
  * 20100511   309395 mahutch@ca.ibm.com - Mark Hutchinson, WS Wizard Converting Java Project into Utility Project without any warning
+ * 20120501   378160 jenyoung@ca.ibm.com - Jennifer Young, Service project and service project type need to be refreshed when web service target runtime changes
+ * 20130225   378160 jcayne@ca.ibm.com - Joel Cayne, Updates for refreshing server project type.
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
@@ -80,6 +83,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.common.DefaultingUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
+import org.eclipse.jst.ws.internal.consumption.ui.preferences.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.IObjectSelectionLaunchable;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.IPackable;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ProjectSelectionDialog;
@@ -734,7 +738,8 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 			if (!currentServiceTRS.equals(newServiceTRS))
 			{
 				setServiceTypeRuntimeServer(newServiceTRS);	
-				refreshClientServerRuntimeSelection();	
+				refreshServiceProjectType();
+				refreshClientServerRuntimeSelection();
 				validationState_ = (new ValidationUtils()).getNewValidationState(validationState_, ValidationUtils.VALIDATE_SERVER_RUNTIME_CHANGES);
 				clientWidget_.setValidationState(ValidationUtils.VALIDATE_SERVER_RUNTIME_CHANGES);
 				statusListener_.handleEvent(null); //Revalidate the page since server/runtime selections changed.
@@ -742,6 +747,62 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 			
 		}		
 	}	
+	
+	/**
+	 * Update the service project type
+	 */
+	private void refreshServiceProjectType(){
+			
+		IProject serviceProject = ResourcesPlugin.getWorkspace().getRoot().getProject(getServiceProjectName());
+		if (!serviceProject.exists())
+		{
+			// Set the project template
+			setServiceComponentType(getDefaultServiceProjectTemplate());
+		}
+		else
+		{
+			//Set it to an empty String
+			setServiceComponentType("");
+		}
+    }
+	
+
+	
+	/*
+	 * Computes an acceptable value for the service project type based on the 
+	 * current runtime
+	 * @return A default value for the service project type
+	*/
+	private String getDefaultServiceProjectTemplate()
+	{
+		String serviceTypeId = getServiceTypeRuntimeServer().getTypeId();  
+		String serviceRuntimeId = getServiceTypeRuntimeServer().getRuntimeId();
+		String serviceServerId = getServiceTypeRuntimeServer().getServerId();
+	    String[] templates = WebServiceRuntimeExtensionUtils2.getServiceProjectTemplates(serviceTypeId, serviceRuntimeId, serviceServerId);
+	    String oldServiceComponentType = getServiceComponentType();
+	    for(String templateId : templates) {
+	    	if(templateId.equals(oldServiceComponentType))
+	    		return templateId;
+	    }
+	    
+	    //Walk the list of service project types in the project topology preference
+	    ProjectTopologyContext ptc= WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();
+	    String[] preferredTemplateIds = ptc.getServiceTypes();
+	    
+	    for (int j = 0; j < preferredTemplateIds.length; j++)
+	    {
+	      for (int i = 0; i < templates.length; i++)
+	      {
+	        String templateId = templates[i];
+	        if (templateId.equals(preferredTemplateIds[j]))
+	        {
+	            return templates[i];
+	        }
+	      }
+	    }
+	    // No supported template was found that matched a runtime.
+	    return "";   
+	}
 	
 	public void setClientTypeRuntimeServer(TypeRuntimeServer ids) {
 		clientWidget_.setTypeRuntimeServer( ids );
