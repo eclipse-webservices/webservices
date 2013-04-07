@@ -384,7 +384,12 @@ public final class AnnotationsManager {
         }
 
         if (javaElement instanceof IMethod) {
-            return getAnnotationsForElementType(javaElement, ElementType.METHOD);
+        	IMethod method = (IMethod) javaElement;
+        	if (method.isConstructor()) {
+                return getAnnotationsForElementType(javaElement, ElementType.CONSTRUCTOR);
+        	} else {
+                return getAnnotationsForElementType(javaElement, ElementType.METHOD);
+        	}
         }
 
         if (javaElement instanceof ILocalVariable) {
