@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -47,6 +48,7 @@ import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.WebFault;
 
 import org.apache.xerces.util.XMLChar;
+import org.eclipse.jdt.core.Signature;
 import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
@@ -58,6 +60,7 @@ import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.AnnotationValue;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.Declaration;
+import com.sun.mirror.declaration.InterfaceDeclaration;
 import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
 import com.sun.mirror.declaration.TypeDeclaration;
@@ -125,11 +128,24 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
         }
     }
 
+    private boolean isAsyncMethod(MethodDeclaration methodDeclaration) {
+    	if (methodDeclaration.getReturnType() instanceof InterfaceDeclaration) {
+    		InterfaceDeclaration id = (InterfaceDeclaration) methodDeclaration.getReturnType();
+    		String qn = Signature.getTypeErasure(id.getQualifiedName());
+    		if (qn.equals("javax.xml.ws.Response") || qn.equals("java.util.concurrent.Future")) { //$NON-NLS-1$ //$NON-NLS-2$
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
     private void checkOperationNames(Collection<? extends MethodDeclaration> methods) {
         Map<Declaration, QName> nameMap = new HashMap<Declaration, QName>();
         for (MethodDeclaration methodDeclaration : methods) {
-            nameMap.put(methodDeclaration, new QName(getTargetNamespace(methodDeclaration.getDeclaringType()),
-                    getOperationName(methodDeclaration)));
+        	if (!isAsyncMethod(methodDeclaration)) {
+                nameMap.put(methodDeclaration, new QName(getTargetNamespace(methodDeclaration.getDeclaringType()),
+                        getOperationName(methodDeclaration)));
+        	}
         }
 
         Declaration[] keys = nameMap.keySet().toArray(new Declaration[nameMap.size()]);
@@ -167,6 +183,14 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
         Set<Declaration> methods = new HashSet<Declaration>();
         methods.addAll(environment.getDeclarationsAnnotatedWith(requestWrapperDeclaration));
         methods.addAll(environment.getDeclarationsAnnotatedWith(resposeWrapperDeclaration));
+
+        Iterator<Declaration> methodsIter = methods.iterator();
+        while(methodsIter.hasNext()) {
+        	Declaration dec = methodsIter.next();
+        	if (dec instanceof MethodDeclaration && isAsyncMethod((MethodDeclaration) dec)) {        
+        		methodsIter.remove();
+        	}
+        }
 
         List<AnnotationValue> classNames = new ArrayList<AnnotationValue>();
         Map<Object, QName> qNames = new HashMap<Object, QName>();

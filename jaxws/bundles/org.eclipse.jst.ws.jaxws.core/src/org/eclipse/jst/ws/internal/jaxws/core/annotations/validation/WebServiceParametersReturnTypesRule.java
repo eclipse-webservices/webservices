@@ -25,6 +25,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.Signature;
 import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
@@ -217,7 +218,16 @@ public class WebServiceParametersReturnTypesRule extends AbstractAnnotationProce
 
     private boolean isSuitableInterface(InterfaceDeclaration interfaceDeclaration) {
         return isJavaType(interfaceDeclaration.getQualifiedName()) && JAVA_TYPES.contains(interfaceDeclaration.getQualifiedName())
-        || isXMLType(interfaceDeclaration);
+        || isXMLType(interfaceDeclaration) || isAsyncType(interfaceDeclaration);
+    }
+    
+    private boolean isAsyncType(InterfaceDeclaration interfaceDeclaration) {
+    	String qn = Signature.getTypeErasure(interfaceDeclaration.getQualifiedName());
+		if (qn.equals("javax.xml.ws.Response") || qn.equals("java.util.concurrent.Future") //$NON-NLS-1$ //$NON-NLS-2$
+			|| qn.equals("javax.xml.ws.AsyncHandler")) { //$NON-NLS-1$
+			return true;
+		}
+        return false;
     }
 
     private boolean isXMLType(InterfaceDeclaration interfaceDeclaration) {
