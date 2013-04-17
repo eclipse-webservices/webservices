@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 IBM Corporation and others.
+ * Copyright (c) 2006, 2013 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@
  * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
  * 20080923   247525 mahutch@ca.ibm.com - Mark Hutchinson, cache not updated properly when project facet versions changed
  * 20100811   322429 mahutch@ca.ibm.com - Mark Hutchinson, Improve performance of launching the Web Services Wizard
+ * 20130225   378160 jcayne@ca.ibm.com - Joel Cayne, Return empty set for template when no service ID is provided.
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 
@@ -444,6 +445,8 @@ public class FacetMatchCache implements IResourceChangeListener
    */  
   public synchronized Set getTemplatesForServiceRuntime(String serviceRuntimeId)
   {
+	if(serviceRuntimeId.length() == 0)
+		return new HashSet<String>();
     Set templates = (Set)templatesByServiceRuntimeId_.get(serviceRuntimeId);
     if (templates != null)
     {
