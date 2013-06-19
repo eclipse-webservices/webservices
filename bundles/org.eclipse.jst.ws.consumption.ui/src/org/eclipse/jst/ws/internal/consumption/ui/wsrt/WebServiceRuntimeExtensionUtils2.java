@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 IBM Corporation and others.
+ * Copyright (c) 2005, 2013 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -753,6 +753,13 @@ public class WebServiceRuntimeExtensionUtils2
     {
       if (serverIds[i].equals(serverFactoryId))
       {
+      	  ServiceRuntimeDescriptor desc = getServiceRuntimeDescriptorById(serviceRuntimeId);
+    	  if(desc.allowServiceServersRestriction()) {
+    		  if(desc.isSupportedServer(serverFactoryId))
+    			  return true;
+    		  else
+    			  continue;
+    	  }
         return true;
       }
     }
@@ -967,6 +974,12 @@ public class WebServiceRuntimeExtensionUtils2
           {
             if (fIds[j].equals(serverFactoryId))
             {
+            	if(desc.allowServiceServersRestriction()) {
+            		if(desc.isSupportedServer(serverFactoryId))
+            			return true;
+            		else
+            			continue;
+            	}
               return true;
             }
           }          
@@ -1639,6 +1652,13 @@ public class WebServiceRuntimeExtensionUtils2
     {
       if (serverIds[i].equals(serverFactoryId))
       {
+        ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(clientRuntimeId);
+    	if(desc.allowClientServersRestriction()) {
+    		if(desc.isSupportedServer(serverFactoryId))
+    			return true;
+    		else
+    			continue;
+    	}
         return true;
       }
     }
@@ -1741,7 +1761,8 @@ public class WebServiceRuntimeExtensionUtils2
           String[] factoryIds = getServerFactoryIdsByClientRuntime(desc.getId());
           for (int j=0; j<factoryIds.length; j++)
           {
-            if (factoryIds[j].equals(serverFactoryId))
+          	// Check if the IDs match and the server is supported by the client.
+            if (factoryIds[j].equals(serverFactoryId) && !desc.isUnsupportedServer(serverFactoryId))
             {
               return true;
             }
@@ -1779,7 +1800,8 @@ public class WebServiceRuntimeExtensionUtils2
     	if (serverId == null || doesClientRuntimeSupportServer(crIds[i], serverId)) { 
 	      ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(crIds[i]);
 	      String thisRuntimeId = desc.getRuntime().getId();
-	      if (thisRuntimeId.equals(runtimeId))
+	      // Check if the IDs match and the server is supported by the runtime.
+	      if (thisRuntimeId.equals(runtimeId) && !desc.isUnsupportedServer(serverId))
 	      {
 	        //Get the templates for this clientRuntime
 	        Set templates = FacetMatchCache.getInstance().getTemplatesForClientRuntime(desc.getId());
@@ -1985,12 +2007,26 @@ public class WebServiceRuntimeExtensionUtils2
    */
   public static String[] getProjectsForClientTypeAndRuntime(String typeId, String runtimeId)
   {
+	  return getProjectsForClientTypeAndRuntime(typeId, runtimeId, null);
+  }
+  
+  /**
+   * Returns the names of all projects in the workspace which support the given Web service client 
+   * implementation type and Web service runtime.
+   * 
+   * @param typeId id of a Web service client implementation type
+   * @param runtimeId id of a Web service runtime
+   * @param serverId id of the target server for filtering unsupported server runtimes
+   * @return String[] array of project names. The array may have 0 elements.
+   */
+  public static String[] getProjectsForClientTypeAndRuntime(String typeId, String runtimeId, String serverId)
+  {
     IProject[] projects = FacetUtils.getAllProjects();
     ArrayList validProjects = new ArrayList();
     
     for (int i=0; i<projects.length;i++)
     {
-      if (doesClientTypeAndRuntimeSupportProject(typeId, runtimeId, projects[i].getName()))
+      if (doesClientTypeAndRuntimeSupportProject(typeId, runtimeId, projects[i].getName(), serverId))
       {
         validProjects.add(projects[i].getName());        
       }      
@@ -2016,7 +2052,28 @@ public class WebServiceRuntimeExtensionUtils2
    * <li>if projectName is null or empty</li>
    * </ul>
    */
-  public static boolean doesClientTypeAndRuntimeSupportProject(String typeId, String runtimeId, String projectName)
+  public static boolean doesClientTypeAndRuntimeSupportProject(String typeId, String runtimeId, String projectName) {
+	  return doesClientTypeAndRuntimeSupportProject(typeId, runtimeId, projectName, null);
+  }
+  
+  /**
+   * Returns whether or not the given project supports the given Web service client implementation type 
+   * and Web service runtime.
+   * 
+   * @param typeId id of a Web service client implementation type
+   * @param runtimeId id of a Web service runtime
+   * @param projectName name of an IProject in the workspace
+   * @param serverId id of the target server for filtering unsupported server runtimes
+   * @return boolean <code>true</code> if the project supports the given Web service type and 
+   * Web service runtime. Returns <code>false</code>
+   * <ul> 
+   * <li>if the project does not support the given Web service client implementation type and 
+   * Web service runtime or</li>
+   * <li>if the project does not exist or</li>
+   * <li>if projectName is null or empty</li>
+   * </ul>
+   */
+  public static boolean doesClientTypeAndRuntimeSupportProject(String typeId, String runtimeId, String projectName, String serverId)
   {
     String[] descs = getClientRuntimesByType(typeId);
     for (int j = 0; j < descs.length; j++)
@@ -2024,7 +2081,7 @@ public class WebServiceRuntimeExtensionUtils2
       ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(descs[j]);
       if (desc.getRuntime().getId().equals(runtimeId))
       {
-        if (doesClientRuntimeSupportProject(descs[j], projectName))
+        if (doesClientRuntimeSupportProject(descs[j], projectName, serverId))
         {
           return true;
         }
@@ -2049,8 +2106,31 @@ public class WebServiceRuntimeExtensionUtils2
    * <li>if projectName is null or empty</li>
    * </ul>
    */
-  public static boolean doesClientRuntimeSupportProject(String clientRuntimeId, String projectName)
+  public static boolean doesClientRuntimeSupportProject(String clientRuntimeId, String projectName) {
+	  return doesClientRuntimeSupportProject(clientRuntimeId, projectName, null);
+  }
+  
+  /**
+   * Returns whether or not the given project supports the given clientRuntime.
+   * @param clientRuntimeId id of a clientRuntime
+   * @param projectName name of an IProject in the workspace
+   * @param serverId id of the target server for filtering unsupported server runtimes
+   * @return boolean <code>true</code> if the project supports the given
+   * clientRuntime. Returns <code>false</code>
+   * <ul> 
+   * <li>if the project does not support the given clientRuntime or</li>
+   * <li>if the project does not exist or</li>
+   * <li>if projectName is null or empty</li>
+   * </ul>
+   */
+  public static boolean doesClientRuntimeSupportProject(String clientRuntimeId, String projectName, String serverId)
   {
+  	// Check if there is an unsupported server to filter
+	if(serverId != null) {
+		ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(clientRuntimeId);
+		if(desc.isUnsupportedServer(serverId))
+			return false;
+	}
     FacetMatcher fm = FacetMatchCache.getInstance().getMatchForProject(true, clientRuntimeId, projectName);
     if (fm != null)
     {

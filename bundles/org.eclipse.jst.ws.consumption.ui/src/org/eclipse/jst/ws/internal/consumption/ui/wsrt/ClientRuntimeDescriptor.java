@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 IBM Corporation and others.
+ * Copyright (c) 2005, 2013 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
@@ -47,12 +48,17 @@ public class ClientRuntimeDescriptor
   private String runtimePreferredServerType;
   private  Set<String> suitableProjectTemplates;
   private  Set<String> unsuitableProjectTemplates;
+  private boolean allowClientServerRestriction;
+  private List<String> supportedServers;
+  private List<String> unsupportedServers;
   
   public ClientRuntimeDescriptor(IConfigurationElement elem, Hashtable allWebServiceClientImpls, Hashtable allRuntimes)
   {
     this.elem = elem;
     this.allWebServiceClientImpls = allWebServiceClientImpls;
     this.allRuntimes = allRuntimes;
+    
+    allowClientServerRestriction = Boolean.parseBoolean(elem.getAttribute("allowClientServerRestriction"));
   }
   
   public WebServiceClientImpl getClientImplementationType()
@@ -219,5 +225,47 @@ public class ClientRuntimeDescriptor
     	runtimePreferredServerType = elem.getAttribute("runtimePreferredServerType");
     }
     return runtimePreferredServerType;
+  }
+  
+  public boolean allowClientServersRestriction() {
+	  return allowClientServerRestriction;
+  }
+   
+  /**
+   * Note that only the supported or unsupported attribute should be used, not both.
+   */
+  public boolean isSupportedServer(String id) {
+	if(!allowClientServerRestriction)
+		return false;
+	if(supportedServers == null) {
+		String serverElements = elem.getAttribute("supportedServers");
+		supportedServers = parseServers(serverElements);
+	}
+	return supportedServers.contains(id);
+  }
+  
+  /**
+   * Note that only the supported or unsupported attribute should be used, not both.
+   */
+  public boolean isUnsupportedServer(String id) {
+	if(!allowClientServerRestriction)
+		return false;
+	if(unsupportedServers == null) {
+		String serverElements = elem.getAttribute("unsupportedServers");
+		unsupportedServers = parseServers(serverElements);
+	}
+	return unsupportedServers.contains(id);
+  }
+  
+  private List<String> parseServers(String serverElements) {
+	List<String> serverList = new ArrayList<String>();
+	if(serverElements != null) {
+		String[] servers = serverElements.split("\\s+");
+		for (int i = 0; i < servers.length; i++)  {
+			if (servers[i].length() > 0)
+				serverList.add(servers[i]);
+		}
+	}
+	return serverList;
   }
 }
