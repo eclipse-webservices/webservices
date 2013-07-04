@@ -20,8 +20,8 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
+import org.eclipse.jst.ws.jaxws.dom.integration.internal.util.CommonNavigatorFinder;
 import org.eclipse.jst.ws.jaxws.dom.integration.internal.util.LoadingWsProjectNodesCollector;
-import org.eclipse.jst.ws.jaxws.dom.integration.internal.util.ProjectExplorerUtil;
 import org.eclipse.jst.ws.jaxws.dom.integration.navigator.ILoadingWsProject.ILoadingDummy;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IDOM;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IServiceEndpointInterface;
@@ -41,7 +41,6 @@ import org.eclipse.jst.ws.jaxws.utils.facets.FacetUtils;
 import org.eclipse.jst.ws.jaxws.utils.logging.Logger;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.navigator.CommonNavigator;
 import org.eclipse.ui.navigator.CommonViewer;
 
@@ -322,15 +321,14 @@ public class DOMAdapterFactoryContentProvider extends AdapterFactoryContentProvi
 	
 	private abstract class ExchangeLoadingWsProjectRunnable implements Runnable
 	{
-		public void run() 
+		public void run()
 		{
-			final IViewPart viewPart = ProjectExplorerUtil.INSTANCE.findProjectExplorer();
-			if (viewPart instanceof CommonNavigator) 
+			for (CommonNavigator navigator : new CommonNavigatorFinder().findCommonNavigators())
 			{
-				final CommonViewer commonViewer = ((CommonNavigator)viewPart).getCommonViewer();
-				for(TreeItem treeItem : new LoadingWsProjectNodesCollector().getLoadingWsProjects(commonViewer.getTree().getItems()))
+				final CommonViewer commonViewer = navigator.getCommonViewer();
+				for (TreeItem treeItem : new LoadingWsProjectNodesCollector().getLoadingWsProjects(commonViewer.getTree().getItems()))
 				{
-					final IProject relevantProject = ((ILoadingWsProject)treeItem.getData()).getProject();					
+					final IProject relevantProject = ((ILoadingWsProject) treeItem.getData()).getProject();
 					updateTreeItemData(treeItem, commonViewer, relevantProject);
 					commonViewer.refresh(relevantProject);
 				}

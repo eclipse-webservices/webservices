@@ -17,6 +17,7 @@ import org.eclipse.jst.ws.jaxws.dom.integration.tests.navigator.DOMAdapterFactor
 import org.eclipse.jst.ws.jaxws.dom.integration.tests.navigator.DOMAdapterFactoryLabelProviderTest;
 import org.eclipse.jst.ws.jaxws.dom.integration.tests.navigator.DOMPropertyViewAdapterFactoryTest;
 import org.eclipse.jst.ws.jaxws.dom.integration.tests.navigator.WebServiceDecoratorTest;
+import org.eclipse.jst.ws.jaxws.dom.integration.tests.util.CommonNavigatorFinderTest;
 import org.eclipse.jst.ws.jaxws.dom.integration.tests.util.LoadingWsProjectNodesCollectorTest;
 
 public class AllTestsSuite
@@ -30,6 +31,7 @@ public class AllTestsSuite
 		suite.addTestSuite(DOMPropertyViewAdapterFactoryTest.class);
 		suite.addTestSuite(WebServiceDecoratorTest.class);
 		suite.addTestSuite(LoadingWsProjectNodesCollectorTest.class);
+		suite.addTestSuite(CommonNavigatorFinderTest.class);
 		
 		return suite;
 	}
