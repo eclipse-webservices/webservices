@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2012, 2013 Eclipse Foundation and others.
+  All rights reserved. This program and the accompanying materials
+  are made available under the terms of the Eclipse Distribution License v1.0
+  which accompanies this distribution, and is available at
+  http://www.eclipse.org/org/documents/edl-v10.php
+ 
+  Contributors:
+    Thanh Ha (Eclipse Foundation) - initial implementation
+-->
+
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.eclipse</groupId>
+    <artifactId>wtp-parent</artifactId>
+    <version>3.6.0-SNAPSHOT</version>
+    <relativePath>../wtp-parent</relativePath>
+  </parent>
+
+  <groupId>org.eclipse.webtools.webservices</groupId>
+  <artifactId>org.eclipse.webtools.webservices.jaxws</artifactId>
+  <version>3.6.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>bundles/org.eclipse.jst.ws.annotations.core</module>
+    <module>bundles/org.eclipse.jst.ws.cxf.consumption.core</module>
+    <module>bundles/org.eclipse.jst.ws.cxf.consumption.ui</module>
+    <module>bundles/org.eclipse.jst.ws.cxf.core</module>
+    <module>bundles/org.eclipse.jst.ws.cxf.creation.core</module>
+    <module>bundles/org.eclipse.jst.ws.cxf.creation.ui</module>
+    <module>bundles/org.eclipse.jst.ws.cxf.ui</module>
+    <module>bundles/org.eclipse.jst.ws.jaxb.core</module>
+    <module>bundles/org.eclipse.jst.ws.jaxws.core</module>
+    <module>bundles/org.eclipse.jst.ws.jaxws.dom.integration</module>
+    <module>bundles/org.eclipse.jst.ws.jaxws.dom.runtime</module>
+    <module>bundles/org.eclipse.jst.ws.jaxws.dom.ui</module>
+    <module>bundles/org.eclipse.jst.ws.jaxws.ui</module>
+    <module>bundles/org.eclipse.jst.ws.jaxws.utils</module>
+
+    <module>docs/org.eclipse.jst.ws.cxf.doc.user</module>
+    <module>docs/org.eclipse.jst.ws.jaxws.doc.isv</module>
+    <module>docs/org.eclipse.jst.ws.jaxws.doc.user</module>
+    <module>docs/org.eclipse.jst.ws.jaxws.dom.doc.isv</module>
+
+    <module>features/org.eclipse.jst.ws.cxf.feature</module>
+    <module>features/org.eclipse.jst.ws.cxf_sdk.feature</module>
+    <module>features/org.eclipse.jst.ws.cxf_tests.feature</module>
+    <module>features/org.eclipse.jst.ws.jaxws.assembly.feature</module>
+    <module>features/org.eclipse.jst.ws.jaxws.assembly_sdk.feature</module>
+    <module>features/org.eclipse.jst.ws.jaxws.assembly_tests.feature</module>
+    <module>features/org.eclipse.jst.ws.jaxws.dom.feature</module>
+    <module>features/org.eclipse.jst.ws.jaxws.dom_sdk.feature</module>
+    <module>features/org.eclipse.jst.ws.jaxws.dom_tests.feature</module>
+    <module>features/org.eclipse.jst.ws.jaxws.feature</module>
+    <module>features/org.eclipse.jst.ws.jaxws_sdk.feature</module>
+    <module>features/org.eclipse.jst.ws.jaxws_tests.feature</module>
+    <module>features/org.eclipse.jst.ws.jaxws_userdoc.feature</module>
+
+    <module>tests/org.eclipse.jst.ws.cxf.tests</module>
+    <module>tests/org.eclipse.jst.ws.jaxb.core.tests</module>
+    <module>tests/org.eclipse.jst.ws.jaxws.core.tests</module>
+    <module>tests/org.eclipse.jst.ws.jaxws.dom.integration.tests</module>
+    <module>tests/org.eclipse.jst.ws.jaxws.dom.runtime.tests</module>
+    <module>tests/org.eclipse.jst.ws.jaxws.dom.ui.tests</module>
+    <module>tests/org.eclipse.jst.ws.jaxws.testutils</module>
+    <module>tests/org.eclipse.jst.ws.jaxws.utils.tests</module>
+    <module>tests/org.jmock</module>
+  </modules>
+</project>
