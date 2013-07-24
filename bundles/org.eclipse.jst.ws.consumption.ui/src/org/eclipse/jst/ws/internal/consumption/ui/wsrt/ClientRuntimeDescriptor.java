@@ -237,9 +237,25 @@ public class ClientRuntimeDescriptor
   public boolean isSupportedServer(String id) {
 	if(!allowClientServerRestriction)
 		return false;
-	if(supportedServers == null) {
-		String serverElements = elem.getAttribute("supportedServers");
-		supportedServers = parseServers(serverElements);
+	
+	String serverElements = elem.getAttribute("supportedServers");
+	// Extension defines supportedServers
+	if (supportedServers == null)
+ 	      supportedServers = parseServers(serverElements);
+	// If the extension does not define supportedServers but defines unsupportedServers
+	// This is for the case when a server does not support a particular client runtime
+	if (serverElements == null)
+	{
+       String unsupportedServerElements = elem.getAttribute("unsupportedServers");
+       if (unsupportedServers == null)
+          unsupportedServers = parseServers(unsupportedServerElements);
+       // If it is not in the unsupported list, then it must be supported, as extensions should
+       // not have to list off all the possible supported servers (and since currently only one 
+       // of unsupportedServer or supportedServers is recognized).
+   	   if (!unsupportedServers.contains(id) && !supportedServers.contains(id))
+	   {
+	     supportedServers.add(id);
+	   }
 	}
 	return supportedServers.contains(id);
   }
