@@ -4,7 +4,7 @@ Bundle-Name: %Bundle-Name.0
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-SymbolicName: org.eclipse.jst.ws.jaxws.dom.ui;singleton:=true
 Bundle-Localization: plugin
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.100.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: org.eclipse.jst.ws.jaxws.dom.ui.internal.plugin.DomUi$Implementation
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
