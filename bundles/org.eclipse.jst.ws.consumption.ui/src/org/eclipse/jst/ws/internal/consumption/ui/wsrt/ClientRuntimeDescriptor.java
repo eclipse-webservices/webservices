@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 IBM Corporation and others.
+ * Copyright (c) 2005, 2013 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -49,6 +49,7 @@ public class ClientRuntimeDescriptor
   private  Set<String> suitableProjectTemplates;
   private  Set<String> unsuitableProjectTemplates;
   private boolean allowClientServerRestriction;
+  private List<String> supportedServers;
   private List<String> unsupportedServers;
   
   public ClientRuntimeDescriptor(IConfigurationElement elem, Hashtable allWebServiceClientImpls, Hashtable allRuntimes)
@@ -229,7 +230,39 @@ public class ClientRuntimeDescriptor
   public boolean allowClientServersRestriction() {
 	  return allowClientServerRestriction;
   }
-    
+   
+  /**
+   * Note that only the supported or unsupported attribute should be used, not both.
+   */
+  public boolean isSupportedServer(String id) {
+	if(!allowClientServerRestriction)
+		return false;
+	
+	String serverElements = elem.getAttribute("supportedServers");
+	// Extension defines supportedServers
+	if (supportedServers == null)
+ 	      supportedServers = parseServers(serverElements);
+	// If the extension does not define supportedServers but defines unsupportedServers
+	// This is for the case when a server does not support a particular client runtime
+	if (serverElements == null)
+	{
+       String unsupportedServerElements = elem.getAttribute("unsupportedServers");
+       if (unsupportedServers == null)
+          unsupportedServers = parseServers(unsupportedServerElements);
+       // If it is not in the unsupported list, then it must be supported, as extensions should
+       // not have to list off all the possible supported servers (and since currently only one 
+       // of unsupportedServer or supportedServers is recognized).
+   	   if (!unsupportedServers.contains(id) && !supportedServers.contains(id))
+	   {
+	     supportedServers.add(id);
+	   }
+	}
+	return supportedServers.contains(id);
+  }
+  
+  /**
+   * Note that only the supported or unsupported attribute should be used, not both.
+   */
   public boolean isUnsupportedServer(String id) {
 	if(!allowClientServerRestriction)
 		return false;
