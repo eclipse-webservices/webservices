@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 IBM Corporation and others.
+ * Copyright (c) 2005, 2013 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
@@ -39,6 +40,7 @@ public class ServiceRuntimeDescriptor
   private IConfigurationElement elem;
   private Hashtable allWebServiceImpls;
   private Hashtable allRuntimes;
+  private boolean allowServiceServerRestriction;
   private String id;
   private WebServiceImpl serviceImplementationType;
   private RuntimeDescriptor runtime;
@@ -52,6 +54,7 @@ public class ServiceRuntimeDescriptor
   private String runtimePreferredServerType;
   private  Set<String> suitableProjectTemplates;
   private  Set<String> unsuitableProjectTemplates;
+  private List<String> supportedServers;
   
   public ServiceRuntimeDescriptor(IConfigurationElement elem, Hashtable allWebServiceImpls, Hashtable allRuntimes)
   {
@@ -59,6 +62,7 @@ public class ServiceRuntimeDescriptor
     this.allWebServiceImpls = allWebServiceImpls;
     this.allRuntimes = allRuntimes;
 
+    allowServiceServerRestriction = Boolean.parseBoolean(elem.getAttribute("allowServiceServerRestriction"));
     bottomUp = (Boolean.valueOf(elem.getAttribute("bottomUp"))).booleanValue();
     topDown = (Boolean.valueOf(elem.getAttribute("topDown"))).booleanValue();    
   }
@@ -251,5 +255,31 @@ public class ServiceRuntimeDescriptor
     	runtimePreferredServerType = elem.getAttribute("runtimePreferredServerType");
     }
     return runtimePreferredServerType;
+  }
+  
+  public boolean allowServiceServersRestriction() {
+	  return allowServiceServerRestriction;
+  }
+    
+  public boolean isSupportedServer(String id) {
+	if(!allowServiceServerRestriction)
+		return false;
+	if(supportedServers == null) {
+		String serverElements = elem.getAttribute("supportedServers");
+		supportedServers = parseServers(serverElements);
+	}
+	return supportedServers.contains(id);
+  }
+  
+  private List<String> parseServers(String serverElements) {
+	List<String> serverList = new ArrayList<String>();
+	if(serverElements != null) {
+		String[] servers = serverElements.split("\\s+");
+		for (int i = 0; i < servers.length; i++)  {
+			if (servers[i].length() > 0)
+				serverList.add(servers[i]);
+		}
+	}
+	return serverList;
   }
 }
