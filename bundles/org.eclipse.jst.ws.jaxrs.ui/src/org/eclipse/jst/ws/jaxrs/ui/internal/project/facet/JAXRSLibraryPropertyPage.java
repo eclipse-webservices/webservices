@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 IBM Corporation and others.
+ * Copyright (c) 2009, 2013 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -46,11 +47,13 @@ import org.eclipse.jst.javaee.web.WebApp;
 import org.eclipse.jst.ws.jaxrs.core.internal.IJAXRSCoreConstants;
 import org.eclipse.jst.ws.jaxrs.core.internal.Messages;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.IJAXRSFacetInstallDataModelProperties;
+import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSFacetDelegateUtils;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSJ2EEUtils;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSJEEUtils;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSUtils;
 import org.eclipse.jst.ws.jaxrs.ui.internal.IJAXRSUIConstants;
 import org.eclipse.jst.ws.jaxrs.ui.internal.JAXRSUIPlugin;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -101,24 +104,31 @@ implements IJAXRSFacetInstallDataModelProperties
     	}
     }
     this.webXMLPath = new Path("WEB-INF").append("web.xml"); //$NON-NLS-1$ //$NON-NLS-2$
-    this.provider = JAXRSUtils.getModelProvider(getProject());
-    if (provider != null)
-    	this.webAppObj = provider.getModelObject();
-	if (doesDDFileExist(getProject(), this.webXMLPath)) {
-	    servletInfoGroup = new ServletInformationGroup((Composite) c, SWT.NONE);
-			servletInfoGroup.txtJAXRSServletName.addListener(SWT.Modify,
-					new Listener() {
-						public void handleEvent(Event arg0) {
-							updateValidation();
-						}
-					});
-			servletInfoGroup.txtJAXRSServletClassName.addListener(SWT.Modify,
-					new Listener() {
-						public void handleEvent(Event arg0) {
-							updateValidation();
-						}
-					});
-	    initializeValues();
+    try {
+		if(JAXRSFacetDelegateUtils.isDynamicWebProject(getProject())) {
+		this.provider = JAXRSUtils.getModelProvider(getProject());
+		if (provider != null)
+			this.webAppObj = provider.getModelObject();
+		if (doesDDFileExist(getProject(), this.webXMLPath)) {
+		    servletInfoGroup = new ServletInformationGroup((Composite) c, SWT.NONE);
+				servletInfoGroup.txtJAXRSServletName.addListener(SWT.Modify,
+						new Listener() {
+							public void handleEvent(Event arg0) {
+								updateValidation();
+							}
+						});
+				servletInfoGroup.txtJAXRSServletClassName.addListener(SWT.Modify,
+						new Listener() {
+							public void handleEvent(Event arg0) {
+								updateValidation();
+							}
+						});
+		    initializeValues();
+		}
+		}
+	} catch (CoreException e) {
+		JAXRSUIPlugin.log(IStatus.ERROR,NLS.bind(Messages.JAXRSFacetUninstallDelegate_ConfigErr,
+				getProject().getName()), e);
 	}
     return c;
   }
@@ -237,8 +247,13 @@ implements IJAXRSFacetInstallDataModelProperties
 		}
 	  
     // Update the servlet properties
-	if (doesDDFileExist(getProject(), webXMLPath)) {
-	    createServletAndModifyWebXML(getProject(), null, new NullProgressMonitor());
+	try {
+		if (JAXRSFacetDelegateUtils.isDynamicWebProject(getProject()) && doesDDFileExist(getProject(), webXMLPath)) {
+		    createServletAndModifyWebXML(getProject(), null, new NullProgressMonitor());
+		}
+	} catch (CoreException e) {
+		JAXRSUIPlugin.log(IStatus.ERROR,NLS.bind(Messages.JAXRSFacetUninstallDelegate_ConfigErr,
+				getProject().getName()), e);
 	}
     return true;
   }
@@ -284,13 +299,20 @@ implements IJAXRSFacetInstallDataModelProperties
 	protected IStatus performValidation() {
 		IStatus superValidation = super.performValidation();
 		if (superValidation.isOK())
-			if (doesDDFileExist(getProject(), this.webXMLPath))
-			  if (servletInfoGroup != null && !servletInfoGroup.isDisposed())
-				  return validateServletInfo(servletInfoGroup.txtJAXRSServletName.getText(), servletInfoGroup.txtJAXRSServletClassName.getText());
-			  else
-			    return Status.OK_STATUS; // superValidation is ok
-			else
-				return Status.OK_STATUS;
+			try {
+				if (JAXRSFacetDelegateUtils.isDynamicWebProject(getProject()) && doesDDFileExist(getProject(), this.webXMLPath))
+				  if (servletInfoGroup != null && !servletInfoGroup.isDisposed())
+					  return validateServletInfo(servletInfoGroup.txtJAXRSServletName.getText(), servletInfoGroup.txtJAXRSServletClassName.getText());
+				  else
+				    return Status.OK_STATUS; // superValidation is ok
+				else
+					return Status.OK_STATUS;
+			} catch (CoreException e) {
+				String errorMessage = NLS.bind(
+						Messages.JAXRSFacetUninstallDelegate_ProjectErr,
+						getProject().getName());
+				return createErrorStatus(errorMessage);
+			}
 		else {
 			return superValidation;
 		}

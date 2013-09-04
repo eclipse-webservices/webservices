@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and others.
+ * Copyright (c) 2009, 2013 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -57,26 +57,33 @@ public final class JAXRSFacetUninstallDelegate implements IDelegate {
 			}
 
 			try {
-				// Before we do any de-configuration, verify that web.xml is
-				// available for update
-				IModelProvider provider = JAXRSUtils.getModelProvider(project);
-				if (provider == null) {
-					throw new JAXRSFacetException(NLS.bind(
-							Messages.JAXRSFacetUninstallDelegate_ConfigErr,
-							project.getName()));
-				} else if (!(provider.validateEdit(null, null).isOK())) {
-					throw new JAXRSFacetException(
-							NLS
-									.bind(
-											Messages.JAXRSFacetUninstallDelegate_NonUpdateableWebXML,
-											project.getName()));
+
+				final boolean isDynamicWebProject = JAXRSFacetDelegateUtils.isDynamicWebProject(project);
+
+				if (isDynamicWebProject) {
+					// Before we do any de-configuration, verify that web.xml is
+					// available for update
+					IModelProvider provider = JAXRSUtils.getModelProvider(project);
+					if (provider == null) {
+						throw new JAXRSFacetException(NLS.bind(
+								Messages.JAXRSFacetUninstallDelegate_ConfigErr,
+								project.getName()));
+					} else if (!(provider.validateEdit(null, null).isOK())) {
+						throw new JAXRSFacetException(
+								NLS
+										.bind(
+												Messages.JAXRSFacetUninstallDelegate_NonUpdateableWebXML,
+												project.getName()));
+					}
 				}
 
 				// Remove JAXRS Libraries
 				( (JAXRSFacetUninstallConfig) config ).getLibrariesUninstallDelegate().execute( null );
 
-				// remove servlet stuff from web.xml
-				uninstallJAXRSReferencesFromWebApp(project, monitor);
+				if (isDynamicWebProject) {
+					// remove servlet stuff from web.xml
+					uninstallJAXRSReferencesFromWebApp(project, monitor);
+				}
 
 				if (monitor != null) {
 					monitor.worked(1);
