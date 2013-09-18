@@ -92,25 +92,28 @@ public final class JAXRSFacetInstallDelegate implements IDelegate {
 						Messages.JAXRSFacetInstallDelegate_InternalErr);
 			}
 
-			// Before we do any configuration, verify that web.xml is available
-			// for update
-			IModelProvider provider = JAXRSUtils.getModelProvider(project);
-			if (provider == null) {
-				throw new JAXRSFacetException(NLS.bind(
-						Messages.JAXRSFacetInstallDelegate_ConfigErr, project
-								.getName()));
-			} else if (!(provider.validateEdit(null, null).isOK())) {
-				// checks for web.xml file being read-only and allows user to set writeable
-				if (!(provider.validateEdit(null, null).isOK())) {
-					throw new JAXRSFacetException(
-							NLS
-									.bind(
-											Messages.JAXRSFacetInstallDelegate_NonUpdateableWebXML,
-											project.getName())); //$NON-NLS-2$
+			final boolean isDynamicWebProject = JAXRSFacetDelegateUtils.isDynamicWebProject(project);
+
+			if (isDynamicWebProject) {
+				// Before we do any configuration, verify that web.xml is available
+				// for update
+				IModelProvider provider = JAXRSUtils.getModelProvider(project);
+				if (provider == null) {
+					throw new JAXRSFacetException(NLS.bind(
+							Messages.JAXRSFacetInstallDelegate_ConfigErr, project
+									.getName()));
+				} else if (!(provider.validateEdit(null, null).isOK())) {
+					// checks for web.xml file being read-only and allows user to set writeable
+					if (!(provider.validateEdit(null, null).isOK())) {
+						throw new JAXRSFacetException(
+								NLS
+										.bind(
+												Messages.JAXRSFacetInstallDelegate_NonUpdateableWebXML,
+												project.getName())); //$NON-NLS-2$
+					}
 				}
 			}
 
-			
 			if (((LibraryInstallDelegate) config
 					.getProperty(IJAXRSFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE))
 					.getLibraryProviderOperationConfig() instanceof JAXRSUserLibraryProviderInstallOperationConfig
@@ -151,9 +154,12 @@ public final class JAXRSFacetInstallDelegate implements IDelegate {
 					createSharedLibraries(project, fv, monitor, config);
 			}			
 
-			// Update web model if necessary
-			if (config.getBooleanProperty(IJAXRSFacetInstallDataModelProperties.UPDATEDD))
-				createServletAndModifyWebXML(project, config, monitor);
+			if (isDynamicWebProject) {
+				// Update web model if necessary
+				if (config.getBooleanProperty(IJAXRSFacetInstallDataModelProperties.UPDATEDD))
+					createServletAndModifyWebXML(project, config, monitor);
+			}
+
 			if (monitor != null) {
 				monitor.worked(1);
 			}

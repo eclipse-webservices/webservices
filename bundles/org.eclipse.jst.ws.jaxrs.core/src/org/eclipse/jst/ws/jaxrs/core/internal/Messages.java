@@ -146,6 +146,11 @@ public class Messages extends NLS {
 	 * see messages.properties
 	 */
 	public static String JAXRSFacetUninstallDelegate_NonUpdateableWebXML;
+	
+	/**
+	 * see messages.properties
+	 */
+	public static String JAXRSFacetUninstallDelegate_ProjectErr;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

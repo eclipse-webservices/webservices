@@ -183,10 +183,11 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements IJAXRS
 				}
 				});
 
+
     servletInfoGroup = new ServletInformationGroup(composite, SWT.NONE);
     servletInfoGroup.setDataModel(model);
    	updateUpdateDDState(librariesInstallDelegate.getLibraryProvider().getId());
-
+   	servletInfoGroup.setVisible(isWebFacetSelected());
     addModificationListeners();
 
     return composite;
@@ -197,7 +198,9 @@ private void updateUpdateDDState(String libraryProviderID) {
 	boolean nOopLibrary = libraryProviderID.equals(IJAXRSCoreConstants.NO_OP_LIBRARY_ID);
 	if (bUserLibrary || nOopLibrary) {
 		updateDDCheckBox.setVisible(isJEE6orGreater());
-	}  else
+	}  else if (!isWebFacetSelected() ) {
+		updateDDCheckBox.setVisible(false);
+	} else
 		updateDDCheckBox.setVisible(showUpdateDDCheckBox(libraryProviderID));
     if (updateDDCheckBox.getVisible()) {
     		boolean selected;
@@ -212,7 +215,21 @@ private void updateUpdateDDState(String libraryProviderID) {
 	if (updateDDCheckBox.getVisible())
 		model.setBooleanProperty(IJAXRSFacetInstallDataModelProperties.UPDATEDD, updateDDCheckBox.getSelection());
 	else
-		model.setBooleanProperty(IJAXRSFacetInstallDataModelProperties.UPDATEDD, true);
+		model.setBooleanProperty(IJAXRSFacetInstallDataModelProperties.UPDATEDD, isWebFacetSelected());
+}
+
+@SuppressWarnings("rawtypes")
+private boolean isWebFacetSelected() {
+	Iterator it = this.context.getSelectedProjectFacets().iterator();
+	while (it.hasNext()) {
+		// find Web facet
+		IProjectFacetVersion pfv = (IProjectFacetVersion) it.next();
+		if (pfv.getProjectFacet().getId().equals("jst.web")) { //$NON-NLS-1$
+			return true;
+		}
+	}
+	return false;
+
 }
 
 	@SuppressWarnings("rawtypes")
@@ -302,31 +319,39 @@ private void initializeValues()
         }
       }
     }
+    
 
-    String servletName = null;
-    if (root != null)
-      servletName = root.get(SETTINGS_SERVLET);
-    if (servletName == null || servletName.equals("")) { //$NON-NLS-1$
-      servletName = (String) model.getDefaultProperty(IJAXRSFacetInstallDataModelProperties.SERVLET_NAME);
-    }
-    servletInfoGroup.txtJAXRSServletName.setText(servletName);
+			String servletName = null;
+			if (root != null)
+				servletName = root.get(SETTINGS_SERVLET);
+			if (servletName == null || servletName.equals("")) { //$NON-NLS-1$
+				servletName = (String) model
+						.getDefaultProperty(IJAXRSFacetInstallDataModelProperties.SERVLET_NAME);
+			}
+			servletInfoGroup.txtJAXRSServletName.setText(servletName);
 
-    String servletClassname = null;
-    String libraryProviderID = "";
-	LibraryInstallDelegate librariesInstallDelegate = (LibraryInstallDelegate) getDataModel().getProperty(LIBRARY_PROVIDER_DELEGATE);
-	if (librariesInstallDelegate != null && librariesInstallDelegate.getLibraryProvider() != null)
-		libraryProviderID = librariesInstallDelegate.getLibraryProvider().getId();
-    if (root != null) {
-        servletClassname = root.get(libraryProviderID + SETTINGS_SERVLET_CLASSNAME);
-    }
-    if (servletClassname == null) { 
-      servletClassname = JAXRSLibraryProviderUtil.getServletClassName(libraryProviderID);
-      if (servletClassname == null)
-    	  servletClassname = (String) model.getDefaultProperty(IJAXRSFacetInstallDataModelProperties.SERVLET_CLASSNAME);
-    }
-    servletInfoGroup.txtJAXRSServletClassName.setText(servletClassname);
+			String servletClassname = null;
+			String libraryProviderID = "";
+			LibraryInstallDelegate librariesInstallDelegate = (LibraryInstallDelegate) getDataModel()
+					.getProperty(LIBRARY_PROVIDER_DELEGATE);
+			if (librariesInstallDelegate != null
+					&& librariesInstallDelegate.getLibraryProvider() != null)
+				libraryProviderID = librariesInstallDelegate
+						.getLibraryProvider().getId();
+			if (root != null) {
+				servletClassname = root.get(libraryProviderID
+						+ SETTINGS_SERVLET_CLASSNAME);
+			}
+			if (servletClassname == null) {
+				servletClassname = JAXRSLibraryProviderUtil
+						.getServletClassName(libraryProviderID);
+				if (servletClassname == null)
+					servletClassname = (String) model
+							.getDefaultProperty(IJAXRSFacetInstallDataModelProperties.SERVLET_CLASSNAME);
+			}
+			servletInfoGroup.txtJAXRSServletClassName.setText(servletClassname);
 
-    loadURLMappingPatterns(root);
+			loadURLMappingPatterns(root);
   }
 
   private void saveSettings()
@@ -576,7 +601,7 @@ private void initializeValues()
 						Messages.JAXRSFacetInstallPage_ErrorNoWebAppDataModel,
 						e);
 			}
-		}
+		} 
 	}
 
   /*

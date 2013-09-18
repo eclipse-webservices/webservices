@@ -18,6 +18,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
+
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
@@ -242,7 +243,6 @@ public class JAXRSUserLibraryProviderInstallPanel extends UserLibraryProviderIns
     });
     }
 
-    setDownloadCommandEnabled(false);
     initialize();
     return mainComp;
   }
