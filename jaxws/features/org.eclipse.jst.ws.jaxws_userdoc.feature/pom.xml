@@ -39,6 +39,12 @@
             <goals>
               <goal>source-feature</goal>
             </goals>
+            <configuration>
+              <excludes>
+                <plugin id="org.eclipse.jst.ws.cxf.doc.user"/>
+                <plugin id="org.eclipse.jst.ws.jaxws.doc.user"/>
+              </excludes>
+            </configuration>            
           </execution>
         </executions>
       </plugin>
