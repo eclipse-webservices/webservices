@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.eclipse.wst.wsdl.ui.tests
-Bundle-Version: 1.0.101.qualifier
+Bundle-Version: 1.0.200.qualifier
 Bundle-ClassPath: wsdluitests.jar
 Bundle-Activator: org.eclipse.wst.wsdl.ui.tests.Activator
 Require-Bundle: org.eclipse.wst.wsdl;bundle-version="[1.1.0,2.0.0)",
