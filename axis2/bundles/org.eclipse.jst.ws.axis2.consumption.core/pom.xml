@@ -22,6 +22,6 @@
 
   <groupId>org.eclipse.webtools.webservices</groupId>
   <artifactId>org.eclipse.jst.ws.axis2.consumption.core</artifactId>
-  <version>1.0.105-SNAPSHOT</version>
+  <version>1.0.200-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 </project>
