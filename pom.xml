@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2012, 2013 Eclipse Foundation and others.
+  All rights reserved. This program and the accompanying materials
+  are made available under the terms of the Eclipse Distribution License v1.0
+  which accompanies this distribution, and is available at
+  http://www.eclipse.org/org/documents/edl-v10.php
+ 
+  Contributors:
+    Thanh Ha (Eclipse Foundation) - initial implementation
+-->
+
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.eclipse</groupId>
+    <artifactId>wtp-parent</artifactId>
+    <version>3.5.0-SNAPSHOT</version>
+    <relativePath>../wtp-parent</relativePath>
+  </parent>
+
+  <groupId>org.eclipse.webtools.webservices</groupId>
+  <artifactId>org.eclipse.webtools.webservices</artifactId>
+  <version>3.5.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>bundles/org.eclipse.jst.ws</module>
+    <module>bundles/org.eclipse.jst.ws.axis.consumption.core</module>
+    <module>bundles/org.eclipse.jst.ws.axis.consumption.ui</module>
+    <module>bundles/org.eclipse.jst.ws.axis.creation.ui</module>
+    <module>bundles/org.eclipse.jst.ws.consumption</module>
+    <module>bundles/org.eclipse.jst.ws.consumption.ui</module>
+    <module>bundles/org.eclipse.jst.ws.creation.ejb.ui</module>
+    <module>bundles/org.eclipse.jst.ws.creation.ui</module>
+    <module>bundles/org.eclipse.jst.ws.jaxrs.core</module>
+    <module>bundles/org.eclipse.jst.ws.jaxrs.ui</module>
+    <module>bundles/org.eclipse.jst.ws.uddiregistry</module>
+    <module>bundles/org.eclipse.jst.ws.ui</module>
+    <module>bundles/org.eclipse.wst.command.env</module>
+    <module>bundles/org.eclipse.wst.command.env.core</module>
+    <module>bundles/org.eclipse.wst.command.env.ui</module>
+    <module>bundles/org.eclipse.wst.ws</module>
+    <module>bundles/org.eclipse.wst.wsdl</module>
+    <module>bundles/org.eclipse.wst.wsdl.ui</module>
+    <module>bundles/org.eclipse.wst.wsdl.validation</module>
+    <module>bundles/org.eclipse.wst.ws.explorer</module>
+    <module>bundles/org.eclipse.wst.wsi</module>
+    <module>bundles/org.eclipse.wst.wsi.ui</module>
+    <module>bundles/org.eclipse.wst.ws.parser</module>
+    <module>bundles/org.eclipse.wst.ws.service.policy</module>
+    <module>bundles/org.eclipse.wst.ws.service.policy.ui</module>
+    <module>bundles/org.eclipse.wst.ws.ui</module>
+
+    <module>docs/org.eclipse.jst.ws.axis.infopop</module>
+    <module>docs/org.eclipse.jst.ws.axis.ui.doc.user</module>
+    <module>docs/org.eclipse.jst.ws.consumption.infopop</module>
+    <module>docs/org.eclipse.jst.ws.consumption.ui.doc.user</module>
+    <module>docs/org.eclipse.jst.ws.doc.user</module>
+    <module>docs/org.eclipse.jst.ws.infopop</module>
+    <module>docs/org.eclipse.wst.command.env.doc.user</module>
+    <module>docs/org.eclipse.wst.command.env.infopop</module>
+    <module>docs/org.eclipse.wst.ws.api.doc</module>
+    <module>docs/org.eclipse.wst.wsdl.doc.isv</module>
+    <module>docs/org.eclipse.wst.wsdl.ui.doc.user</module>
+    <module>docs/org.eclipse.wst.ws.infopop</module>
+    <module>docs/org.eclipse.wst.wsi.ui.doc.user</module>
+
+    <module>features/org.eclipse.wst.ws_core.feature</module>
+    <module>features/org.eclipse.wst.ws_sdk.feature</module>
+    <module>features/org.eclipse.wst.ws_tests.feature</module>
+    <module>features/org.eclipse.wst.ws_ui.feature</module>
+    <module>features/org.eclipse.wst.ws_userdoc.feature</module>
+    <module>features/org.eclipse.wst.ws_wsdl15.feature</module>
+
+    <module>tests/org.eclipse.jst.ws.axis.consumption.core.tests</module>
+    <module>tests/org.eclipse.jst.ws.tests</module>
+    <module>tests/org.eclipse.jst.ws.tests.performance</module>
+    <module>tests/org.eclipse.wst.wsdl.tests</module>
+    <module>tests/org.eclipse.wst.wsdl.tests.ui</module>
+    <module>tests/org.eclipse.wst.wsdl.ui.tests</module>
+    <module>tests/org.eclipse.wst.wsdl.validation.tests</module>
+    <module>tests/org.eclipse.wst.wsi.tests</module>
+    <module>tests/org.eclipse.wst.ws.tests</module>
+  </modules>
+</project>
