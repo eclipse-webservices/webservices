@@ -67,7 +67,7 @@
           <requires facet="jst.web" soft="true" version="[3.1"/>
           <requires
                 facet="jst.java"
-                version="[1.7">
+                version="[1.6">
           </requires> 
          </and>
       </constraint>
