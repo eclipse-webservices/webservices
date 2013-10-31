@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 IBM Corporation and others.
+ * Copyright (c) 2005, 2013 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@
  * 20081001   243869 ericdp@ca.ibm.com - Eric D. Peters, Web Service tools allowing mixed J2EE levels
  * 20090415   264683 danail.branekov@sap.com - Danail Branekov
  * 20100511   309395 mahutch@ca.ibm.com - Mark Hutchinson, WS Wizard Converting Java Project into Utility Project without any warning
+ * 20131030   417117 kchong@ca.ibm.com - Keith Chong, NPE in web service wizard when specifying illegal service implementation
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
@@ -140,8 +141,11 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
 		  if (scenarioInt == WebServiceScenario.BOTTOMUP)
 		  {
 			  scenario = WebServiceScenario.BOTTOMUP_LITERAL;
-			  String impl = (String)(selection_.getSelection())[0];
-			  wsInfo.setImplURL(impl);
+			  if (selection_.getSelection() != null)
+			  {
+			    String impl = (String)(selection_.getSelection())[0];
+			    wsInfo.setImplURL(impl);
+			  }
 		  }
 		  else if (scenarioInt == WebServiceScenario.TOPDOWN)
 		  {
