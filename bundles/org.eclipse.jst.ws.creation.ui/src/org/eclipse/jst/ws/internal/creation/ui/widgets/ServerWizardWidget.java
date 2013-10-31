@@ -66,6 +66,7 @@
  * 20100511   309395 mahutch@ca.ibm.com - Mark Hutchinson, WS Wizard Converting Java Project into Utility Project without any warning
  * 20120501   378160 jenyoung@ca.ibm.com - Jennifer Young, Service project and service project type need to be refreshed when web service target runtime changes
  * 20130225   378160 jcayne@ca.ibm.com - Joel Cayne, Updates for refreshing server project type.
+ * 20131030   417117 kchong@ca.ibm.com - Keith Chong, NPE in web service wizard when specifying illegal service implementation
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -1239,7 +1240,9 @@ private void handleTypeChange()
 				if (launchable != null){
 					IStatus valStatus = launchable.validateSelection(new StructuredSelection(fieldText));
 					if (valStatus.getSeverity() == IStatus.WARNING)
-						return StatusUtils.warningStatus(ConsumptionUIMessages.MSG_WARN_SERVICE_IMPL_NAMING_CONVENTION);
+ 					  return StatusUtils.warningStatus(ConsumptionUIMessages.MSG_WARN_SERVICE_IMPL_NAMING_CONVENTION);
+					else if (valStatus.getSeverity() == IStatus.ERROR)
+						return StatusUtils.errorStatus(ConsumptionUIMessages.MSG_INVALID_SERVICE_IMPL);
 				}
 				else
 					return StatusUtils.errorStatus(ConsumptionUIMessages.MSG_INVALID_SERVICE_IMPL);
