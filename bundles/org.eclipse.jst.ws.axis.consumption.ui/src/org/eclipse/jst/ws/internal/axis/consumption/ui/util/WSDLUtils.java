@@ -32,6 +32,10 @@ import org.eclipse.wst.wsdl.internal.impl.wsdl4j.WSDLFactoryImpl;
 import com.ibm.icu.text.Collator;
 import com.ibm.icu.util.StringTokenizer;
 
+@Deprecated
+/**
+ *  This class has moved to org.eclipse.jst.ws.internal.axis.consumption.core.util
+ */
 public class WSDLUtils {
 
   private static final String DOT = ".";
