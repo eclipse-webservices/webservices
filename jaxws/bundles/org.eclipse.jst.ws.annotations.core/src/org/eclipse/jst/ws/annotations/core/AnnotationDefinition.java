@@ -258,6 +258,9 @@ public final class AnnotationDefinition {
                                 annotationTypeTargets.add(ElementType.valueOf(value.toString().substring(value.toString().lastIndexOf('.') + 1)));
                             }
                         }
+                    } else {
+                        //Target meta-annotation is not present on an annotation type declaration, the declared type may be used on any program element.
+                    	annotationTypeTargets.addAll(Arrays.asList(ElementType.values()));
                     }
                     List<ElementType> filteredTargets = getFilteredTargets(configurationElement);
                     if (annotationTypeTargets.containsAll(filteredTargets) && filteredTargets.size() < annotationTypeTargets.size()) {
