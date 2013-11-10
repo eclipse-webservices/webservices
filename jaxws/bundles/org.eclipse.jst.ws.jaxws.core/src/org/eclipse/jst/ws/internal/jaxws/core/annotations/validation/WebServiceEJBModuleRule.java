@@ -28,11 +28,13 @@ import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
+import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.Declaration;
 
 public class WebServiceEJBModuleRule extends AbstractAnnotationProcessor {
 
     private static final String STATELESS = "javax.ejb.Stateless"; //$NON-NLS-1$
+    private static final String SINGLETON = "javax.ejb.Singleton"; //$NON-NLS-1$
     private static final String EJB_FACET = "jst.ejb"; //$NON-NLS-1$
     private static final String EJB_FACET_VERSION = "3.0"; //$NON-NLS-1$
 
@@ -51,9 +53,9 @@ public class WebServiceEJBModuleRule extends AbstractAnnotationProcessor {
                             AnnotationTypeDeclaration webServiceDeclaration = (AnnotationTypeDeclaration) eclipseEnvironment.getTypeDeclaration(WebService.class.getName());
                             Collection<Declaration> annotatedTypes = eclipseEnvironment.getDeclarationsAnnotatedWith(webServiceDeclaration);
                             for (Declaration declaration : annotatedTypes) {
-                                if (getStatelessAnnotation(declaration) == null) {
+                                if (declaration instanceof ClassDeclaration && getStatelessOrSingletonAnnotation(declaration) == null) {
                                     AnnotationMirror webService = AnnotationUtils.getAnnotation(declaration, WebService.class);
-                                    printError(webService.getPosition(), JAXWSCoreMessages.WEBSERVICE_ONLY_ON_STATELESS_SESSION_BEANS);
+                                    printError(webService.getPosition(), JAXWSCoreMessages.WEBSERVICE_ONLY_ON_STATELESS_OR_SINGLETON_SESSION_BEANS);
                                 }
                             }
                         }
@@ -65,13 +67,14 @@ public class WebServiceEJBModuleRule extends AbstractAnnotationProcessor {
         }
     }
 
-    private AnnotationMirror getStatelessAnnotation(Declaration declaration) {
+    private AnnotationMirror getStatelessOrSingletonAnnotation(Declaration declaration) {
         Collection<AnnotationMirror> aannotationMirrors = declaration.getAnnotationMirrors();
 
         for (AnnotationMirror annotationMirror : aannotationMirrors) {
             AnnotationTypeDeclaration annotationTypeDeclaration = annotationMirror.getAnnotationType().getDeclaration();
             if (annotationTypeDeclaration != null
-                    && annotationTypeDeclaration.getQualifiedName().equals(STATELESS)) {
+                    && (annotationTypeDeclaration.getQualifiedName().equals(STATELESS)
+                    		|| annotationTypeDeclaration.getQualifiedName().equals(SINGLETON))) {
                 return annotationMirror;
             }
         }

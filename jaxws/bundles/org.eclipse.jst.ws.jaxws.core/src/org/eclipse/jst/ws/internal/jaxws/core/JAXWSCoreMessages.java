@@ -113,7 +113,7 @@ public class JAXWSCoreMessages extends NLS {
     public static String IMPLEMENTS_MULTIPLE_INTERFACES;
 
     public static String WEBPARAM_NAME_REDUNDANT;
-    public static String WEBSERVICE_ONLY_ON_STATELESS_SESSION_BEANS;
+    public static String WEBSERVICE_ONLY_ON_STATELESS_OR_SINGLETON_SESSION_BEANS;
     public static String TARGET_NAMESPACE_URI_SYNTAX_ERROR;
 
     public static String EMPTY_ATTRIBUTE_VALUE;

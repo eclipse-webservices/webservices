@@ -108,7 +108,7 @@ public class EndpointIsSessionBeanRuleTest extends ValidationTestsSetUp
 		markersExpectations.put(IMarker.CHAR_START, 46);
 		markersExpectations.put(IMarker.CHAR_END, 56);
 		markersExpectations.put(IMarker.LINE_NUMBER, 5);
-		markersExpectations.put(IMarker.MESSAGE, JAXWSCoreMessages.WEBSERVICE_ONLY_ON_STATELESS_SESSION_BEANS);
+		markersExpectations.put(IMarker.MESSAGE, JAXWSCoreMessages.WEBSERVICE_ONLY_ON_STATELESS_OR_SINGLETON_SESSION_BEANS);
 		validateResourceMarkers(endpointType.getResource(), new MarkerData(endpointType.getResource(), VALIDATION_PROBLEM_MARKER_ID, markersExpectations));
 	}
 
