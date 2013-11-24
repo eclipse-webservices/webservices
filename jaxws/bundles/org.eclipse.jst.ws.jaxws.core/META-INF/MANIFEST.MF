@@ -28,7 +28,7 @@ Export-Package: org.eclipse.jst.ws.internal.jaxws.core;x-friends:="org.eclipse.j
 Import-Package: javax.activation,
  javax.jws,
  javax.jws.soap,
- javax.xml.bind.annotation;version="2.1.0",
+ javax.xml.bind.annotation,
  javax.xml.ws;version="2.1.0",
  javax.xml.ws.http;version="2.1.0",
  javax.xml.ws.soap;version="2.1.0",
