@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2013 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -142,6 +142,7 @@ public final class ConsumptionUIMessages extends NLS {
     public static String MSG_CLIENT_SERVER_DOES_NOT_SUPPORT_PROJECT;
     public static String MSG_CLIENT_RUNTIME_DOES_NOT_SUPPORT_TEMPLATE;
     public static String MSG_CLIENT_SERVER_DOES_NOT_SUPPORT_TEMPLATE;
+    public static String MSG_CLIENT_SERVER_DOES_NOT_SUPPORT_PROJECT_JAVA_UTIL_VERSION;    
 	public static String MSG_SAME_CLIENT_AND_SERVICE_EARS;
 	public static String MSG_SAME_CLIENT_AND_SERVICE_COMPONENTS;
 	public static String MSG_SAME_CLIENT_AND_SERVICE_PROJECTS;
@@ -406,6 +407,8 @@ public final class ConsumptionUIMessages extends NLS {
     public static String MSG_LOADING_WEB_SERVICE;
 
 
+    
+    
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, ConsumptionUIMessages.class);
 	}

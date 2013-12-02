@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2013 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -57,6 +57,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
+import org.eclipse.jst.common.project.facet.JavaFacetUtils;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.j2ee.project.JavaEEProjectUtilities;
 import org.eclipse.jst.j2ee.webservice.internal.WebServiceConstants;
@@ -86,6 +87,7 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.common.project.facet.core.VersionFormatException;
+import org.eclipse.wst.common.project.facet.core.internal.ProjectFacetVersion;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeType;
 import org.eclipse.wst.server.core.IServerType;
@@ -356,10 +358,24 @@ public class ValidationUtils
 
 					// Check if the server supports it.
 					if (serverId != null && serverId.length() > 0) {
+			        	  
 						if (!valUtils.doesServerSupportProject(serverId, projectName)) {
-							return StatusUtils.errorStatus(NLS.bind(
-													ConsumptionUIMessages.MSG_CLIENT_SERVER_DOES_NOT_SUPPORT_PROJECT,
-													new String[] { serverLabel, projectName }));
+							// Server does not support the project...
+							
+							boolean isJavaUtilProject = project != null ? FacetUtils.isJavaProject(project) : false ;
+			    		  
+							// If this error is due to differing Java facet versions on a Java utility project, display a specific error message
+							if(isJavaUtilProject && doesServerSupportClientProject(serverId, projectName, true)) {
+								return StatusUtils.errorStatus(NLS.bind(
+										ConsumptionUIMessages.MSG_CLIENT_SERVER_DOES_NOT_SUPPORT_PROJECT_JAVA_UTIL_VERSION,
+										new String[] { serverLabel, projectName }));
+			    			  
+							} else {
+								// Otherwise display a general error
+								return StatusUtils.errorStatus(NLS.bind(
+										ConsumptionUIMessages.MSG_CLIENT_SERVER_DOES_NOT_SUPPORT_PROJECT,
+										new String[] { serverLabel, projectName }));
+							}
 						}
 					}
 				} else {
@@ -584,6 +600,40 @@ public class ValidationUtils
 		return Status.OK_STATUS;
 
 	}
+
+
+  /**
+   * Returns whether or not the provided server type supports the facet versions on the provided client project
+   * @param serverFactoryId server type id
+   * @param projectName name of a project that may or may not exist.
+   * @param ignoreJavaVersionFacet Whether or not to ignore differences in java facet version
+   * @return boolean <code>true</code> if the server type supports the facet versions on the project (facets versions are inferred from a Java project), 
+   * <code>false</code> if the server type does not support the facet versions or facet versions on the project cannot be determined.   */
+  public boolean doesServerSupportClientProject(String serverFactoryId, String projectName, boolean ignoreJavaVersionFacet) {
+    Set facets = FacetUtils.getFacetsForProject(projectName);
+
+    if (ignoreJavaVersionFacet && facets != null) {
+
+      Set facetsCopy = new HashSet();
+      facetsCopy.addAll(facets);
+      for (Iterator it = facetsCopy.iterator(); it.hasNext();) {
+        ProjectFacetVersion pfv = (ProjectFacetVersion) it.next();
+        String facetId = pfv.getProjectFacet().getId();
+        if (facetId != null && facetId.equalsIgnoreCase(JavaFacetUtils.JAVA_FACET.getId())) {
+          it.remove();
+        }
+      }
+
+      facets = facetsCopy;
+
+    }
+
+    if (facets == null) {
+      return true;
+    } else {
+      return doesServerSupportFacets(serverFactoryId, facets);
+    }
+  }
   
   /**
    * Returns whether or not the provided server type supports the facet versions on the provided project
@@ -610,6 +660,7 @@ public class ValidationUtils
   public boolean doesServerSupportFacets(String serverFactoryId, Set facets)
   {
     Set runtimes = FacetUtils.getRuntimes(new Set[]{facets});
+    
     Iterator itr = runtimes.iterator();
     IServerType st = ServerCore.findServerType(serverFactoryId);        
     String runtimeTypeId = st.getRuntimeType().getId();
