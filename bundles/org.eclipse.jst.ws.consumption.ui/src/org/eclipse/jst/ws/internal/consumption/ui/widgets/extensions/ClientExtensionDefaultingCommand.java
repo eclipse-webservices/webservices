@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2009 IBM Corporation and others.
+ * Copyright (c) 2004, 2013 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
+import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.RuntimeDescriptor;
@@ -631,15 +632,32 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
             runtimeLabel }));
         env.getStatusHandler().reportError(status);
       }
+      
+      IProject clientProject = ProjectUtilities.getProject(clientProjectName_);
+      
       //If the project exists, ensure it supports the Web service type, Web service runtime, and server.
-      if (clientProjectName_ != null && ProjectUtilities.getProject(clientProjectName_).exists()) {
+      if (clientProjectName_ != null && clientProject.exists()) {
     	  ValidationUtils vUtil = new ValidationUtils();
+    	  
           if (!vUtil.doesServerSupportProject(serverId,clientProjectName_)) {
-    	  status = StatusUtils.errorStatus(NLS.bind(
-					ConsumptionUIMessages.MSG_CLIENT_SERVER_DOES_NOT_SUPPORT_PROJECT,
-					new String[] { WebServiceRuntimeExtensionUtils2.getServerLabelById(serverId),clientProjectName_ }));
-    	  env.getStatusHandler().reportError(status);
-          }
+
+        	  // If this error is due to differing Java facet versions, display a specific error message
+    		  boolean isJavaUtilProject = clientProject != null ? FacetUtils.isJavaProject(clientProject) : false ;
+    		  if(isJavaUtilProject && vUtil.doesServerSupportClientProject(serverId, clientProjectName_, true)) {
+	        	  status = StatusUtils.errorStatus(NLS.bind(
+	        			  ConsumptionUIMessages.MSG_CLIENT_SERVER_DOES_NOT_SUPPORT_PROJECT_JAVA_UTIL_VERSION,
+						new String[] { WebServiceRuntimeExtensionUtils2.getServerLabelById(serverId),clientProjectName_ }));
+    			  
+    		  } else {
+    			  // otherwise display a general error message
+	        	  status = StatusUtils.errorStatus(NLS.bind(
+						ConsumptionUIMessages.MSG_CLIENT_SERVER_DOES_NOT_SUPPORT_PROJECT,
+						new String[] { WebServiceRuntimeExtensionUtils2.getServerLabelById(serverId),clientProjectName_ }));
+    		  }
+    		  
+    		  // Show error
+    		  env.getStatusHandler().reportError(status);
+          }		  
       }
       // Determine if the selected server type has only stub runtimes associated
       // with it and if a server instance is not selected.
