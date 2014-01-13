@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2009 IBM Corporation and others.
+ * Copyright (c) 2004, 2014 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,7 @@ public class PersistentServerRuntimeContext extends PersistentContext {
 	private String FALLBACK_RUNTIME = "FALLBACK_RUNTIME";  // Web service runtime to fallback to if preferred runtime is not suitable
 	//private String PREFERENCE_J2EE_VERSION = "PREFERENCE_J2EE_VERSION";
 	
-	private String SERVER_FACTORY_ID_DEFAULT = "org.eclipse.jst.server.tomcat.60";
+	private String SERVER_FACTORY_ID_DEFAULT = "org.eclipse.jst.server.tomcat.80";
 	private String RUNTIME_ID_DEFAULT = "org.eclipse.jst.ws.axis.creation.axisWebServiceRT";
 	
 	public PersistentServerRuntimeContext()
