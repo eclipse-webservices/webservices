@@ -37,6 +37,11 @@
             <goals>
               <goal>source-feature</goal>
             </goals>
+            <configuration>
+              <excludes>
+                <plugin id="org.eclipse.jst.ws.axis2.ui.doc.user"/>
+              </excludes>
+            </configuration>
           </execution>
         </executions>
       </plugin>
