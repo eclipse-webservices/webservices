@@ -113,7 +113,7 @@ public class Java2WSClassConfigWidget extends Java2WSTypeConfigWidget {
         enableSelectSEIControls(useSEI);
         extractSEIButton.setSelection(false);
         extractSEIButton.setEnabled(useSEI);
-        enableExtractSEIControls(useSEI);
+        enableExtractSEIControls(false);
         seiInterfaceNameText.setText("");
         seiMembersToExtractTableViewer.setAllChecked(false);
         NUMBER_OF_CHECKED_METHODS = 0;
