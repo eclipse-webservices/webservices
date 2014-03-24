@@ -20,8 +20,7 @@
 		     <and>
       	        <requires facet="jst.web" version="[2.5"/>
       	        <requires facet="jst.java" version="[5.0"/>
-                <conflicts facet="axis2.core" version="[1.0"/>
-                <conflicts facet="axis2.ext" version="[1.0"/>
+      	        <conflicts group="cxf.facet.conflicts.group" ignore-problems="facet-not-defined"/>
              </and>
           </constraint>
           
@@ -84,6 +83,13 @@
              class="org.eclipse.jst.ws.internal.cxf.core.CXFClasspathContainerInitializer"
              id="org.eclipse.jst.ws.cxf.core.CXF_CLASSPATH_CONTAINER">
        </classpathContainerInitializer>
+    </extension>
+    
+    <extension point="org.eclipse.wst.common.project.facet.core.groups">
+       <members group="cxf.facet.conflicts.group">
+          <include facet="axis2.core" versions="[1.0"/>
+          <include facet="axis2.ext" versions="[1.0"/>
+       </members>
     </extension>    
     
 </plugin>
