@@ -27,6 +27,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.Annotation;
+import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 import org.eclipse.jst.ws.internal.cxf.core.context.Java2WSPersistentContext;
 import org.eclipse.jst.ws.internal.cxf.core.model.CXFDataModel;
@@ -38,6 +41,7 @@ import org.eclipse.jst.ws.internal.cxf.core.utils.FileUtils;
 import org.eclipse.jst.ws.internal.cxf.core.utils.LaunchUtils;
 import org.eclipse.jst.ws.internal.cxf.core.utils.SpringUtils;
 import org.eclipse.jst.ws.internal.cxf.creation.core.CXFCreationCorePlugin;
+import org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
@@ -95,6 +99,7 @@ public class Java2WSCommand extends AbstractDataModelOperation {
             }
 
             if (isImplementationSelected() || isGenerateServer()) {
+            	model.setTargetNamespace(getTargetNamespace(startingPoint));
                 SpringUtils.createJAXWSEndpoint(model);
             }
 
@@ -111,6 +116,36 @@ public class Java2WSCommand extends AbstractDataModelOperation {
         }
 
         return status;
+    }
+    
+    private String getTargetNamespace(IType type) throws JavaModelException {
+    	if (type.isClass()) {
+    		IType sei = findServiceEndpointInterface(type);
+    		if (sei != null) {
+    			return findTargetNamespace(sei);
+    		}
+    	} 
+        return findTargetNamespace(type);
+    }
+    
+    private IType findServiceEndpointInterface(IType type) {
+        Annotation wsa = AnnotationUtils.getAnnotation(type, javax.jws.WebService.class);
+        if (wsa != null) {
+        	String sei = AnnotationUtils.getStringValue(wsa, JAXWSUtils.ENDPOINT_INTERFACE);
+        	if (sei != null) {
+        		return JDTUtils.findType(type.getJavaProject(), sei);
+        	}        	
+        }
+        return null;
+    }
+    
+    private String findTargetNamespace(IType type) {
+        Annotation wsa = AnnotationUtils.getAnnotation(type, javax.jws.WebService.class);
+        if (wsa != null) {
+            return AnnotationUtils.getStringValue(wsa, JAXWSUtils.TARGET_NAMESPACE);
+        }
+    	
+    	return JDTUtils.getTargetNamespaceFromPackageName(type.getPackageFragment().getElementName());
     }
 
     private boolean isImplementationSelected() {

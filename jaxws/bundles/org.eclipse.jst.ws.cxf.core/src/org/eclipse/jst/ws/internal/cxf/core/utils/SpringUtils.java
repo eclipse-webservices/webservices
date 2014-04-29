@@ -190,6 +190,22 @@ public final class SpringUtils {
     }
 
     @SuppressWarnings("unchecked")
+	private static Element getElement(Document doc, String elementName, Namespace namespace, String id) throws IOException {
+		Element beans = doc.getRootElement();
+		List<Element> endpoints = beans.getChildren(elementName, namespace);
+		for (Element element : endpoints) {
+			if (element != null && element.getAttribute("id") != null) { //$NON-NLS-1$
+				Attribute idAttribute = element.getAttribute("id"); //$NON-NLS-1$
+				if (idAttribute.getValue().equals(id)) {
+					return element;
+				}
+			}
+		}
+		return null;
+	}
+    
+    /*
+    @SuppressWarnings("unchecked")
     private static boolean isBeanDefined(CXFDataModel cxfDataModel, String projectName, String elementName,
             Namespace namespace, String id) throws IOException {
         IFile springConfigFile = null;
@@ -225,7 +241,8 @@ public final class SpringUtils {
         }
         return false;
     }
-
+    */
+    
     @SuppressWarnings("unchecked")
     public static String getEndpointAddress(IProject project, String jaxwsEndpointId) throws IOException {
         IFile springConfigFile = null;
@@ -357,46 +374,64 @@ public final class SpringUtils {
                     .toFile());
             try {
                 Document doc = builder.build(springConfigInputSteam);
-                Element beans = doc.getRootElement();
-
-                Element jaxwsEndpoint = new Element("endpoint", JAXWS_NS); //$NON-NLS-1$
-
                 String id = getJAXWSEndpointID(model);
-                model.setConfigId(id);
-                jaxwsEndpoint.setAttribute("id", id); //$NON-NLS-1$
 
-                jaxwsEndpoint.setAttribute("implementor", model.getFullyQualifiedJavaClassName()); //$NON-NLS-1$
+            	Element element = getElement(doc, "endpoint", JAXWS_NS, id);
+            	if (element != null) {
+            		Namespace tns = null;
+            		for (Object ns : element.getAdditionalNamespaces()) {
+            			Namespace namespace = (Namespace) ns;
+            			if (namespace.getPrefix().equals("tns") && !namespace.getURI().equals(model.getTargetNamespace())) {
+            				tns = namespace;
+            			}
+            		}
+            		if (tns != null) {
+            			element.removeNamespaceDeclaration(tns);
+            			
+            		    tns = Namespace.getNamespace("tns", model.getTargetNamespace()); //$NON-NLS-1$
+            			element.addNamespaceDeclaration(tns);
+                        
+                        writeConfig(doc, springConfigFile);
+            		}
+            		
+            	} else {
+                    Element beans = doc.getRootElement();
 
-                if (model.getConfigWsdlLocation() != null) {
-                    jaxwsEndpoint.setAttribute("wsdlLocation", model.getConfigWsdlLocation()); //$NON-NLS-1$
+                    Element jaxwsEndpoint = new Element("endpoint", JAXWS_NS); //$NON-NLS-1$
 
-                    if (model.getEndpointName() != null && model.getServiceName() != null) {
-                        jaxwsEndpoint.setAttribute("endpointName", "tns:" + model.getEndpointName()); //$NON-NLS-1$ //$NON-NLS-2$
-                        jaxwsEndpoint.setAttribute("serviceName", "tns:" + model.getServiceName()); //$NON-NLS-1$ //$NON-NLS-2$
+                    model.setConfigId(id);
+                    jaxwsEndpoint.setAttribute("id", id); //$NON-NLS-1$
 
-                        Namespace XMLNS_TNS = Namespace.getNamespace("tns", model.getTargetNamespace()); //$NON-NLS-1$
-                        jaxwsEndpoint.addNamespaceDeclaration(XMLNS_TNS);
+                    jaxwsEndpoint.setAttribute("implementor", model.getFullyQualifiedJavaClassName()); //$NON-NLS-1$
+
+                    if (model.getConfigWsdlLocation() != null) {
+                        jaxwsEndpoint.setAttribute("wsdlLocation", model.getConfigWsdlLocation()); //$NON-NLS-1$
+
+                        if (model.getEndpointName() != null && model.getServiceName() != null) {
+                            jaxwsEndpoint.setAttribute("endpointName", "tns:" + model.getEndpointName()); //$NON-NLS-1$ //$NON-NLS-2$
+                            jaxwsEndpoint.setAttribute("serviceName", "tns:" + model.getServiceName()); //$NON-NLS-1$ //$NON-NLS-2$
+
+                            Namespace XMLNS_TNS = Namespace.getNamespace("tns", model.getTargetNamespace()); //$NON-NLS-1$
+                            jaxwsEndpoint.addNamespaceDeclaration(XMLNS_TNS);
+                        }
                     }
-                }
 
-                if (model.getEndpointName() != null) {
-                    jaxwsEndpoint.setAttribute("address", "/" + model.getEndpointName()); //$NON-NLS-1$ //$NON-NLS-2$
-                } else {
-                    jaxwsEndpoint.setAttribute("address", "/" + id); //$NON-NLS-1$ //$NON-NLS-2$
-                }
+                    if (model.getEndpointName() != null) {
+                        jaxwsEndpoint.setAttribute("address", "/" + model.getEndpointName()); //$NON-NLS-1$ //$NON-NLS-2$
+                    } else {
+                        jaxwsEndpoint.setAttribute("address", "/" + id); //$NON-NLS-1$ //$NON-NLS-2$
+                    }
 
+                    Element jaxwsFeatures = new Element("features", JAXWS_NS); //$NON-NLS-1$
+                    Element bean = new Element("bean", SPRING_BEANS_NS); //$NON-NLS-1$
+                    bean.setAttribute("class", "org.apache.cxf.feature.LoggingFeature"); //$NON-NLS-1$ //$NON-NLS-2$
+                    jaxwsFeatures.addContent(bean);
+                    jaxwsEndpoint.addContent(jaxwsFeatures);
 
-                Element jaxwsFeatures = new Element("features", JAXWS_NS); //$NON-NLS-1$
-                Element bean = new Element("bean", SPRING_BEANS_NS); //$NON-NLS-1$
-                bean.setAttribute("class", "org.apache.cxf.feature.LoggingFeature"); //$NON-NLS-1$ //$NON-NLS-2$
-                jaxwsFeatures.addContent(bean);
-                jaxwsEndpoint.addContent(jaxwsFeatures);
-
-                if (!isBeanDefined(model, projectName, "endpoint", JAXWS_NS, id)) { //$NON-NLS-1$
                     beans.addContent(jaxwsEndpoint);
 
                     writeConfig(doc, springConfigFile);
-                }
+            	}
             } catch (JDOMException jdome) {
                 CXFCorePlugin.log(jdome);
             } finally {

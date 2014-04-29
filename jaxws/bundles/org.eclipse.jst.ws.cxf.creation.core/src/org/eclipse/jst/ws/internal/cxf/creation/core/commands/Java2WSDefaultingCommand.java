@@ -47,9 +47,6 @@ public class Java2WSDefaultingCommand extends AbstractDataModelOperation {
             model.setUseServiceEndpointInterface(startingPointType.isInterface());
             model.setExtractInterface(false);
 
-            String packageName = startingPointType.getPackageFragment().getElementName();
-            model.setTargetNamespace(JDTUtils.getTargetNamespaceFromPackageName(packageName));
-
             model.setAnnotationProcessingEnabled(context.isAnnotationProcessingEnabled());
             model.setGenerateWebMethodAnnotation(context.isGenerateWebMethodAnnotation());
             model.setGenerateWebParamAnnotation(context.isGenerateWebParamAnnotation());
