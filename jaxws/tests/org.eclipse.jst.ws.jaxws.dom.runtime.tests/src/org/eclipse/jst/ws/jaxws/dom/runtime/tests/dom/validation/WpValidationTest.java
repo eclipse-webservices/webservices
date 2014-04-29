@@ -58,7 +58,6 @@ public class WpValidationTest extends ValidationTestsSetUp
 		validateResourceMarkers(seiType.getResource(), markerData);
 	}
 
-	/*
 	public void testNameIsUniqe() throws CoreException
 	{
 		setContents(seiType.getCompilationUnit(),
@@ -79,7 +78,6 @@ public class WpValidationTest extends ValidationTestsSetUp
 		final MarkerData marker2_Data = new MarkerData(seiType.getResource(), VALIDATION_PROBLEM_MARKER_ID, marker2_Attributes);
 		validateResourceMarkers(seiType.getResource(), marker2_Data, marker1_Data);
 	}
-	*/
 
 	public void testNameNotRedundant() throws CoreException
 	{

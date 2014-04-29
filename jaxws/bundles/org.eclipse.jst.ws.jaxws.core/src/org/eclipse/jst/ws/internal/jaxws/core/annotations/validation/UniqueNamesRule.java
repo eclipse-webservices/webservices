@@ -419,31 +419,35 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
         }
 
         for (MethodDeclaration methodDeclaration : methods) {
-            List<AnnotationValue> names = new ArrayList<AnnotationValue>();
+        	Map<AnnotationValue, SourcePosition> values = new HashMap<AnnotationValue, SourcePosition>();
+        	List<AnnotationValue> names = new ArrayList<AnnotationValue>();
             List<ParameterDeclaration> parameters = (List<ParameterDeclaration>) methodDeclaration.getParameters();
             for (ParameterDeclaration parameterDeclaration : parameters) {
                 AnnotationMirror webParam = AnnotationUtils.getAnnotation(parameterDeclaration, WebParam.class);
                 if (webParam != null) {
                     AnnotationValue name = AnnotationUtils.getAnnotationValue(webParam, NAME);
                     if (name != null) {
-                        names.add(name);
+                    	values.put(name, name.getPosition());
+                    	names.add(name);
                         testForGeneratedNameClash(name, parameterDeclaration, parameters);
                     }
                 }
             }
-
+            
             for (int i = 0; i < names.size(); i++) {
                 AnnotationValue name = names.get(i);
                 for (int j = i + 1; j < names.size(); j++) {
                     AnnotationValue otherName = names.get(j);
                     if (name.toString().equals(otherName.toString())) {
-                        printError(name.getPosition(), JAXWSCoreMessages.bind(
+                    	printError(values.get(name), JAXWSCoreMessages.bind(
                                 JAXWSCoreMessages.PARAMETER_NAME_CLASH, name.getValue().toString()));
-                        printError(otherName.getPosition(), JAXWSCoreMessages.bind(
+                        printError(values.get(otherName), JAXWSCoreMessages.bind(
                                 JAXWSCoreMessages.PARAMETER_NAME_CLASH, otherName.getValue().toString()));
                     }
                 }
             }
+            values.clear();
+            values = null;
         }
     }
 
