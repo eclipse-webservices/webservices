@@ -40,6 +40,7 @@
             </goals>
             <configuration>
               <excludes>
+                  <feature id="org.eclipse.jst.ws.jaxws_userdoc.feature"/>
                   <plugin id="javax.xml.bind"/>
                   <plugin id="javax.xml.stream"/>
                   <plugin id="javax.xml.ws"/>
