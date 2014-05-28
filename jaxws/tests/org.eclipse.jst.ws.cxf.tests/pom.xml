@@ -42,6 +42,11 @@
           <dependencies>
             <dependency>
               <type>p2-installable-unit</type>
+              <artifactId>org.eclipse.sdk.ide</artifactId>
+              <version>0.0.0</version>
+            </dependency>
+            <dependency>
+              <type>p2-installable-unit</type>
               <artifactId>org.eclipse.jst.j2ee.web</artifactId>
               <version>0.0.0</version>
             </dependency>
