@@ -104,8 +104,6 @@ public class Java2WSSelectSEICommand extends AbstractDataModelOperation {
 
             Set<IMethod> methods = model.getMethodMap().keySet();
             extractInterfaceProcessor.setExtractedMembers(methods.toArray(new IMember[methods.size()]));
-            extractInterfaceProcessor.setAbstract(false);
-            extractInterfaceProcessor.setPublic(true);
             extractInterfaceProcessor.setComments(false);
             extractInterfaceProcessor.setInstanceOf(false);
 
