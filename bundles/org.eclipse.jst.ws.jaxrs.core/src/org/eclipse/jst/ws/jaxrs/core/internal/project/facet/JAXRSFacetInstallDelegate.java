@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and others.
+ * Copyright (c) 2009, 2014 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@
  * 20100413   307552 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS and Java EE 6 setup is incorrect
  * 20100428   310905 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet fails to install due to NPE or runtime exception due to duplicate cp entries
  * 20101123   330916 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS - facet install should consider Web project associated with multiple EARs
+ * 20140813   441729 kchong@ca.ibm.com - Keith Chong, JAX-RS Facet install may fail to update the web.xml with servlet info.
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -273,7 +274,7 @@ public final class JAXRSFacetInstallDelegate implements IDelegate {
 
 		IModelProvider provider = JAXRSUtils.getModelProvider(project);
 		IPath webXMLPath = new Path("WEB-INF").append("web.xml"); //$NON-NLS-1$ //$NON-NLS-2$
-		if (JAXRSJEEUtils.isWebApp25or30(provider.getModelObject())) {
+		if (JAXRSJEEUtils.isWebApp25orHigher(provider.getModelObject())) {
 			provider.modify(new UpdateWebXMLForJavaEE(project, config),
 					doesDDFileExist(project, webXMLPath) ? webXMLPath
 							: IModelProvider.FORCESAVE);

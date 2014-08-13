@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and others.
+ * Copyright (c) 2009, 2014 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20091106   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100319   306594 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet install fails for Web 2.3 & 2.4
+ * 20140813   441729 kchong@ca.ibm.com - Keith Chong, JAX-RS Facet install may fail to update the web.xml with servlet info. 
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -104,7 +105,7 @@ public final class JAXRSFacetUninstallDelegate implements IDelegate {
 		Object webAppObj = provider.getModelObject();
 		if (webAppObj != null) {
 			IPath ddPath = new Path("WEB-INF").append("web.xml"); //$NON-NLS-1$ //$NON-NLS-2$
-			if (JAXRSJEEUtils.isWebApp25or30(webAppObj)) {
+			if (JAXRSJEEUtils.isWebApp25orHigher(webAppObj)) {
 				WebApp webApp = (WebApp) webAppObj;
 				Servlet servlet = JAXRSJEEUtils.findJAXRSServlet(webApp);
 				if (servlet == null)

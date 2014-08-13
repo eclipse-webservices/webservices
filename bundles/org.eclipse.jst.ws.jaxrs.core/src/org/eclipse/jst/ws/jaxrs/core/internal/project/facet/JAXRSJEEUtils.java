@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and others.
+ * Copyright (c) 2009, 2014 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@
  * 20100325   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
  * 20100408   308565 kchong@ca.ibm.com - Keith Chong, JAX-RS: Servlet name and class not updated
  * 20100618   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
+ * 20140813   441729 kchong@ca.ibm.com - Keith Chong, JAX-RS Facet install may fail to update the web.xml with servlet info.
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -216,7 +217,20 @@ public class JAXRSJEEUtils extends JAXRSUtils {
 			return true;
 		return false;
 	}
-	
+
+	/**
+	 * @param webAppObj
+	 *            as Object
+	 * @return true if webApp instanceof org.eclipse.jst.javaee.web.WebApp and
+	 *         WebAppVersionType._25 or higher
+	 */
+	public static boolean isWebApp25orHigher(final Object webAppObj) {
+		if (isWebApp25or30(webAppObj) || (webAppObj instanceof WebApp
+				&& ((WebApp) webAppObj).getVersion() == WebAppVersionType._31))
+			return true;
+		return false;
+	}
+
 	/**
 	 * Creates servlet-mappings for the servlet for 2.5 WebModules or greater
 	 * 
