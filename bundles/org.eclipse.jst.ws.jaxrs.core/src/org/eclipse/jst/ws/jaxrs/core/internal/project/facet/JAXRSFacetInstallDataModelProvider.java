@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 IBM Corporation and others.
+ * Copyright (c) 2009, 2014 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@
  * 20100519   313576 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS tools- validation problems
  * 20110817   355026 kchong@ca.ibm.com - Keith Chong, [JAXRS] JAXRSFacetInstallDataModelProvider dispose method does not remove all listeners it adds
  * 20120214   371661 jenyoung@ca.ibm.com - Jennifer Young, [JAXRS] Performance issue since dispose method is not being called
+ * 20140709   431081 jgwest@ca.ibm.com - Jonathan West,  "Further Configuration" state when adding JAX-RS Facet should be "available", not "required"  
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -55,6 +56,18 @@ public class JAXRSFacetInstallDataModelProvider extends
     private LibraryInstallDelegate libraryInstallDelegate = null;
     private IPropertyChangeListener propertyChangeListener = null;
 
+    @Override
+    public boolean isPropertyEnabled(String propertyName) {
+		if (propertyName.equals(SERVLET_NAME) 
+				|| propertyName.equals(SERVLET_URL_PATTERNS) 
+				|| propertyName.equals(SERVLET_CLASSNAME)) {
+			
+			return model.getBooleanProperty(UPDATEDD);
+		} else {
+			return super.isPropertyEnabled(propertyName);
+		}
+    }
+    
 	@SuppressWarnings("unchecked")
 	public Set<String> getPropertyNames() {
 		Set<String> names = super.getPropertyNames();
@@ -112,7 +125,7 @@ public class JAXRSFacetInstallDataModelProvider extends
 		} else if (propertyName.equals(DEPLOY_IMPLEMENTATION)) {
 			return true;
 		} else if (propertyName.equals(UPDATEDD)) {
-			return true;
+			return false;
 		}
 		return super.getDefaultProperty(propertyName);
 	}

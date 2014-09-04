@@ -160,6 +160,7 @@
         <config class="org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSUserLibraryProviderInstallOperationConfig"/>
         <operation class="org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSUserLibraryProviderInstallOperation"/>
       </action>
+      <priority>5</priority>
     </provider>
   </extension>
   
@@ -172,9 +173,12 @@
           <test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jst.jaxrs" forcePluginActivation="true"/>
         </with>
       </enablement>
+      <priority>10</priority>
     </provider>
+    
   </extension>  
   <extension-point id="pluginProvidedJaxrsLibraries" name="pluginProvidedJaxrsLibraries" schema="schema/pluginProvidedJaxrsLibraries.exsd"/>
+  
 
    
 </plugin>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 IBM Corporation and others.
+ * Copyright (c) 2009, 2014 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@
  * 20110822   349541 atosak@ca.ibm.com - Atosa Khoddamhazrati, JAX-RS Facet assumes a project has a runtime when enabling the facet
  * 20120206   365103 jenyoung@ca.ibm.com - Jennifer Young, JAX-RS configuration UI should have the Update Deployment descriptor check box available
  * 20120427   377916 jenyoung@ca.ibm.com - Jennifer Young, The JAX-RS install operation config should be updated whenever there are provider set changes
+ * 20140709   431081 jgwest@ca.ibm.com - Jonathan West,  "Further Configuration" state when adding JAX-RS Facet should be "available", not "required" * 
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -196,26 +197,32 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements IJAXRS
 private void updateUpdateDDState(String libraryProviderID) {
 	boolean bUserLibrary = libraryProviderID.equals(IJAXRSUIConstants.USER_LIBRARY_ID);
 	boolean nOopLibrary = libraryProviderID.equals(IJAXRSCoreConstants.NO_OP_LIBRARY_ID);
+	
 	if (bUserLibrary || nOopLibrary) {
 		updateDDCheckBox.setVisible(isJEE6orGreater());
 	}  else if (!isWebFacetSelected() ) {
 		updateDDCheckBox.setVisible(false);
-	} else
+	} else {
 		updateDDCheckBox.setVisible(showUpdateDDCheckBox(libraryProviderID));
+	}
+	
     if (updateDDCheckBox.getVisible()) {
     		boolean selected;
-    		if (!bUserLibrary && !nOopLibrary)
+    		if (!bUserLibrary && !nOopLibrary) {
     			selected = getUpdateDDCheckBoxSelected(libraryProviderID);
-    		else 
-    			selected = true;
+    		} else {
+    			// The User library and no-op library cases should pull from the model
+    			selected = model.getBooleanProperty(IJAXRSFacetInstallDataModelProperties.UPDATEDD);
+    		}
     		servletInfoGroup.setFieldsEnabled(selected);
     		updateDDCheckBox.setSelection(selected);
     		updateDDCheckBox.getSelection();
     }
-	if (updateDDCheckBox.getVisible())
+	if (updateDDCheckBox.getVisible()) {
 		model.setBooleanProperty(IJAXRSFacetInstallDataModelProperties.UPDATEDD, updateDDCheckBox.getSelection());
-	else
+	} else {
 		model.setBooleanProperty(IJAXRSFacetInstallDataModelProperties.UPDATEDD, isWebFacetSelected());
+	}
 }
 
 @SuppressWarnings("rawtypes")
@@ -246,7 +253,7 @@ private boolean isWebFacetSelected() {
 			}
 		}
 		if (webFacetVersion != null) {
-			if (webFacetVersion.equals(WebUtilities.DYNAMIC_WEB_30)) 
+			if (webFacetVersion.equals(WebUtilities.DYNAMIC_WEB_30) || webFacetVersion.equals(WebUtilities.DYNAMIC_WEB_31))
 				return true;
 				
 		}
@@ -369,12 +376,12 @@ private void initializeValues()
 
   private String getJAXRSServletName()
   {
-    return servletInfoGroup.txtJAXRSServletName.getText().trim();
+	    return servletInfoGroup.txtJAXRSServletName.getText().trim();
   }
 
   private String getJAXRSServletClassname()
   {
-    return servletInfoGroup.txtJAXRSServletClassName.getText().trim();
+	  return servletInfoGroup.txtJAXRSServletClassName.getText().trim();
   }
 
   private String[] getJAXRSPatterns()
@@ -421,11 +428,12 @@ private void initializeValues()
 
   private void addModificationListeners()
   {
+	  
 // jaxrsLibCfgComp.setSynchHelper(synchHelper);
-    synchHelper.synchText(servletInfoGroup.txtJAXRSServletName, SERVLET_NAME, null);
-    synchHelper.synchText(servletInfoGroup.txtJAXRSServletClassName, SERVLET_CLASSNAME, null);
-    synchHelper.synchList(servletInfoGroup.lstJAXRSServletURLPatterns, SERVLET_URL_PATTERNS, null);
-    synchHelper.synchCheckbox(updateDDCheckBox, UPDATEDD, null);
+	    synchHelper.synchText(servletInfoGroup.txtJAXRSServletName, SERVLET_NAME, null);
+	    synchHelper.synchText(servletInfoGroup.txtJAXRSServletClassName, SERVLET_CLASSNAME, null);
+	  synchHelper.synchList(servletInfoGroup.lstJAXRSServletURLPatterns, SERVLET_URL_PATTERNS, null);
+	  synchHelper.synchCheckbox(updateDDCheckBox, UPDATEDD, null);
   }
 
   private void loadURLMappingPatterns(IDialogSettings root)
