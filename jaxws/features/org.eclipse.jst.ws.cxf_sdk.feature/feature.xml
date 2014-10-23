@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jst.ws.cxf_sdk.feature"
       label="%featureName"
-      version="1.1.201.qualifier"
+      version="1.1.202.qualifier"
       provider-name="%featureProvider"
       image="eclipse_update_120.jpg"
       license-feature="org.eclipse.license"

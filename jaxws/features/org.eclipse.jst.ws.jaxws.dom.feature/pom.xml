@@ -22,7 +22,7 @@
 
   <groupId>org.eclipse.webtools.webservices</groupId>
   <artifactId>org.eclipse.jst.ws.jaxws.dom.feature</artifactId>
-  <version>1.0.300-SNAPSHOT</version>
+  <version>1.0.301-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 
   <build>

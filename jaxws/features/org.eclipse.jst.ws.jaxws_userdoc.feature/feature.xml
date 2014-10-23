@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jst.ws.jaxws_userdoc.feature"
       label="%featureName"
-      version="1.0.400.qualifier"
+      version="1.0.401.qualifier"
       provider-name="%featureProvider"
       license-feature="org.eclipse.license"
       license-feature-version="1.0.1.qualifier">

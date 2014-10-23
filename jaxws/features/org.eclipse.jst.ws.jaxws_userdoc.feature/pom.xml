@@ -22,6 +22,6 @@
 
   <groupId>org.eclipse.webtools.webservices</groupId>
   <artifactId>org.eclipse.jst.ws.jaxws_userdoc.feature</artifactId>
-  <version>1.0.400-SNAPSHOT</version>
+  <version>1.0.401-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 </project>
