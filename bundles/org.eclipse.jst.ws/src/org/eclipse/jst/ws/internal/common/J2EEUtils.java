@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2011 IBM Corporation and others.
+ * Copyright (c) 2000, 2014 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -254,7 +254,8 @@ public final class J2EEUtils {
 		return (IVirtualComponent[])v.toArray(new IVirtualComponent[0]);		
 	}
     
-    public static IVirtualComponent[] getAllEJBComponents(){
+    @SuppressWarnings("rawtypes")
+	public static IVirtualComponent[] getAllEJBComponents(){
         List v = new ArrayList();
         IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
         for (int i = 0; i < projects.length; i++) {
@@ -581,13 +582,13 @@ public final class J2EEUtils {
 				if (bean.isSession()) {
 					Session sessionBean = (Session) bean;
 
-					if (sessionBean.getSessionType().getValue() == SessionType.STATELESS) {
+					if (sessionBean.getSessionType() == SessionType.STATELESS_LITERAL) {
 						names.add(bean.getName());
 					}
 				}
 			} else {
 				SessionBean bean = (SessionBean) next;
-				if (bean.getSessionType().getValue() == SessionType.STATELESS) {
+				if (bean.getSessionType() == org.eclipse.jst.javaee.ejb.SessionType.STATELESS_LITERAL) {
 					names.add(bean.getEjbName());
 				}
 			}
