@@ -26,6 +26,10 @@
   <version>3.6.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
+  <properties>
+    <tycho.scmUrl>scm:git:git://git.eclipse.org/gitroot/webservices/webtools.webservices.axis2.git</tycho.scmUrl>
+  </properties>
+
   <modules>
     <module>bundles/org.eclipse.jst.ws.axis2.consumption.core</module>
     <module>bundles/org.eclipse.jst.ws.axis2.consumption.ui</module>
