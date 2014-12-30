@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.jst.ws.jaxws.core;singleton:=true
 Bundle-Vendor: %pluginProvider
-Bundle-Version: 1.0.400.qualifier
+Bundle-Version: 1.0.401.qualifier
 Bundle-ClassPath: .
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
@@ -28,7 +28,6 @@ Export-Package: org.eclipse.jst.ws.internal.jaxws.core;x-friends:="org.eclipse.j
 Import-Package: javax.activation,
  javax.jws,
  javax.jws.soap,
- javax.xml.bind.annotation,
  javax.xml.ws;version="2.1.0",
  javax.xml.ws.http;version="2.1.0",
  javax.xml.ws.soap;version="2.1.0",

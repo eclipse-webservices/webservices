@@ -13,8 +13,6 @@ package org.eclipse.jst.ws.jaxb.core.tests;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlSchema;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IPackageDeclaration;
@@ -24,6 +22,9 @@ import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 
 public class AddAnnotationToPackageTest extends AbstractAnnotationTest {
+
+	private static final String XML_SCHEMA_CANONICAL_NAME = "javax.xml.bind.annotation.XmlSchema";
+	private static final String XML_SCHEMA_SIMPLE_NAME = "XmlSchema";
 
     @Override
     public String getPackageName() {
@@ -53,23 +54,23 @@ public class AddAnnotationToPackageTest extends AbstractAnnotationTest {
         memberValuePairs.add(locationVP);
         memberValuePairs.add(namespaceVP);
 
-        return AnnotationsCore.createNormalAnnotation(ast, XmlSchema.class.getSimpleName(), memberValuePairs);
+        return AnnotationsCore.createNormalAnnotation(ast, XML_SCHEMA_SIMPLE_NAME, memberValuePairs);
     }
 
     public void testAddAnnotationToPackage() {
         try {
             assertNotNull(annotation);
-            assertEquals(XmlSchema.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(XML_SCHEMA_SIMPLE_NAME, AnnotationUtils.getAnnotationName(annotation));
             IPackageDeclaration myPackage = source.getPackageDeclaration(getPackageName());
             assertNotNull(myPackage);
 
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(myPackage, annotation));
-            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(myPackage, XmlSchema.class.getCanonicalName()));
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(myPackage, XML_SCHEMA_CANONICAL_NAME));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
             assertTrue(AnnotationUtils.isAnnotationPresent(myPackage, AnnotationUtils.getAnnotationName(annotation)));
-            assertTrue(source.getImport(XmlSchema.class.getCanonicalName()).exists());
+            assertTrue(source.getImport(XML_SCHEMA_CANONICAL_NAME).exists());
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
         }

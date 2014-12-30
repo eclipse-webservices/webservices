@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.jws.WebService;
-import javax.xml.bind.annotation.XmlType;
 
 import org.eclipse.jdt.apt.core.env.EclipseAnnotationProcessorEnvironment;
 import org.eclipse.jdt.core.Flags;
@@ -27,10 +26,10 @@ import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
-import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
 
+import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.Declaration;
@@ -50,6 +49,8 @@ public class WebServiceParametersReturnTypesRule extends AbstractAnnotationProce
 
     private static final Set<String> ALLOWED_IN_MULTIPLE_INHERITANCE = new HashSet<String>();
 
+    private static final String XML_TYPE = "javax.xml.bind.annotation.XmlType";
+    
     static {
         JAVA_TYPES.add("java.util.Calendar"); //$NON-NLS-1$
         JAVA_TYPES.add("java.util.Date"); //$NON-NLS-1$
@@ -231,9 +232,18 @@ public class WebServiceParametersReturnTypesRule extends AbstractAnnotationProce
     }
 
     private boolean isXMLType(InterfaceDeclaration interfaceDeclaration) {
-        return AnnotationUtils.getAnnotation(interfaceDeclaration, XmlType.class) != null;
-    }
+        Collection<AnnotationMirror> aannotationMirrors = interfaceDeclaration.getAnnotationMirrors();
 
+        for (AnnotationMirror annotationMirror : aannotationMirrors) {
+            AnnotationTypeDeclaration annotationTypeDeclaration = annotationMirror.getAnnotationType().getDeclaration();
+            if (annotationTypeDeclaration != null
+                    && annotationTypeDeclaration.getQualifiedName().equals(XML_TYPE)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     private void checkIfRemoteObject(ClassDeclaration classDeclaration, MethodDeclaration methodDeclaration) {
         if (isRemoteObject(classDeclaration)) {
             printError(methodDeclaration.getPosition(), JAXWSCoreMessages.bind(

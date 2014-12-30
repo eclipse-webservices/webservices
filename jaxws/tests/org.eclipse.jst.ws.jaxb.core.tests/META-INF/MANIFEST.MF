@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.jst.ws.jaxb.core.tests
-Bundle-Version: 1.0.300.qualifier
+Bundle-Version: 1.0.400.qualifier
 Bundle-Vendor: %pluginProvider
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.junit;bundle-version="3.8.0",
@@ -18,10 +18,4 @@ Require-Bundle: org.junit;bundle-version="3.8.0",
  org.eclipse.jdt.apt.core;bundle-version="[3.3.100,4.0.0)",
  org.eclipse.text;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.jdt.ui;bundle-version="[3.4.0,4.0.0)"
-Import-Package: javax.xml.bind;version="[2.1.0,2.2.0)",
- javax.xml.bind.annotation;version="[2.1.0,2.2.0)",
- javax.xml.bind.annotation.adapters;version="[2.1.0,2.2.0)",
- javax.xml.bind.attachment;version="[2.1.0,2.2.0)",
- javax.xml.bind.helpers;version="[2.1.0,2.2.0)",
- javax.xml.bind.util;version="[2.1.0,2.2.0)"
 Export-Package: org.eclipse.jst.ws.jaxb.core.tests
