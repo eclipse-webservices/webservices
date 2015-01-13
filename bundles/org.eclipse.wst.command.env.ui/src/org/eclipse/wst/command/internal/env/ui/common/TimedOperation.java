@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2006 IBM Corporation and others.
+ * Copyright (c) 2003, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060504   119296 pmoogk@ca.ibm.com - Peter Moogk
  * 20060822   154750 pmoogk@ca.ibm.com - Peter Moogk
+ * 20150113	  457332 jgwest@ca.ibm.com - Jonathan West, TimedWSDLSelectionConditionCommand/TimedOperation classes blocks automated tests with confirmation dialog box
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.common;
 
@@ -36,6 +37,8 @@ public class TimedOperation implements IUndoableOperation
   private IStatus           returnStatus;
   private boolean           operationComplete;
   private String            timeOutMessage;
+  
+  private boolean headless = false;
   
   public TimedOperation( AbstractOperation operation, int timeout, String timeOutMessage )
   {
@@ -72,11 +75,20 @@ public class TimedOperation implements IUndoableOperation
         
         if( !operationComplete )
         {
-          // We timed out, since the execution thread hasn't set operationComplete 
-          // to true.
-          Status  errorStatus = new Status( IStatus.ERROR,"id", 0, EnvironmentUIMessages.MSG_ERROR_OPERATION_TIMED_OUT, null);
-          Shell   shell       = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-          boolean waitMore    = MessageDialog.openConfirm(shell, EnvironmentUIMessages.MSG_ERROR_OPERATION_TIMED_OUT, timeOutMessage );
+        	
+          Status errorStatus = new Status( IStatus.ERROR,"id", 0, EnvironmentUIMessages.MSG_ERROR_OPERATION_TIMED_OUT, null);
+
+          boolean waitMore;
+          if(!headless) 
+          {
+	        // We timed out, since the execution thread hasn't set operationComplete to true.
+	        Shell   shell       = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+	        waitMore    = MessageDialog.openConfirm(shell, EnvironmentUIMessages.MSG_ERROR_OPERATION_TIMED_OUT, timeOutMessage );
+          } else 
+          {
+        	// If we are running headless, don't pop-up a message dialog; we should just automatically stop waiting after timeout. 
+        	waitMore = false;
+          }
           
           if( !waitMore )
           {
@@ -175,5 +187,10 @@ public class TimedOperation implements IUndoableOperation
   public void setLabel(String name)
   {
     operation.setLabel(name);
+  }
+  
+  public void setHeadless(boolean headless) 
+  {
+	this.headless = headless;
   }
 }
