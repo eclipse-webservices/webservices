@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060504   119296 pmoogk@ca.ibm.com - Peter Moogk
+ * 20150113	  457332 jgwest@ca.ibm.com - Jonathan West, TimedWSDLSelectionConditionCommand/TimedOperation classes blocks automated tests with confirmation dialog box
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -30,6 +31,7 @@ public class TimedWSDLSelectionConditionCommand extends AbstractDataModelOperati
   private final String                  TIMEOUT_PREFERENCE = "wsdlTimeOut";
   private WSDLSelectionConditionCommand selectionCommand;
   private int                           timeOutValue;
+  private boolean						headless = false;
   
   public TimedWSDLSelectionConditionCommand()
   {
@@ -55,6 +57,7 @@ public class TimedWSDLSelectionConditionCommand extends AbstractDataModelOperati
     String         timeOutMessage = ConsumptionUIMessages.bind( ConsumptionUIMessages.MSG_INFO_WSDL_OPERATION_TIMED_OUT, getWebServiceURI() );
     
     TimedOperation timedOperation = new TimedOperation( selectionCommand, timeOutValue, timeOutMessage );
+    timedOperation.setHeadless(headless);
     
     return timedOperation.execute(monitor, adaptable);
   }
@@ -89,5 +92,9 @@ public String getHttpBasicAuthPassword() {
  */
 public String getHttpBasicAuthUsername() {
 	return selectionCommand.getHttpBasicAuthUsername();
+}
+
+public void setHeadless(boolean headless) {
+	this.headless = headless;
 }
 }

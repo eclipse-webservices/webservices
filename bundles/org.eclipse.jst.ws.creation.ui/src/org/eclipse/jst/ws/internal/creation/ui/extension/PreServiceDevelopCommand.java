@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 IBM Corporation and others.
+ * Copyright (c) 2005, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@
  * 20090415   264683 danail.branekov@sap.com - Danail Branekov
  * 20100511   309395 mahutch@ca.ibm.com - Mark Hutchinson, WS Wizard Converting Java Project into Utility Project without any warning
  * 20131030   417117 kchong@ca.ibm.com - Keith Chong, NPE in web service wizard when specifying illegal service implementation
+ * 20150113	  457332 jgwest@ca.ibm.com - Jonathan West, TimedWSDLSelectionConditionCommand/TimedOperation classes blocks automated tests with confirmation dialog box
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
@@ -96,6 +97,7 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
   private boolean test_;
   private boolean publish_;
   
+  private boolean headlessRun_ = false;
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
@@ -160,6 +162,10 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
 			  
 			  // Validate the url before proceeding.
 			  TimedWSDLSelectionConditionCommand timedCmd = new TimedWSDLSelectionConditionCommand();
+			  
+			  // If the test is running headless, then inform the TimedWSDLSelectionCommand so that it doesn't pop-up a UI dialog
+			  timedCmd.setHeadless(headlessRun_);
+			  
 			  WebServicesParser                  parser   = WSDLParserFactory.getWSDLParser();
 			  
 			  timedCmd.setWebServicesParser( parser );
@@ -412,4 +418,9 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
 	  return initialProject_;  
   }	
 
+  
+  public void setHeadless(boolean isHeadless) 
+  {
+	  headlessRun_ = isHeadless;
+  }
 }
