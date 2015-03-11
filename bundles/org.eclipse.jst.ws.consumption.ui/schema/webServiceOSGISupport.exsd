@@ -73,6 +73,14 @@ From here, consumers should use thie ServiceOsgiAppProjectName value to create t
       </complexType>
    </element>
 
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         &lt;b&gt;This extension point is part of an interim API that might undergo further development and could change significantly before reaching stability. It is being made available at this early stage to solicit feedback from pioneering adopters on the understanding that any code that uses this API will almost certainly be broken (repeatedly) as the API evolves.&lt;/b&gt;
+      </documentation>
+   </annotation>
 
    <annotation>
       <appInfo>
