@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.jst.ws.consumption.ui" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.jst.ws.consumption.ui" id="webServiceOSGISupport" name="Web Service OSGI Support"/>
+      </appInfo>
+      <documentation>
+         Implementing consumers may consume this extension point, in order to allow OSGI bundles and applications to be supported by the Web Services Wizard. 
+
+Implementing this extension point and it&apos;s corresponding Interface will alter the Web Service wizard language from EAR-&gt;OSGI when an OSGI supported project is detected. Likewise, the value of the OSGI App field will be stored in ServiceOsgiAppProjectName, rather than in ServiceEarProjectName. 
+
+From here, consumers should use thie ServiceOsgiAppProjectName value to create the composite OSGI application and associate the OSGI bundle, as needed. This is not presently handled by the existing Web service commands.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="webServiceOSGISupport"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="webServiceOSGISupport">
+      <complexType>
+         <attribute name="applicableTemplates" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.jst.ws.internal.consumption.ui.common.IWebServiceOSGISupportExtension"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;pre&gt;
+  &lt;extension
+        point=&quot;org.eclipse.jst.ws.consumption.ui.webServiceOSGISupport&quot;&gt;
+
+     &lt;webServiceOSGISupport
+     	applicableTemplates=&quot;template.osgi.app template.osgi.bundle template.osgi.fragment&quot;
+           class=&quot;(Java class implementing interface IWebServiceOSGISupportExtension)&quot; &gt;
+                      
+     &lt;/webServiceOSGISupport&gt;
+     
+  &lt;/extension&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+
+
+
+</schema>
