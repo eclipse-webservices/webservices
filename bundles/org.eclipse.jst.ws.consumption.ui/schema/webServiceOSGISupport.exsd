@@ -6,11 +6,11 @@
          <meta.schema plugin="org.eclipse.jst.ws.consumption.ui" id="webServiceOSGISupport" name="Web Service OSGI Support"/>
       </appInfo>
       <documentation>
-         Implementing consumers may consume this extension point, in order to allow OSGI bundles and applications to be supported by the Web Services Wizard. 
+         Implementing consumers may consume this extension point, in order to allow OSGi bundles and applications to be supported by the Web Services Wizard. 
 
-Implementing this extension point and it&apos;s corresponding Interface will alter the Web Service wizard language from EAR-&gt;OSGI when an OSGI supported project is detected. Likewise, the value of the OSGI App field will be stored in ServiceOsgiAppProjectName, rather than in ServiceEarProjectName. 
+Implementing this extension point and it&apos;s corresponding Interface will alter the Web Service wizard language from EAR-&gt;OSGi when an OSGi supported project is detected. Likewise, the value of the OSGi App field will be stored in ServiceOsgiAppProjectName, rather than in ServiceEarProjectName. 
 
-From here, consumers should use thie ServiceOsgiAppProjectName value to create the composite OSGI application and associate the OSGI bundle, as needed. This is not presently handled by the existing Web service commands.
+From here, consumers should use this ServiceOsgiAppProjectName value to create the composite OSGi application and associate the OSGi bundle, as needed. This is not presently handled by the existing Web service commands.
       </documentation>
    </annotation>
 
