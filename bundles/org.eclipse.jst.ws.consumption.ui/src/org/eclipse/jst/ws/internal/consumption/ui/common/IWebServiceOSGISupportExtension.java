@@ -10,16 +10,16 @@ package org.eclipse.jst.ws.internal.consumption.ui.common;
 import org.eclipse.core.resources.IProject;
 
 /*
- *  Implementing consumers may consume the webServiceOSGISupport extension point, in order to allow OSGI bundles and applications to be supported by the Web Services Wizard.
+ *  Implementing consumers may consume the webServiceOSGISupport extension point, in order to allow OSGi bundles and applications to be supported by the Web Services Wizard.
  *   
- *  Implementing the extension point and this interface will alter the Web Service wizard language from EAR->OSGI when an OSGI supported project is detected. 
- *  Likewise, the value of the OSGI App field will be stored in ServiceOsgiAppProjectName, rather than in ServiceEarProjectName. 
+ *  Implementing the extension point and this interface will alter the Web Service wizard language from EAR to OSGi when an OSGi supported project is detected. 
+ *  Likewise, the value of the OSGi App field will be stored in ServiceOsgiAppProjectName, rather than in ServiceEarProjectName. 
  */
 
 public interface IWebServiceOSGISupportExtension {
 
 	/**
-	 * Return the default name of a composite OSGI app, given a bundle
+	 * Return the default name of a composite OSGi app, given a bundle
 	 * 'projectName', for example, MyWebProj would return MyWebProj.app; this is
 	 * similar to DefaultingUtils.getDefaultEARProjectName(...)
 	 */
