@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2013 IBM Corporation and others.
+ * Copyright (c) 2000, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@
  * 20080416   215084 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080425   221232 gilberta@ca.ibm.com - Gilbert Andrews
  * 20100511   309395 mahutch@ca.ibm.com - Mark Hutchinson, WS Wizard Converting Java Project into Utility Project without any warning
+ * 20150311   461526  jgwest@ca.ibm.com - Jonathan West,  Allow OSGi bundles to be selected in the Wizard * 
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui;
 
@@ -93,8 +94,13 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String LABEL_SERVICE_MODULE;
 	public static String LABEL_CLIENT_PROJECT;
 	public static String LABEL_SERVICE_PROJECT;
+	
 	public static String LABEL_CLIENT_EAR_PROJECT;
+	public static String LABEL_CLIENT_OSGI_PROJECT;
+	
 	public static String LABEL_SERVICE_EAR_PROJECT;
+	public static String LABEL_SERVICE_OSGI_PROJECT;
+	
 	public static String LABEL_CLIENT_COMP_TYPE_WEB;
 	public static String LABEL_CLIENT_COMP_TYPE_EJB;
 	public static String LABEL_CLIENT_COMP_TYPE_APP_CLIENT;
@@ -124,10 +130,16 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String MSG_J2EE_MISMATCH;
 	public static String MSG_SERVICE_PROJECT_EMPTY;
 	public static String MSG_SERVICE_PROJECT_TYPE_EMPTY;
+	
 	public static String MSG_SERVICE_EAR_EMPTY;
+	public static String MSG_SERVICE_OSGIAPP_EMPTY;
+	
 	public static String MSG_CLIENT_PROJECT_EMPTY;
 	public static String MSG_CLIENT_PROJECT_TYPE_EMPTY;
+	
 	public static String MSG_CLIENT_EAR_EMPTY;
+	public static String MSG_CLIENT_OSGIAPP_EMPTY;
+	
 	public static String MSG_INVALID_EJB_PROJECT;
 	public static String MSG_INVALID_WEB_PROJECT;
 	public static String MSG_INVALID_PROJECT_TYPE;
@@ -151,10 +163,18 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String MSG_SERVICE_SUB;
 	public static String MSG_GENERAL_PROJECT_AND_EAR;
 	public static String MSG_EAR_PROJECT_WILL_BE_CREATED;
+	
 	public static String MSG_EAR_WILL_BE_ASSOCIATED;
+	public static String MSG_OSGIAPP_WILL_BE_ASSOCIATED;
+	
 	public static String MSG_PROJECT_WILL_BE_CREATED;
+	
 	public static String MSG_EAR_WILL_BE_CREATED;
+	public static String MSG_OSGIAPP_WILL_BE_CREATED;
+	
 	public static String MSG_PROJECT_AND_EAR_CREATED;
+	public static String MSG_PROJECT_AND_OSGIAPP_CREATED;
+	
 	public static String PAGE_TITLE_WS_CLIENT_RUNTIME_SELECTION;
 	public static String PAGE_DESC_WS_CLIENT_RUNTIME_SELECTION;
 	public static String LABEL_CLIENT_SELECTION_VIEW_TITLE;
@@ -211,14 +231,20 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String TABLE_TITLE_EJB_BEAN_NAMES;
 	public static String TABLE_TITLE_EJB_PROJECT_NAME;
 	public static String LABEL_EAR_PROJECTS;
+	public static String LABEL_OSGI_PROJECTS;
     public static String LABEL_SHOW_ALL_STATELESS_SESSION_EJBS;
 	public static String CHECKBOX_OVERWRITE_FILES;
 	public static String DIALOG_TITILE_SERVICE_PROJECT_SETTINGS;
 	public static String DIALOG_TITILE_CLIENT_PROJECT_SETTINGS;
 	public static String DIALOG_TITILE_SERVICE_IMPL_SELECTION;
 	public static String DIALOG_TITILE_SERVICE_DEF_SELECTION;
-	public static String TOOLTIP_WSWSCEN_SERVICEPROJECT_LINK;
+	
+	public static String TOOLTIP_WSWSCEN_SERVICEPROJECT_LINK;	
 	public static String TOOLTIP_WSWSCEN_CLIENTPROJECT_LINK;
+
+	public static String TOOLTIP_WSWSCEN_SERVICEPROJECT_LINK_OSGI;	
+	public static String TOOLTIP_WSWSCEN_CLIENTPROJECT_LINK_OSGI;
+	
 	public static String TOOLTIP_WSWSCEN_SCALE_DEVELOP;
 	public static String TOOLTIP_WSWSCEN_SCALE_ASSEMBLE;
 	public static String TOOLTIP_WSWSCEN_SCALE_DEPLOY;
@@ -310,6 +336,7 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String TOOLTIP_PWSM_TEXT_SAMPLE_FOLDER;
 	public static String TOOLTIP_PWSM_TREE_METHODS;
 	public static String TOOLTIP_PWSM_EAR_PROJECT;
+	public static String TOOLTIP_PWSM_OSGI_PROJECT;
 	public static String DIALOG_TITLE_HTTP_BASIC_AUTH;
 	public static String LABEL_URL;
 	public static String LABEL_HTTP_BASIC_AUTH_USERNAME;

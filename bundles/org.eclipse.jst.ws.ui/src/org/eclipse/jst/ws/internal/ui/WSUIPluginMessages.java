@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2008 IBM Corporation and others.
+ * Copyright (c) 2000, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@
  * 20060515   141398 cbrealey@ca.ibm.com - Chris Brealey
  * 20080324   220983 trungha@ca.ibm.com - Trung Ha
  * 20080326   171705 trungha@ca.ibm.com - Trung, improve AntTask errors report
+ * 20150311   461526 jgwest@ca.ibm.com - Jonathan West,  Allow OSGi bundles to be selected in the Wizard 
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.ui;
 
@@ -72,7 +73,12 @@ public final class WSUIPluginMessages extends NLS {
 	public static String TOOLTIP_DRES_TREE_RESOURCE;
 	public static String TOOLTIP_PTPP_PAGE;
 	public static String TOOLTIP_ENABLE_TWO_EARS;
+	
 	public static String LABEL_ENABLE_TWO_EARS;
+	
+	public static String TOOLTIP_ENABLE_TWO_EARS_OR_OSGI;
+	public static String LABEL_ENABLE_TWO_EARS_OR_OSGI;
+	
 	public static String LABEL_CLIENT_TYPE_NAME;
 	public static String DIALOG_TITLE_RESOURCE_BROWSER;
 	public static String TOOLTIP_RESOURCE_TREE;

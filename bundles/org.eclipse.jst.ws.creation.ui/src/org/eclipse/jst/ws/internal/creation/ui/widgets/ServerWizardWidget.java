@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2013 IBM Corporation and others.
+ * Copyright (c) 2004, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -67,6 +67,7 @@
  * 20120501   378160 jenyoung@ca.ibm.com - Jennifer Young, Service project and service project type need to be refreshed when web service target runtime changes
  * 20130225   378160 jcayne@ca.ibm.com - Joel Cayne, Updates for refreshing server project type.
  * 20131030   417117 kchong@ca.ibm.com - Keith Chong, NPE in web service wizard when specifying illegal service implementation
+ * 20150311   461526 jgwest@ca.ibm.com - Jonathan West,  Allow OSGi bundles to be selected in the Wizard
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -314,7 +315,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 	
 	public WidgetDataEvents addControls(Composite parent,
 			Listener statusListener) {
-				
+		
 		statusListener_ = statusListener;
 		utils_.createInfoPop(parent, INFOPOP_WSWSCEN_PAGE);
 		
@@ -670,7 +671,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 	private void launchProjectDialog()
 	{
 		String currentProjectName = getServiceProjectName();
-		String currentEarProjectName = getServiceEarProjectName();
+		String currentEarProjectName = serviceEarProjectName_;
 		String currentProjectType = getServiceComponentType();
 		boolean currentNeedEar = getServiceNeedEAR();
 		
@@ -1082,7 +1083,20 @@ private void handleTypeChange()
 	
 	public String getClientEarProjectName()
 	{
-		return clientWidget_.getClientEarProjectName();
+		if(clientWidget_.isOSGI()) {
+			return null;
+		} else {
+			return clientWidget_.getClientEarProjectName();
+		}
+	}
+	
+	public String getClientOsgiAppProjectName() {
+		if(clientWidget_.isOSGI()) {
+			return clientWidget_.getClientEarProjectName();
+		} else {
+			return null;
+		}
+		
 	}
 	
 	public String getClientProjectName()
@@ -1271,7 +1285,7 @@ private void handleTypeChange()
 		String serverId = getServiceTypeRuntimeServer().getServerId();
 		String projectName = getServiceProjectName();
 		boolean needEar = getServiceNeedEAR();
-		String earProjectName = getServiceEarProjectName();
+		String earProjectName = serviceEarProjectName_;
 		String projectTypeId = getServiceComponentType();
 		
 		IStatus serviceMissingFieldStatus = valUtils.checkMissingFieldStatus(validationState_, typeId, serviceImpl,
@@ -1299,7 +1313,7 @@ private void handleTypeChange()
 		// 1. Check for errors on service side
 		String projectName = getServiceProjectName();
 		boolean needEar = getServiceNeedEAR();
-		String earProjectName = getServiceEarProjectName();
+		String earProjectName = serviceEarProjectName_;
 		String projectTypeId = getServiceComponentType();
 		String initialProjectName = "";
 		if (initialProject_ != null) {
@@ -1331,7 +1345,7 @@ private void handleTypeChange()
 
 				if (runtimeChecker != null) {
 					return runtimeChecker.checkServiceClientCompatibility(
-							getServiceNeedEAR(), getServiceEarProjectName(), getServiceProjectName(), 
+							getServiceNeedEAR(), serviceEarProjectName_, getServiceProjectName(), 
 							clientWidget_.getClientNeedEAR(), clientWidget_.getClientEarProjectName(), 
 							clientWidget_.getClientProjectName());
 				}
@@ -1421,14 +1435,44 @@ private void handleTypeChange()
 		 refreshEARLink();
 	  }
 	 
+	 private boolean isOSGI() 
+	 {
+		 
+		 if(DefaultingUtils.isOSGIProject(serviceProjectName_)) 
+		 {
+			 return true;
+		 }
+		 
+		 if(serviceComponentType_ != null && DefaultingUtils.isOSGITemplate(serviceComponentType_)) 
+		 {
+			 return true;
+		 }
+		 
+		 return false;
+	 }
+	 
 	  public void refreshEARLink()
 	  {
 		  hLinkServiceEAR_.setVisible(needEar_); 
 		  if (needEar_)
 		  {			 
-			  hLinkServiceEAR_.setText(SERVICE_EAR_PREFIX + " " + serviceEarProjectName_);
+			  
+			  if(isOSGI()) 
+			  {
+				  
+				  hLinkServiceEAR_.setText(ConsumptionUIMessages.LABEL_SERVICE_OSGI_PROJECT + " " + serviceEarProjectName_);
+				  hLinkServiceEAR_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SERVICEPROJECT_LINK_OSGI);
+				  hLinkServiceProject_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SERVICEPROJECT_LINK_OSGI);
+			  } else 
+			  {
+				  hLinkServiceEAR_.setText(SERVICE_EAR_PREFIX + " " + serviceEarProjectName_);
+				  hLinkServiceEAR_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SERVICEPROJECT_LINK);
+				  hLinkServiceProject_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SERVICEPROJECT_LINK);
+			  }
+			  
 			  hLinkServiceEAR_.pack(true);
 			  packSelf();
+			  
 		  }
 	  }
 	 public void setServiceComponentType( String type )
@@ -1470,7 +1514,24 @@ private void handleTypeChange()
 	  
 	  public String getServiceEarProjectName()
 	  {
-		  return serviceEarProjectName_;
+		  if(isOSGI()) 
+		  {
+			  return null; 
+		  } 
+		  else 
+		  {
+			  return serviceEarProjectName_;
+		  }
+	  }
+	  
+	  public String getServiceOsgiAppProjectName() {
+		  if(isOSGI()) 
+		  {
+			  return serviceEarProjectName_;
+		  } else 
+		  {
+			  return null;
+		  }
 	  }
 	  
 	  public void setClientProject(IProject project)

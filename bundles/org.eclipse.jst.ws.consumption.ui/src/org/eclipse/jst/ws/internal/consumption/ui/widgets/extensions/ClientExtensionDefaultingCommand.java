@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2013 IBM Corporation and others.
+ * Copyright (c) 2004, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@
  * 20080506   227848 makandre@ca.ibm.com - Andrew Mak, Disabled "Run on Server" checkbox is in checked state
  * 20080729   241275 ericdp@ca.ibm.com - Eric D. Peters, No Validation error generating Web Service client if dialog hidden
  * 20090803   283312 ericdp@ca.ibm.com - Eric D. Peters, ANT Client gen- message missing server name subst. variable
+ * 20150311   461526 jgwest@ca.ibm.com - Jonathan West,  Allow OSGi bundles to be selected in the Wizard
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
@@ -92,6 +93,9 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
   
   //ServerDeployableConfigurationCommand
   private String serverInstId_;
+  
+  
+  private String clientOsgiAppProjectName;
   
   public ClientExtensionDefaultingCommand( boolean isClientScenario )
   {
@@ -676,4 +680,12 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
 
     return status;
   } 
+  
+  public String getClientOsgiAppProjectName() {
+	  return clientOsgiAppProjectName;
+  }
+  
+  public void setClientOsgiAppProjectName(String clientOsgiAppProjectName) {
+	this.clientOsgiAppProjectName = clientOsgiAppProjectName;
+  }
 }

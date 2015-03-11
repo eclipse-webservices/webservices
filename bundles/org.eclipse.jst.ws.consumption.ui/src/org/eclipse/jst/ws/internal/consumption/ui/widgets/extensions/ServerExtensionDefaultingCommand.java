@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 IBM Corporation and others.
+ * Copyright (c) 2004, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@
  * 20080409   219121 trungha@ca.ibm.com - Trung Ha
  * 20080729   241275 ericdp@ca.ibm.com - Eric D. Peters, No Validation error generating Web Service client if dialog hidden
  * 20081028   248625 ericdp@ca.ibm.com - Eric D. Peters, Exceptions running ANT tasks using inappropriate projects
+ * 20150311   461526 jgwest@ca.ibm.com - Jonathan West,  Allow OSGi bundles to be selected in the Wizard
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
@@ -68,6 +69,7 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
   private boolean serviceNeedEAR_;
   private WebServicesParser wsdlParser_;
   
+  private String serviceOsgiAppProjectName_;
 
   
   public void setServiceTypeRuntimeServer(TypeRuntimeServer ids)
@@ -461,4 +463,13 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
     
     return status;
   }
+  
+  public String getServiceOsgiAppProjectName() {
+	return serviceOsgiAppProjectName_;
+  }
+  
+  public void setServiceOsgiAppProjectName(String serviceOsgiAppProjectName) {
+	this.serviceOsgiAppProjectName_ = serviceOsgiAppProjectName;
+  }
+  
 }

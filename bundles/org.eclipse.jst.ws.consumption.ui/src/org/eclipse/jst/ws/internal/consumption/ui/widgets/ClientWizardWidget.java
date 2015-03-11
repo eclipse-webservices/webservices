@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2009 IBM Corporation and others.
+ * Copyright (c) 2004, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@
  * 20090302   242462 ericdp@ca.ibm.com - Eric D. Peters, Save Web services wizard settings
  * 20090313   268567 ericdp@ca.ibm.com - Eric D. Peters, persisted wizard settings gone unless launching on object
  * 20090326   269097 kchong@ca.ibm.com - Keith Chong, [Accessibility] Web services wizard dialog should be selected after canceling the Browse for class dialog
+ * 20150311   461526 jgwest@ca.ibm.com - Jonathan West,  Allow OSGi bundles to be selected in the Wizard
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -46,6 +47,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUI
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.Timer;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
+import org.eclipse.jst.ws.internal.ui.common.ComboWithHistory;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -60,8 +62,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.env.ui.widgets.PageInfo;
@@ -70,7 +70,6 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
-import org.eclipse.jst.ws.internal.ui.common.ComboWithHistory;
 
 
 public class ClientWizardWidget extends SimpleWidgetDataContributor implements Runnable
@@ -235,10 +234,25 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor implements R
 	  return clientWidget_.getClientRuntimeId();
   }
   
-  public String getClientEarProjectName()
-  {
-	  return clientWidget_.getClientEarProjectName();
-  }
+
+	public String getClientEarProjectName()
+	{
+		if(clientWidget_.isOSGI()) {
+			return null;
+		} else {
+			return clientWidget_.getClientEarProjectName();
+		}
+	}
+	
+	public String getClientOsgiAppProjectName() {
+		if(clientWidget_.isOSGI()) {
+			return clientWidget_.getClientEarProjectName();
+		} else {
+			return null;
+		}
+		
+	}
+
   
   public String getClientProjectName()
   {

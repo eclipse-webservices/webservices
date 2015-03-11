@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2006 IBM Corporation and others.
+ * Copyright (c) 2003, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,10 +11,12 @@
  * -------- -------- -----------------------------------------------------------
  * 20060227   124392 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060515   141398 cbrealey@ca.ibm.com - Chris Brealey
+ * 20150311   461526 jgwest@ca.ibm.com - Jonathan West,  Allow OSGi bundles to be selected in the Wizard 
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.preferences;
 
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.eclipse.jface.preference.PreferencePage;
@@ -24,6 +26,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jst.ws.internal.consumption.ui.common.DefaultingUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.ui.WSUIPluginMessages;
 import org.eclipse.jst.ws.internal.ui.plugin.WebServiceUIPlugin;
@@ -48,6 +51,7 @@ import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
 
 
+
 public class ProjectTopologyPreferencePage extends PreferencePage implements IWorkbenchPreferencePage, SelectionListener
 {
   /*CONTEXT_ID PTPP0001 for the Project Topology Preference Page*/
@@ -65,6 +69,8 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
 
   private Button twoEAR_;
 
+  private boolean containsOSGIClientOrServiceType = false;
+  
  /**
    * Creates preference page controls on demand.
    *   @param parent  the parent for the preference page
@@ -263,6 +269,38 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
     twoEAR_.setSelection(true);
   }
   
+  private void updateForOSGIIfNeeded() {
+	  try {
+		  boolean isOSGI = false;
+		  if(serviceTypes_ != null) {
+			  for(Iterator it = serviceTypes_.iterator(); it.hasNext() && !isOSGI;) {
+				  String type = (String)it.next();
+				  if(type != null) {
+					  isOSGI = isOSGI ? isOSGI : DefaultingUtils.isOSGITemplate(type);
+				  }
+			  }
+		  }
+		  
+		  if(clientTypes_ != null && !isOSGI) {
+			  for(Iterator it = clientTypes_.iterator(); it.hasNext() && !isOSGI;) {
+				  String type = (String)it.next();
+				  if(type != null) {
+					  isOSGI = isOSGI ? isOSGI : DefaultingUtils.isOSGITemplate(type);
+				  }
+			  }			  
+		  }
+		  
+		  if(isOSGI) {
+			twoEAR_.setText(WSUIPluginMessages.LABEL_ENABLE_TWO_EARS_OR_OSGI);
+			twoEAR_.setToolTipText(WSUIPluginMessages.TOOLTIP_ENABLE_TWO_EARS_OR_OSGI);
+		  } 
+	  } catch(Exception e) {
+		  // Report and return; first, do no harm.
+		  e.printStackTrace();
+		  
+	  }
+  }
+  
   /**
    * Initializes states of the controls from the preference helper.
    */
@@ -310,6 +348,8 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
     }
     
     twoEAR_.setSelection(context.isUseTwoEARs());
+    
+    updateForOSGIIfNeeded();
    }
 
   /**

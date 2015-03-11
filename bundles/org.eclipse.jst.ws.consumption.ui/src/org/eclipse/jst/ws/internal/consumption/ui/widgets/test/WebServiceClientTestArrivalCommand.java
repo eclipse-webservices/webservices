@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2008 IBM Corporation and others.
+ * Copyright (c) 2003, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@
  * 20060906   154548 gilberta@ca.ibm.com - Gilbert Andrews, This fixes name collisions when creating a sample project
  * 20060922   158177 makandre@ca.ibm.com - Andrew Mak, NPE when creating web service client into existing Java project with test
  * 20080507   224433 makandre@ca.ibm.com - Andrew Mak, Need better error message in sample JSP generation when Java proxy bean does not exist
+ * 20150311   461526 jgwest@ca.ibm.com - Jonathan West,  Allow OSGi bundles to be selected in the Wizard
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
@@ -67,6 +68,7 @@ public class WebServiceClientTestArrivalCommand extends AbstractDataModelOperati
   private String sampleC;
   private String sampleProjectEAR;
 
+  private String clientProjectOSGI;
   
   
   /**
@@ -205,12 +207,14 @@ public class WebServiceClientTestArrivalCommand extends AbstractDataModelOperati
   	}  
 	
   	
+  	if(clientProjectEAR != null && clientProjectEAR.length() > 0) {
+  		sampleProjectEAR = clientProjectEAR;
+  	} else if(clientProjectOSGI != null && clientProjectOSGI.trim().length() > 0) {
+  		sampleProjectEAR = clientProjectOSGI;
+  	} else {
+  		sampleProjectEAR = sampleP + DEFAULT_SAMPLE_EAR_PROJECT_EXT + "/" + sampleC + DEFAULT_SAMPLE_EAR_PROJECT_EXT;
+  	}
   	
-  	
-  	sampleProjectEAR = clientProjectEAR;
-	if (sampleProjectEAR == null || sampleProjectEAR.length()==0){
-	  sampleProjectEAR = sampleP + DEFAULT_SAMPLE_EAR_PROJECT_EXT + "/" + sampleC + DEFAULT_SAMPLE_EAR_PROJECT_EXT;	
-	}
 	
   }
     
@@ -273,5 +277,11 @@ public class WebServiceClientTestArrivalCommand extends AbstractDataModelOperati
     return sampleProjectEAR;
   }
   
+  public String getClientProjectOSGI() {
+	return clientProjectOSGI;
+}
+  public void setClientProjectOSGI(String clientProjectOSGI) {
+	this.clientProjectOSGI = clientProjectOSGI;
+}
 
 }

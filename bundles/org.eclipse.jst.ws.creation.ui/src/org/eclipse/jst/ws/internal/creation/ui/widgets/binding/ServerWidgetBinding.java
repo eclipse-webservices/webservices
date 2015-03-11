@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,7 @@
  * 20080729   241275 ericdp@ca.ibm.com - Eric D. Peters, No Validation error generating Web Service client if dialog hidden
  * 20090724   284582 mahutch@ca.ibm.com - Mark Hutchinson, WS Test facility selection ignored when wizard completes. Default always chosen
  * 20100528   314934 mahutch@ca.ibm.com - Mark Hutchinson, Pressing "Launch" on service test page causes test client not to launch on "Client test" page
+ * 20150311   461526 jgwest@ca.ibm.com - Jonathan West,  Allow OSGi bundles to be selected in the Wizard
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.binding;
 
@@ -209,10 +210,17 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ServerWizardWidget.class, "ClientTypeRuntimeServer", ClientExtensionDefaultingCommand.class);
     dataRegistry.addMapping(ServerWizardWidget.class, "ClientRuntimeId", ClientExtensionDefaultingCommand.class);
     dataRegistry.addMapping(ServerWizardWidget.class, "ServiceProjectName", ServerExtensionDefaultingCommand.class);
+    
+    dataRegistry.addMapping(ServerWizardWidget.class, "ServiceOsgiAppProjectName", ServerExtensionDefaultingCommand.class);
     dataRegistry.addMapping(ServerWizardWidget.class, "ServiceEarProjectName", ServerExtensionDefaultingCommand.class);
+    
     dataRegistry.addMapping(ServerWizardWidget.class, "ServiceComponentType", ServerExtensionDefaultingCommand.class);        
     dataRegistry.addMapping(ServerWizardWidget.class, "ClientProjectName", ClientExtensionDefaultingCommand.class);
+    dataRegistry.addMapping(ServerWizardWidget.class, "ClientOsgiAppProjectName", ClientExtensionDefaultingCommand.class);
+    
     dataRegistry.addMapping(ServerWizardWidget.class, "ClientEarProjectName", ClientExtensionDefaultingCommand.class);
+    
+    
     dataRegistry.addMapping(ServerWizardWidget.class, "ClientComponentType", ClientExtensionDefaultingCommand.class);
     dataRegistry.addMapping(ServerWizardWidget.class, "ServiceNeedEAR", ServerExtensionDefaultingCommand.class);
     dataRegistry.addMapping(ServerWizardWidget.class, "ClientNeedEAR", ClientExtensionDefaultingCommand.class);
@@ -588,9 +596,10 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProject",ClientTestDelegateCommand.class);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientNeedEAR", ClientTestDelegateCommand.class);
 	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientEarProjectName", ClientTestDelegateCommand.class);
+	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientOsgiAppProjectName", WebServiceClientTestArrivalCommand.class, "ClientProjectOSGI", null);	  
 	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientEarComponentName", ClientTestDelegateCommand.class);
 	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProject", WebServiceClientTestArrivalCommand.class);
-	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProjectEAR", WebServiceClientTestArrivalCommand.class);
+	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProjectEAR", WebServiceClientTestArrivalCommand.class);	  
 	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "LaunchedServiceTestName", WebServiceClientTestArrivalCommand.class);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientServer", ClientTestDelegateCommand.class);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "RunTestClient",ClientTestDelegateCommand.class); 

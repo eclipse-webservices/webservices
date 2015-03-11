@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2008 IBM Corporation and others.
+ * Copyright (c) 2000, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
  * 20060608   145529 kathy@ca.ibm.com - Kathy Chan
  * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080610   224433 makandre@ca.ibm.com - Andrew Mak, Need better error message in sample JSP generation when Java proxy bean does not exist (cont.)
+ * 20150311   461526 jgwest@ca.ibm.com - Jonathan West,  Allow OSGi bundles to be selected in the Wizard *
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
@@ -74,6 +75,8 @@ public class ClientTestDelegateCommand extends AbstractDataModelOperation
   private boolean isTestWidget = false;
   private String setEndpointMethod;
   private List endpoints;
+  
+  private String clientOsgiAppProjectName;
 
   public ClientTestDelegateCommand ()
   {
@@ -185,6 +188,7 @@ public class ClientTestDelegateCommand extends AbstractDataModelOperation
 	testInfo.setClientNeedEAR(clientNeedEAR);
 	testInfo.setClientEARProject(clientEarProjectName);
 	testInfo.setClientEARModule(clientEarComponentName);
+	testInfo.setClientOsgiAppProject(clientOsgiAppProjectName);
 	testInfo.setMethods(methods);
 	
 	//if this is a client scenario the service stuff is empty
@@ -365,4 +369,9 @@ public class ClientTestDelegateCommand extends AbstractDataModelOperation
 	public void setClientNeedEAR(boolean clientNeedEAR) {
 		this.clientNeedEAR = clientNeedEAR;
 	}
+	
+	public void setClientOsgiAppProjectName(String clientOsgiAppProjectName) {
+		this.clientOsgiAppProjectName = clientOsgiAppProjectName;
+	}
+	
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@
  * 20090302   249602 ericdp@ca.ibm.com - Eric D. Peters, PII- association warning message needs update
  * 20090910   289113 ericdp@ca.ibm.com - Eric D. Peters -  Linux: usability issue when selecting a Java Project in the Specify Client Project Settings dialog
  * 20100929   326549 mahutch@ca.ibm.com - Mark Hutchinson, Web Service Wizard Can Default to invalid project type
+ * 20150311   461526 jgwest@ca.ibm.com - Jonathan West,  Allow OSGi bundles to be selected in the Wizard *
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -32,7 +33,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jst.j2ee.model.internal.validation.EARValidationMessageResourceHandler;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
@@ -43,15 +44,20 @@ import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUI
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.jst.ws.internal.ui.common.ComboWithHistory;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Widget;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
@@ -83,7 +89,10 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   
   private Composite parent_;
   private Combo moduleProject_;
+  
+  private Label earProjectLabel_;
   private Combo earProject_;
+
   private Combo projectType_;
   
   private String[] templates_;
@@ -124,23 +133,36 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   }
     
   public WidgetDataEvents addControls(Composite parent, Listener statusListener) {
-	  
+	
     parent_ = parent;
     UIUtils uiUtils = new UIUtils(pluginId_);
 
     statusListener_ = statusListener;
-		
+	
+    boolean isOSGISelected = isOSGISelected();
+    
     if (isClient_)
 	{
 	  moduleProject_ = uiUtils.createCombo(parent, ConsumptionUIMessages.LABEL_CLIENT_PROJECT, ConsumptionUIMessages.LABEL_CLIENT_PROJECT, INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
       projectType_ = uiUtils.createCombo(parent, ConsumptionUIMessages.LABEL_CLIENT_TYPE, ConsumptionUIMessages.TOOLTIP_PWCR_COMBO_CLIENT_TYPE, INFOPOP_PWRS_COMBO_CLIENT_PROJECT_TYPE, SWT.SINGLE | SWT.BORDER |SWT.READ_ONLY);      
-	  earProject_ = uiUtils.createCombo(parent, ConsumptionUIMessages.LABEL_CLIENT_EAR_PROJECT, ConsumptionUIMessages.LABEL_CLIENT_EAR_PROJECT, INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
-    }
+
+      String earProjectLabel = isOSGISelected ? ConsumptionUIMessages.LABEL_CLIENT_OSGI_PROJECT : ConsumptionUIMessages.LABEL_CLIENT_EAR_PROJECT;
+      
+      Widget[] earProjectResult = createCombo(parent, earProjectLabel, earProjectLabel, INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER, null );
+      earProject_ = (Combo)earProjectResult[0];
+      earProjectLabel_ = (Label)earProjectResult[1];
+	}
     else 
 	{      
 	  moduleProject_ = uiUtils.createCombo(parent, ConsumptionUIMessages.LABEL_SERVICE_PROJECT, ConsumptionUIMessages.LABEL_SERVICE_PROJECT, INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
       projectType_ = uiUtils.createCombo(parent, ConsumptionUIMessages.LABEL_SERVICE_TYPE, ConsumptionUIMessages.TOOLTIP_PWCR_COMBO_SERVICE_TYPE, INFOPOP_PWRS_COMBO_SERVICE_PROJECT_TYPE, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY);      
-	  earProject_ = uiUtils.createCombo(parent, ConsumptionUIMessages.LABEL_SERVICE_EAR_PROJECT, ConsumptionUIMessages.LABEL_SERVICE_EAR_PROJECT, INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
+	  
+      String earProjectLabel = isOSGISelected ? ConsumptionUIMessages.LABEL_SERVICE_OSGI_PROJECT : ConsumptionUIMessages.LABEL_SERVICE_EAR_PROJECT;
+      
+      
+      Widget[] earProjectResult = createCombo(parent, earProjectLabel, earProjectLabel, INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER, null );
+      earProject_ = (Combo)earProjectResult[0];
+      earProjectLabel_ = (Label)earProjectResult[1];
     }
     
     //Temporarily remove the listeners
@@ -177,6 +199,8 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     messageText_.setBackground(parent.getBackground());
     setEarProjectItems();
   
+    updateTextForOSGI();
+    
     return this;
   }
   
@@ -435,8 +459,83 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     return -1;    
   }
   
+  private boolean isOSGISelected() {
+	  try {
+		  if(projectType_ != null && !projectType_.isDisposed()) {
+			  int index = projectType_.getSelectionIndex();
+			  if(index >= 0) {
+				  String item = projectType_.getItem(index);
+				  if(item != null) {
+					  String id = FacetUtils.getTemplateIdByLabel(item);
+					  if(DefaultingUtils.isOSGITemplate(id)) {
+						  return true;
+					  }
+					  
+				  }
+			  }
+		  }
+		  
+		  if(moduleProject_ != null && !moduleProject_.isDisposed()) {
+			  String text = moduleProject_.getText();
+			  
+			  if(text != null && text.trim().length() > 0 && DefaultingUtils.isOSGIProject(text)) {
+				  return true;
+			  }
+		  }
+	  } catch(Exception e) {
+		  // Ignore -- First, do no harm.
+		  e.printStackTrace();		  
+	  }
+	  
+	  
+	  return false;
+	
+  }
+  
+  private void updateTextForOSGI() {
+	  try {
+		  
+		  if(moduleProject_ != null) {
+			  
+			  boolean isOSGISelected = isOSGISelected();
+
+			  if(isOSGISelected) {
+				  
+				  if(isClient_) {
+					  earProjectLabel_.setText(ConsumptionUIMessages.LABEL_CLIENT_OSGI_PROJECT);
+					  earProjectLabel_.setToolTipText(ConsumptionUIMessages.LABEL_CLIENT_OSGI_PROJECT);
+					  earProject_.setToolTipText(ConsumptionUIMessages.LABEL_CLIENT_OSGI_PROJECT);
+				  } else {
+					  earProjectLabel_.setText(ConsumptionUIMessages.LABEL_SERVICE_OSGI_PROJECT);
+					  earProjectLabel_.setToolTipText(ConsumptionUIMessages.LABEL_SERVICE_OSGI_PROJECT);
+					  earProject_.setToolTipText(ConsumptionUIMessages.LABEL_SERVICE_OSGI_PROJECT);
+				  }
+			  } else {
+	
+				  if(isClient_) {
+					  earProjectLabel_.setText(ConsumptionUIMessages.LABEL_CLIENT_EAR_PROJECT);
+					  earProjectLabel_.setToolTipText(ConsumptionUIMessages.LABEL_CLIENT_EAR_PROJECT);
+					  earProject_.setToolTipText(ConsumptionUIMessages.LABEL_CLIENT_EAR_PROJECT);
+				  } else {
+					  earProjectLabel_.setText(ConsumptionUIMessages.LABEL_SERVICE_EAR_PROJECT);
+					  earProjectLabel_.setToolTipText(ConsumptionUIMessages.LABEL_SERVICE_EAR_PROJECT);
+					  earProject_.setToolTipText(ConsumptionUIMessages.LABEL_SERVICE_EAR_PROJECT);
+				  }
+	
+			  }
+		  }
+	  } catch(Exception e) {
+		  e.printStackTrace();
+		  // Ignore -- First, do no harm.
+	  }
+	  
+  }
+
+  
   private void updateEARState()
   {
+	  updateTextForOSGI();
+	  
       if(!projectNeedsEAR(moduleProject_.getText()))
       {
 	    earProject_.setEnabled(false);   
@@ -457,7 +556,14 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     earProject_.removeAll();    
     setEarProjectItems(); 
     
-    String earName = DefaultingUtils.getDefaultEARProjectName(moduleProject_.getText());
+    String earName = "";
+    
+    if(isOSGISelected()) {
+    	earName = DefaultingUtils.getDefaultOSGIAppProjectName(moduleProject_.getText());
+    } else {
+    	earName = DefaultingUtils.getDefaultEARProjectName(moduleProject_.getText());
+    }
+    
     earProject_.setText(earName);
   }
 
@@ -545,6 +651,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   
   private String getValidationMessage(byte result, String serviceOrClient) {
     String msg = null;
+    boolean isOSGI = isOSGISelected();
     switch (result) {
     case 0:
       return "";
@@ -554,14 +661,28 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
       break;
     case 2:
     case 6:
-      msg = ConsumptionUIMessages.MSG_EAR_WILL_BE_CREATED;
+    	if(isOSGI) {
+    		msg = ConsumptionUIMessages.MSG_OSGIAPP_WILL_BE_CREATED;
+    	} else {
+    		msg = ConsumptionUIMessages.MSG_EAR_WILL_BE_CREATED;
+    	}
       break;
     case 3:
     case 7:
-      msg = ConsumptionUIMessages.MSG_PROJECT_AND_EAR_CREATED;
+    	if(isOSGI) {
+    		msg = ConsumptionUIMessages.MSG_PROJECT_AND_OSGIAPP_CREATED;
+    	} else {
+    		msg = ConsumptionUIMessages.MSG_PROJECT_AND_EAR_CREATED;
+    	}
+      
       break;
     case 4:
-      msg = ConsumptionUIMessages.MSG_EAR_WILL_BE_ASSOCIATED;
+    	if(isOSGI) {
+    		msg = ConsumptionUIMessages.MSG_OSGIAPP_WILL_BE_ASSOCIATED;
+    	} else {
+    		msg = ConsumptionUIMessages.MSG_EAR_WILL_BE_ASSOCIATED;
+    	}
+      
       break;
     }
     return msg != null ? NLS.bind(msg, new Object[] { serviceOrClient}) : "";
@@ -573,6 +694,8 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     handleSetMessageText();
     String projectText = moduleProject_.getText();
     String earText = earProject_.getText();
+    
+    boolean isOSGI = isOSGISelected();
     
     if (projectText==null || projectText.length()==0)
     {
@@ -586,11 +709,21 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     {
       if (isClient_)
       {
-        return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_CLIENT_EAR_EMPTY, new String[]{""} ) );
+    	  if(isOSGI) {
+    		  return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_CLIENT_OSGIAPP_EMPTY, new String[]{""} ) );
+    	  } else  {
+    		  return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_CLIENT_EAR_EMPTY, new String[]{""} ) );  
+    	  }
+        
       }
       else
       {
-        return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_SERVICE_EAR_EMPTY, new String[]{""} ) );
+    	  if(isOSGI) {
+    		  return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_SERVICE_OSGIAPP_EMPTY, new String[]{""} ) );
+    	  } else {
+    		  return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_SERVICE_EAR_EMPTY, new String[]{""} ) );
+    	  }
+        
       }      
     }
     
@@ -622,4 +755,36 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     
     return finalStatus;
   }
+  
+  private Widget[] createCombo( Composite parent, String labelName, String tooltip, String infopop, int style, IDialogSettings settings ) 
+  {
+	  Widget[] result = new Widget[2];
+	  
+	  tooltip = tooltip == null ? labelName : tooltip;
+	    Combo combo;
+	    if( labelName != null )
+	    {
+	      Label label = new Label( parent, SWT.WRAP);
+	      label.setText( labelName );
+	      label.setToolTipText( tooltip );
+	      result[1] = label;
+	    }
+	    if (settings == null)
+	    	combo = new Combo( parent, style );
+	    else
+	    	combo = new ComboWithHistory(parent, style, settings);
+	    GridData griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+	     
+	    combo.setLayoutData( griddata );
+	    combo.setToolTipText( tooltip );
+	    
+	    if( infopop != null ) PlatformUI.getWorkbench().getHelpSystem().setHelp( combo, pluginId_ + "." + infopop );
+	    
+	    result[0] = combo;
+	    
+	    return result;      
+
+  }
+  
+
 }

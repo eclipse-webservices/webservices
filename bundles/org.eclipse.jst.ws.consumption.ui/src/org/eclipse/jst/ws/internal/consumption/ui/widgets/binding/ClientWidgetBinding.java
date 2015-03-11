@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 IBM Corporation and others.
+ * Copyright (c) 2004, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@
  * 20080506   227848 makandre@ca.ibm.com - Andrew Mak, Disabled "Run on Server" checkbox is in checked state
  * 20080715   240722 makandre@ca.ibm.com - Andrew Mak, Cannot setup TCP/IP Monitor for soap12 endpoints
  * 20080722   240231 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20150311   461526 jgwest@ca.ibm.com - Jonathan West,  Allow OSGi bundles to be selected in the Wizard
  * 
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
@@ -149,7 +150,10 @@ public class ClientWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ClientWizardWidget.class, "ClientTypeRuntimeServer", ClientExtensionDefaultingCommand.class);
     dataRegistry.addMapping(ClientWizardWidget.class, "ClientRuntimeId", ClientExtensionDefaultingCommand.class);
     dataRegistry.addMapping(ClientWizardWidget.class, "ClientProjectName", ClientExtensionDefaultingCommand.class);
-    dataRegistry.addMapping(ClientWizardWidget.class, "ClientEarProjectName", ClientExtensionDefaultingCommand.class); 
+    
+    dataRegistry.addMapping(ClientWizardWidget.class, "ClientEarProjectName", ClientExtensionDefaultingCommand.class);
+    dataRegistry.addMapping(ClientWizardWidget.class, "ClientOsgiAppProjectName", ClientExtensionDefaultingCommand.class);
+    
     dataRegistry.addMapping(ClientWizardWidget.class, "ClientComponentType", ClientExtensionDefaultingCommand.class);
     dataRegistry.addMapping(ClientWizardWidget.class, "ClientNeedEAR", ClientExtensionDefaultingCommand.class);
         
@@ -384,6 +388,10 @@ public class ClientWidgetBinding implements CommandWidgetBinding
            
 	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProjectEAR", WebServiceClientTestArrivalCommand.class);
 	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProject", WebServiceClientTestArrivalCommand.class);
+	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientOsgiAppProjectName", WebServiceClientTestArrivalCommand.class, "ClientProjectOSGI", null);
+	  
+	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientOsgiAppProjectName", ClientTestDelegateCommand.class, "ClientOsgiAppProjectName", null);
+	  
             
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "GenerateProxy", ClientTestFragment.class);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService", ClientTestFragment.class );

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2009 IBM Corporation and others.
+ * Copyright (c) 2004, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,7 @@
  * 20080327   224452 trungha@ca.ibm.com - Trung Ha
  * 20080416   215084 gilberta@ca.ibm.com - Gilbert Andrews
  * 20090121   261730 zhang@ca.ibm.com - Allan Zhang, WebService client runtime id return null
+ * 20150311   461526 jgwest@ca.ibm.com - Jonathan West,  Allow OSGi bundles to be selected in the Wizard 
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -694,11 +695,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor impl
 				hLinkClientProject_.pack(true);
 				packIt();
 			}
-			if (!newEarProjectName.equals(currentEarProjectName))
-			{
-				hLinkClientEAR_.pack(true);
-				packIt();
-			}
+			refreshEARLink();
 		}		
 	}
   
@@ -906,12 +903,41 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor impl
    		   
   }
   
+  
+ public boolean isOSGI() 
+ {
+	 
+	 if(DefaultingUtils.isOSGIProject(projectName_)) 
+	 {
+		 return true;
+	 }
+	 
+	 if(clientComponentType_ != null && DefaultingUtils.isOSGITemplate(clientComponentType_)) 
+	 {
+		 return true;
+	 }
+	 
+	 return false;
+ }
+
+  
   public void refreshEARLink()
   {
 	  hLinkClientEAR_.setVisible(needEar_ && getGenerateProxy());
 	  if (needEar_)
-	  {    	
-		  hLinkClientEAR_.setText(CLIENT_EAR_PREFIX + " " + earProjectName_);
+	  {
+		  if(isOSGI()) {
+			  hLinkClientEAR_.setText(ConsumptionUIMessages.LABEL_CLIENT_OSGI_PROJECT + " " + earProjectName_);
+			  hLinkClientEAR_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_CLIENTPROJECT_LINK_OSGI);
+			  
+			  hLinkClientProject_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_CLIENTPROJECT_LINK_OSGI);
+			  
+		  } else {
+			  hLinkClientEAR_.setText(CLIENT_EAR_PREFIX + " " + earProjectName_);
+			  hLinkClientEAR_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_CLIENTPROJECT_LINK);
+			  hLinkClientProject_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_CLIENTPROJECT_LINK);
+		  }
+		  
 		  hLinkClientEAR_.pack(true); 
 		  packIt();
 	  }  

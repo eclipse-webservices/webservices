@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2009 IBM Corporation and others.
+ * Copyright (c) 2004, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@
  * 20080808   243602 rkklai@ca.ibm.com   - Raymond Lai, fix NPE when changing runtime (the server combo)
  * 20090302   242462 ericdp@ca.ibm.com - Eric D. Peters, Save Web services wizard settings
  * 20090324   247535 mahutch@ca.ibm.com - Mark Hutchinson, Wrong server instance(s) is chosen during JAX-RPC sample generation
+ * 20150311   461526 jgwest@ca.ibm.com - Jonathan West,  Allow OSGi bundles to be selected in the Wizard
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
@@ -38,6 +39,7 @@ import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.FolderResourceFilter;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.common.DefaultingUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.common.LabelsAndIds;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
@@ -50,6 +52,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -128,6 +131,8 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   /*CONTEXT_ID PWSM0015 for the run test check box of the Sample Page*/
   private String INFOPOP_PWSM_CHECKBOX_LAUNCH = "PWSM0015";
   //
+  
+  private Label earLabel_;
   private Text earCombo_;
   /*CONTEXT_ID PWSM0016 for the EAR combo box of the Sample Page*/
   private String INFOPOP_PWSM_EAR_COMBO = "PWSM0016";
@@ -193,14 +198,15 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
     new Label( comboGroup_, SWT.NONE );
     
     
-    earCombo_ = uiUtils.createText( comboGroup_, ConsumptionUIMessages.LABEL_EAR_PROJECTS,
+    Object[] earComboWidgets = createText( comboGroup_, ConsumptionUIMessages.LABEL_EAR_PROJECTS,
     								ConsumptionUIMessages.TOOLTIP_PWSM_EAR_PROJECT,
                                      INFOPOP_PWSM_EAR_COMBO,
                                      SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
     
+    earCombo_ = (Text)earComboWidgets[0];
+    earLabel_ = (Label)earComboWidgets[1];
+    
     new Label( comboGroup_, SWT.NONE );
-    
-    
     
     sampleFolderText_ = uiUtils.createComboWithHistory(comboGroup_, ConsumptionUIMessages.LABEL_FOLDER_NAME,
     										ConsumptionUIMessages.TOOLTIP_PWSM_TEXT_SAMPLE_FOLDER,
@@ -566,6 +572,7 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   public void setSampleProjectEAR(String clientProjectEAR) 
   {
     earCombo_.setText(extractProjectName(clientProjectEAR));
+    updateEARText();
   }
   
   public String getFolder()
@@ -727,4 +734,73 @@ public void internalize() {
 	sampleFolderText_.restoreWidgetHistory("org.eclipse.jst.ws.internal.consumption.ui.widgets.test.ClientTestWidget.sampleFolderText_");
 	sampleFolderText_.addModifyListener(sampleFolderTextModifyListener);
 }
+
+
+
+	/** Returns [ Text, Label]  */
+	private Object[] createText( Composite parent, String labelName, String tooltip, String infopop, int style )
+	{    
+	  tooltip = tooltip == null ? labelName : tooltip;
+	  
+	  Label label = null;
+	  if( labelName != null )
+	  {
+	    label = new Label( parent, SWT.LEAD);
+	    label.setText(  labelName  );
+	    label.setToolTipText(  tooltip );
+	  }
+	  
+	  Text text = new Text( parent, style );
+	  GridData griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+	  
+	  text.setLayoutData( griddata );
+	  text.setToolTipText( tooltip);
+	  
+	  if( infopop != null ) PlatformUI.getWorkbench().getHelpSystem().setHelp( text, pluginId_ + "." + infopop );
+	  
+	  Object[] result = new Object[2];
+	  result[0] = text;
+	  result[1] = label;
+	  
+	  return result;      
+	}
+
+
+	private boolean isOSGI() 
+	{
+		 if(earCombo_ != null) 
+		 {
+			 if(DefaultingUtils.isOSGIProject(earCombo_.getText())) 
+			 {
+				 return true;
+			 }
+		 }
+		 	 
+		 return false;
+	}
+
+	
+	private void updateEARText() {
+		if(isOSGI() ) {
+			if(earCombo_ != null) {
+				earCombo_.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWSM_OSGI_PROJECT);
+			}
+			if(earLabel_ != null) {
+				earLabel_.setText(ConsumptionUIMessages.LABEL_OSGI_PROJECTS);
+				earLabel_.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWSM_OSGI_PROJECT);
+			}
+			
+			
+		} else {
+			if(earCombo_ != null) {
+				earCombo_.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWSM_EAR_PROJECT);
+			}
+			if(earLabel_ != null) {
+				earLabel_.setText(ConsumptionUIMessages.LABEL_EAR_PROJECTS);
+				earLabel_.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWSM_EAR_PROJECT);
+			}
+			
+		}
+	}
+
 }

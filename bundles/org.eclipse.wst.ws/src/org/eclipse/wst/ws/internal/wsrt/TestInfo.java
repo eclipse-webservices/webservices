@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060608   145529 kathy@ca.ibm.com - Kathy Chan
+ * 20150311   461526 jgwest@ca.ibm.com - Jonathan West, Allow OSGi bundles to be selected in the Wizard
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.wsrt;
@@ -32,6 +33,7 @@ public class TestInfo {
   private String clientProject;
   private String clientModule;
   private boolean clientNeedEAR;
+  private String clientOsgiAppProject;
   private String clientEARProject;
   private String clientEARModule;
   private BooleanSelection[] methods;
@@ -272,6 +274,13 @@ public void setRunTestClient(boolean runTestClient) {
 	this.runTestClient = runTestClient;
 }
 
+public void setClientOsgiAppProject(String clientOsgiAppProject) {
+	this.clientOsgiAppProject = clientOsgiAppProject;
+}
+
+public String getClientOsgiAppProject() {
+	return clientOsgiAppProject;
+}
 
 	
 }
