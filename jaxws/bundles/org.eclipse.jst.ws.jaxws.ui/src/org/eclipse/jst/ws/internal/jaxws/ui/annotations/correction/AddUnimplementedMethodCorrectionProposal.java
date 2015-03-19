@@ -77,7 +77,7 @@ public class AddUnimplementedMethodCorrectionProposal extends AbstractJavaCorrec
             IMethodBinding methodBinding = unimplementedMethods[i];
             MethodDeclaration methodDeclaration = StubUtility2.createImplementationStub(compilationUnit, rewriter,
                     importRewrite, importRewrite.getDefaultImportRewriteContext(), methodBinding,
-                    methodBinding.getDeclaringClass().getName(), settings, false);
+                    methodBinding.getDeclaringClass(), settings, false);
             listRewrite.insertLast(methodDeclaration, null);
         }
         textChange.addEdit(rewriter.rewriteAST());
