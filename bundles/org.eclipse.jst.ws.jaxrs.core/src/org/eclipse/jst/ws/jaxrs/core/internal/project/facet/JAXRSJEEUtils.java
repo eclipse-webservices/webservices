@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2014 IBM Corporation and others.
+ * Copyright (c) 2009, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@
  * 20100408   308565 kchong@ca.ibm.com - Keith Chong, JAX-RS: Servlet name and class not updated
  * 20100618   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
  * 20140813   441729 kchong@ca.ibm.com - Keith Chong, JAX-RS Facet install may fail to update the web.xml with servlet info.
+ * 20150325   463126 jgwest@ca.ibm.com - Jonathan West,  JAX-RS Facet Install Page servlet-class field validation is too strict  
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -123,17 +124,22 @@ public class JAXRSJEEUtils extends JAXRSUtils {
 	 * @return Servlet servlet - if passed servlet was null, will return created
 	 *         servlet
 	 */
-	@SuppressWarnings("unchecked")
 	public static Servlet createOrUpdateServletRef(final WebApp webApp,
 			final IDataModel config, org.eclipse.jst.javaee.web.Servlet servlet) {
 
 		String displayName = getDisplayName(config);
 		String className = getServletClassname(config);
+		
+		// For Web 3.0+, return null, rather than empty, as the className is not required in some scenarios.
+		if(className == null || className.trim().length() == 0) {
+			if(isWebApp30orHigher(webApp)) {
+				className = null;
+			}
+		}
 
 		return createOrUpdateServletRef(webApp, displayName, className, servlet);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static Servlet createOrUpdateServletRef(final WebApp webApp,
 			String displayName, String className, org.eclipse.jst.javaee.web.Servlet servlet) {
 
@@ -231,6 +237,24 @@ public class JAXRSJEEUtils extends JAXRSUtils {
 		return false;
 	}
 
+	public static boolean isWebApp30orHigher(final Object webAppObj) {
+		
+		if (webAppObj instanceof WebApp) {
+			WebApp w = (WebApp)webAppObj;
+			
+			if(w.getVersion() == WebAppVersionType._30_LITERAL) {		
+				return true;
+			}
+			
+			if(w.getVersion() == WebAppVersionType._31) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	
 	/**
 	 * Creates servlet-mappings for the servlet for 2.5 WebModules or greater
 	 * 

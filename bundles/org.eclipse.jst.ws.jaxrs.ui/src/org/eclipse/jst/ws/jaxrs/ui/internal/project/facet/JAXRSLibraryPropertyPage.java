@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2014 IBM Corporation and others.
+ * Copyright (c) 2009, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@
  * 20100618   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
  * 20110823   349718 kchong@ca.ibm.com - Keith Chong, Upon selection, the JAX-RS Configuration page is blank when Project Facets page has unapplied changes
  * 20140813   441729 kchong@ca.ibm.com - Keith Chong, JAX-RS Facet install may fail to update the web.xml with servlet info.
+ * 20150325   463126 jgwest@ca.ibm.com - Jonathan West,  JAX-RS Facet Install Page servlet-class field validation is too strict 
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -264,7 +265,16 @@ implements IJAXRSFacetInstallDataModelProperties
     List<String> listOfMappings = Arrays.asList(servletInfoGroup.lstJAXRSServletURLPatterns.getItems());
     if (JAXRSJEEUtils.isWebApp25orHigher(webAppObj))
     {
-      provider.modify(new UpdateWebXMLForJavaEE(project, initialInstallDelegateLibraryProviderID , servletInfoGroup.txtJAXRSServletName.getText(), servletInfoGroup.txtJAXRSServletClassName.getText(), listOfMappings),
+    	
+    	String className = servletInfoGroup.txtJAXRSServletClassName.getText(); 
+    	if(JAXRSJEEUtils.isWebApp30orHigher(webAppObj)) {
+			// For Web 3.0+, return null, rather than empty, as the className is not required in some scenarios.
+			if(className == null || className.trim().length() == 0) {
+				className = null;
+			}
+    	}
+    	
+      provider.modify(new UpdateWebXMLForJavaEE(project, initialInstallDelegateLibraryProviderID , servletInfoGroup.txtJAXRSServletName.getText(), className, listOfMappings),
           IModelProvider.FORCESAVE);
     }
     else
@@ -288,10 +298,8 @@ implements IJAXRSFacetInstallDataModelProperties
 			String errorMessage = Messages.JAXRSFacetInstallDataModelProvider_ValidateServletName;
 			return createErrorStatus(errorMessage);
 		}
-		if (ServletClassName == null || ServletClassName.trim().length() == 0) {
-			String errorMessage = Messages.JAXRSFacetInstallDataModelProvider_ValidateServletClassName;
-			return createErrorStatus(errorMessage);
-		}
+		
+		// ServletClassName is not required in some cases, for example, if servlet name is a javax.ws.rs.core.Application.
 		return Status.OK_STATUS;
 	}
 	private IStatus createErrorStatus(String msg) {

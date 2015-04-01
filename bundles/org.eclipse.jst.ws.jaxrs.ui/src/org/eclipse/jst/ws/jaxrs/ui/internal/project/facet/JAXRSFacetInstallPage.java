@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2014 IBM Corporation and others.
+ * Copyright (c) 2009, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,8 @@
  * 20110822   349541 atosak@ca.ibm.com - Atosa Khoddamhazrati, JAX-RS Facet assumes a project has a runtime when enabling the facet
  * 20120206   365103 jenyoung@ca.ibm.com - Jennifer Young, JAX-RS configuration UI should have the Update Deployment descriptor check box available
  * 20120427   377916 jenyoung@ca.ibm.com - Jennifer Young, The JAX-RS install operation config should be updated whenever there are provider set changes
- * 20140709   431081 jgwest@ca.ibm.com - Jonathan West,  "Further Configuration" state when adding JAX-RS Facet should be "available", not "required" * 
+ * 20140709   431081 jgwest@ca.ibm.com - Jonathan West,  "Further Configuration" state when adding JAX-RS Facet should be "available", not "required" *
+ * 20150325   463126 jgwest@ca.ibm.com - Jonathan West,  JAX-RS Facet Install Page servlet-class field validation is too strict 
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -381,6 +382,16 @@ private void initializeValues()
 
   private String getJAXRSServletClassname()
   {
+	  String text = servletInfoGroup.txtJAXRSServletClassName.getText();
+
+	  if(text == null || text.trim().length() == 0) {
+		  if(isJEE6orGreater()) {
+			  return null;
+		  } else {
+			  return "";
+		  }
+	  }
+
 	  return servletInfoGroup.txtJAXRSServletClassName.getText().trim();
   }
 

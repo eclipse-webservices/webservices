@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and others.
+ * Copyright (c) 2009, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@
  * 20100325   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
  * 20100408   308565 kchong@ca.ibm.com - Keith Chong, JAX-RS: Servlet name and class not updated
  * 20100618   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
+ * 20150325   463126 jgwest@ca.ibm.com - Jonathan West,  JAX-RS Facet Install Page servlet-class field validation is too strict  
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -158,12 +159,15 @@ public class JAXRSJ2EEUtils extends JAXRSUtils {
 	 * @return Servlet servlet - if passed servlet was null, will return created
 	 *         servlet
 	 */
-	@SuppressWarnings("unchecked")
-	public static Servlet createOrUpdateServletRef(final WebApp webApp,
-			final IDataModel config, Servlet servlet) {
+	public static Servlet createOrUpdateServletRef(final WebApp webApp,  final IDataModel config, Servlet servlet) {
 
 		String displayName = getDisplayName(config);
 		String className = getServletClassname(config);
+
+		// For 2.3 and 2.4, return empty element rather than null
+		if(className == null || className.trim().length() == 0 ) {
+			className = JAXRSUtils.JAXRS_SERVLET_CLASS; // The default name of the JAX-RS servlet class
+		}
 		
 		return createOrUpdateServletRef(webApp, displayName, className, servlet);
 	}

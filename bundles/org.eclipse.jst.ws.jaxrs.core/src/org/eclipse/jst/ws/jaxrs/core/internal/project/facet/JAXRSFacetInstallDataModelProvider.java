@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2014 IBM Corporation and others.
+ * Copyright (c) 2009, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,8 @@
  * 20100519   313576 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS tools- validation problems
  * 20110817   355026 kchong@ca.ibm.com - Keith Chong, [JAXRS] JAXRSFacetInstallDataModelProvider dispose method does not remove all listeners it adds
  * 20120214   371661 jenyoung@ca.ibm.com - Jennifer Young, [JAXRS] Performance issue since dispose method is not being called
- * 20140709   431081 jgwest@ca.ibm.com - Jonathan West,  "Further Configuration" state when adding JAX-RS Facet should be "available", not "required"  
+ * 20140709   431081 jgwest@ca.ibm.com - Jonathan West,  "Further Configuration" state when adding JAX-RS Facet should be "available", not "required"
+ * 20150325   463126 jgwest@ca.ibm.com - Jonathan West,  JAX-RS Facet Install Page servlet-class field validation is too strict 
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -202,14 +203,13 @@ public class JAXRSFacetInstallDataModelProvider extends
 	}
 
 	private IStatus validateServletInfo(String servletName, String servletClassName) {
+		
 		if (servletName == null || servletName.trim().length() == 0) {
 			errorMessage = Messages.JAXRSFacetInstallDataModelProvider_ValidateServletName;
 			return createErrorStatus(errorMessage);
 		}
-		if (servletClassName == null || servletClassName.trim().length() == 0) {
-			errorMessage = Messages.JAXRSFacetInstallDataModelProvider_ValidateServletClassName;
-			return createErrorStatus(errorMessage);
-		}
+
+		// ServletClassName is not required in some cases, for example, if servlet name is a javax.ws.rs.core.Application.
 
 		return OK_STATUS;
 	}
