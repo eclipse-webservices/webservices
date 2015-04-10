@@ -30,6 +30,7 @@ public class RegressionBucket extends TestSuite {
 	  public static Test suite() 
 	  {
 	    TestSuite suite= new TestSuite("Regression Bucket");
+	    suite.addTest(new TestSuite(ExistenceTest.class));
 	    if (tadIsAvailable(WSITestToolsProperties.SSBP_ASSERTION_FILE)) {
               suite.addTest(new TestSuite(WSDLConformanceSSBPTest.class));
               suite.addTest(new TestSuite(MessageLogConformanceSSBPTest.class));
