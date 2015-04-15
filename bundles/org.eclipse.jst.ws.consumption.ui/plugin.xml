@@ -597,7 +597,7 @@
    <!-- The following extension point is internal, though likely to be made public with changes in a future release. -->
    <extension-point id="serviceRuntimeProperties" name="%XP_serviceRuntimesProperties" schema="schema/serviceRuntimeProperties.exsd"/>
    
-   <extension-point id="webServiceOSGISupport" name="Web Service OSGI Support" schema="schema/webServiceOSGISupport.exsd"/>
+   <extension-point id="webServiceOSGISupport" name="%XP_WEB_SERVICE_OSGI_SUPPORT" schema="schema/webServiceOSGISupport.exsd"/>
 
 <!-- Test Extensions beginning  -->
 
