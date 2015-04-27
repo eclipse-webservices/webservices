@@ -11,10 +11,9 @@
 package org.eclipse.jst.ws.jaxws.utils.internal.plugin;
 
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.ui.IStartup;
 import org.osgi.framework.BundleContext;
 
-public class JaxwsUtilsPlugin extends Plugin implements IStartup
+public class JaxwsUtilsPlugin extends Plugin
 {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.jst.ws.jaxws.utils";
@@ -56,8 +55,4 @@ public class JaxwsUtilsPlugin extends Plugin implements IStartup
 		return plugin;
 	}
 
-	public void earlyStartup()
-	{
-		// Nothing to do. However, this pugin has to start as early as possible since its services will be used for common logging
-	}
 }

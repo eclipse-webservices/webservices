@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-SymbolicName: org.eclipse.jst.ws.jaxws.utils;singleton:=true
-Bundle-Version: 1.0.300.qualifier
+Bundle-Version: 1.0.301.qualifier
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.core.runtime,
@@ -38,3 +38,4 @@ Export-Package: org.eclipse.jst.ws.jaxws.utils;
  org.eclipse.jst.ws.jaxws.utils.operation;x-friends:="org.eclipse.jst.ws.jaxws.dom.runtime,org.eclipse.jst.ws.jaxws.dom.runtime.tests,org.eclipse.jst.ws.jaxws.utils.tests",
  org.eclipse.jst.ws.jaxws.utils.resources;x-friends:="org.eclipse.jst.ws.jaxws.dom.integration,org.eclipse.jst.ws.jaxws.dom.runtime.tests,org.eclipse.jst.ws.jaxws.utils.tests"
 Bundle-Activator: org.eclipse.jst.ws.jaxws.utils.internal.plugin.JaxwsUtilsPlugin
+Bundle-ActivationPolicy: lazy
