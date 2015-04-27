@@ -109,8 +109,8 @@ public class JAXWSCoreMessages extends NLS {
     public static String HAS_INADMISSIBLE_INNER_TYPES;
     public static String IS_REMOTE_OBJECT;
     public static String ABSTRACT_CLASS_NOT_IMPLEMENTED;
-    public static String INHERITANCE_AND_IMPLEMENTATION;
-    public static String IMPLEMENTS_MULTIPLE_INTERFACES;
+//    public static String INHERITANCE_AND_IMPLEMENTATION;
+//    public static String IMPLEMENTS_MULTIPLE_INTERFACES;
 
     public static String WEBPARAM_NAME_REDUNDANT;
     public static String WEBSERVICE_ONLY_ON_STATELESS_OR_SINGLETON_SESSION_BEANS;

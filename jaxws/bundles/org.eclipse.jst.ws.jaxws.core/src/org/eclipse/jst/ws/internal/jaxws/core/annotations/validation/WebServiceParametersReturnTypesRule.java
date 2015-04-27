@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.jws.WebService;
@@ -186,7 +184,7 @@ public class WebServiceParametersReturnTypesRule extends AbstractAnnotationProce
         checkInnerPublicStaticTypes(classDeclaration, methodDeclaration);
         checkIfRemoteObject(classDeclaration, methodDeclaration);
         checkAbstactType(classDeclaration, methodDeclaration);
-        checkMultipleInheritance(classDeclaration, methodDeclaration);
+//        checkMultipleInheritance(classDeclaration, methodDeclaration);
     }
 
     private void checkInnerPublicStaticTypes(ClassDeclaration classDeclaration, MethodDeclaration methodDeclaration) {
@@ -322,6 +320,7 @@ public class WebServiceParametersReturnTypesRule extends AbstractAnnotationProce
         return false;
     }
 
+    /*
     private void checkMultipleInheritance(ClassDeclaration classDeclaration, MethodDeclaration methodDeclaration) {
         if (implementsMultipleInterfaces(classDeclaration)) {
             List<String> interfaceNames = getAllowedInterfaceNames(classDeclaration.getSuperinterfaces());
@@ -351,6 +350,7 @@ public class WebServiceParametersReturnTypesRule extends AbstractAnnotationProce
         }
         return interfaceNames;
     }
+    */
 
     private int countAllowedInterfaces(Collection<InterfaceType> superInterfaces) {
         int count = 0;
