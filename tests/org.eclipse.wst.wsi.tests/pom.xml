@@ -54,6 +54,9 @@
             </dependency>
           </dependencies>
         </configuration>
+      	<configuration>
+        	<argLine>-Dhttp.proxyHost=proxy.eclipse.org -Dhttp.proxyPort=9898</argLine>
+      	</configuration>
       </plugin>
     </plugins>
   </build>
