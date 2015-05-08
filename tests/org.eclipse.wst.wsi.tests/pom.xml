@@ -53,10 +53,8 @@
               <version>0.0.0</version>
             </dependency>
           </dependencies>
+          <argLine>-Dhttp.proxyHost=proxy.eclipse.org -Dhttp.proxyPort=9898</argLine>
         </configuration>
-      	<configuration>
-        	<argLine>-Dhttp.proxyHost=proxy.eclipse.org -Dhttp.proxyPort=9898</argLine>
-      	</configuration>
       </plugin>
     </plugins>
   </build>
