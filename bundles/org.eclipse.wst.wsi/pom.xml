@@ -22,7 +22,7 @@
 
   <groupId>org.eclipse.webtools.webservices</groupId>
   <artifactId>org.eclipse.wst.wsi</artifactId>
-  <version>1.0.550-SNAPSHOT</version>
+  <version>1.0.600-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 
   <build>
