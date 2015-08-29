@@ -12,6 +12,7 @@ package org.eclipse.jst.ws.jaxws.dom.runtime.tests.annotations;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.eclipse.jdt.core.IField;
@@ -157,7 +158,7 @@ public class AnnotationFactoryTest extends ClassLoadingTest
 
 		IValue strValue1 = AnnotationFactory.createStringValue("value1");
 		IValue strValue2 = AnnotationFactory.createStringValue("value2");
-		Set<IValue> values = new HashSet<IValue>();
+		Set<IValue> values = new LinkedHashSet<IValue>();
 		values.add(strValue1);
 		values.add(strValue2);
 		
