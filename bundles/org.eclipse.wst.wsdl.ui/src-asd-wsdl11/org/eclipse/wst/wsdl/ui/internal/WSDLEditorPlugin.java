@@ -560,8 +560,8 @@ class ContentGeneratorUIExtensionRegistryReader extends BaseRegistryReader
         bindingGeneratorExtension.setLabel(element.getAttribute(ATT_LABEL));
         try
         {
-          ClassLoader pluginClasssLoader = element.getDeclaringExtension().getDeclaringPluginDescriptor().getPlugin().getClass().getClassLoader();
-          bindingGeneratorExtension.setClassLoader(pluginClasssLoader);
+          Bundle contributorBundle = Platform.getBundle(element.getContributor().getName());
+          bindingGeneratorExtension.setBundleContributor(contributorBundle);
           registry.add(bindingGeneratorExtension);
         }
         catch (Exception e)
@@ -609,8 +609,8 @@ class AdapterFactoryExtensionRegistryReader extends BaseRegistryReader
         adapterFactoryExtension.setAdapterFactoryClassName(element.getAttribute(ATT_ADAPTER_FACTORY_CLASS));
         try
         {
-          ClassLoader pluginClasssLoader = element.getDeclaringExtension().getDeclaringPluginDescriptor().getPlugin().getClass().getClassLoader();
-          adapterFactoryExtension.setClassLoader(pluginClasssLoader);
+          Bundle contributorBundle = Platform.getBundle(element.getContributor().getName());
+          adapterFactoryExtension.setBundleContributor(contributorBundle);
           registry.add(adapterFactoryExtension);
         }
         catch (Exception e)

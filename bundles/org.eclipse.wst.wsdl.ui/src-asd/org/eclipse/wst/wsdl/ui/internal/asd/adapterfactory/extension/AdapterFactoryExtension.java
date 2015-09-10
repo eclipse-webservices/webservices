@@ -11,11 +11,12 @@
 package org.eclipse.wst.wsdl.ui.internal.asd.adapterfactory.extension;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.osgi.framework.Bundle;
 
 public class AdapterFactoryExtension {
 	private String namespace;
 	private String adapterFactoryClassName;
-	private ClassLoader classLoader;
+	private Bundle bundleContributor;
 	
 	public AdapterFactoryExtension(String namespace) {
 		this.namespace = namespace;
@@ -26,18 +27,22 @@ public class AdapterFactoryExtension {
 	}
 	
 	public void setClassLoader(ClassLoader classLoader){
-	    this.classLoader = classLoader;
+	    // unused
 	}
 	
 	public String getNamespace() {
 		return namespace;
 	}
 	
+	public void setBundleContributor(Bundle bundleContributor) {
+		this.bundleContributor = bundleContributor;
+	}
+	
 	public AdapterFactory getAdapterFactory() {
 		AdapterFactory factory = null;
 		if (adapterFactoryClassName != null) {
 			try {
-				Class theClass = classLoader != null ? classLoader.loadClass(adapterFactoryClassName) : Class.forName(adapterFactoryClassName);
+				Class theClass = bundleContributor != null ? bundleContributor.loadClass(adapterFactoryClassName) : Class.forName(adapterFactoryClassName);
 				factory = (AdapterFactory) theClass.newInstance();
 			}
 			catch (Exception e) {

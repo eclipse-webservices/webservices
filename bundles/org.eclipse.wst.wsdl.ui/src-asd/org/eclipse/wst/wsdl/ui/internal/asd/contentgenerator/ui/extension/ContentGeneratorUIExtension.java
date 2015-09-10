@@ -11,6 +11,7 @@
 package org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension;
 
 import org.eclipse.wst.wsdl.ui.internal.wizards.ContentGeneratorOptionsPage;
+import org.osgi.framework.Bundle;
 
 public class ContentGeneratorUIExtension {
 	private String name;
@@ -18,8 +19,7 @@ public class ContentGeneratorUIExtension {
 	private String label;
 	private String bindingOptionsPageClassName;
 	private String portOptionsPageClassName;
-	
-	private ClassLoader classLoader;
+	private Bundle bundleContributor;
 	
 	public ContentGeneratorUIExtension(String name, String namespace) {
 		this.name = name;
@@ -35,7 +35,11 @@ public class ContentGeneratorUIExtension {
 	}
 	
 	public void setClassLoader(ClassLoader classLoader){
-	    this.classLoader = classLoader;
+	    // unused
+	}
+	
+	public void setBundleContributor(Bundle bundleContributor) {
+		this.bundleContributor = bundleContributor;
 	}
 	
 	public String getName() {
@@ -50,7 +54,7 @@ public class ContentGeneratorUIExtension {
 		ContentGeneratorOptionsPage result = null;
 		if (bindingOptionsPageClassName != null) {
 			try {
-				Class theClass = classLoader != null ? classLoader.loadClass(bindingOptionsPageClassName) : Class.forName(bindingOptionsPageClassName);
+				Class theClass = bundleContributor != null ? bundleContributor.loadClass(bindingOptionsPageClassName) : Class.forName(bindingOptionsPageClassName);
 				result = (ContentGeneratorOptionsPage) theClass.newInstance();
 			}
 			catch (Exception e) {
@@ -64,7 +68,7 @@ public class ContentGeneratorUIExtension {
 		ContentGeneratorOptionsPage result = null;
 		if (portOptionsPageClassName != null) {
 			try {
-				Class theClass = classLoader != null ? classLoader.loadClass(portOptionsPageClassName) : Class.forName(portOptionsPageClassName);
+				Class theClass = bundleContributor != null ? bundleContributor.loadClass(portOptionsPageClassName) : Class.forName(portOptionsPageClassName);
 				result = (ContentGeneratorOptionsPage) theClass.newInstance();
 			}
 			catch (Exception e) {
