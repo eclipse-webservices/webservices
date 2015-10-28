@@ -38,6 +38,13 @@
 			id="org.eclipse.wst.wsdl.ui.internal.WSDLPreferencePage" />
 	</extension>
 
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.eclipse.wst.wsdl.ui.internal.WSDLPreferenceInitializer">
+      </initializer>
+   </extension>
+
 	<!-- This extension point is used to suplement WSDL 1.1 schemas in order to   -->
 	<!-- constrain the extensiblity elements that are allowed at the 'wsdl' level -->
 	<extension-point
