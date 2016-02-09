@@ -12,14 +12,11 @@ package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.CLASS_NAME;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.FAULT_BEAN;
-import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.HEADER;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.LOCAL_NAME;
-import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.MODE;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.NAME;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.OPERATION_NAME;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.PART_NAME;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.PORT_NAME;
-import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.RESPONSE_SUFFIX;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.SERVICE_NAME;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.TARGET_NAMESPACE;
 
@@ -37,12 +34,9 @@ import java.util.regex.Pattern;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
-import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.jws.WebParam.Mode;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.namespace.QName;
-import javax.xml.ws.Holder;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.WebFault;
@@ -65,7 +59,6 @@ import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
 import com.sun.mirror.declaration.TypeDeclaration;
 import com.sun.mirror.type.ReferenceType;
-import com.sun.mirror.type.TypeMirror;
 import com.sun.mirror.util.SourcePosition;
 
 public class UniqueNamesRule extends AbstractAnnotationProcessor {
@@ -86,7 +79,8 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
                 validateNameAttributes(typeDeclaration);
                 checkOperationNames(typeDeclaration.getMethods());
                 checkWrapperAndFaultBeanNames(typeDeclaration.getMethods());
-                checkDocumentBareMethods(typeDeclaration.getMethods());
+                //https://bugs.eclipse.org/bugs/show_bug.cgi?id=479748
+                //checkDocumentBareMethods(typeDeclaration.getMethods());
                 checkMethodParameters(typeDeclaration.getMethods());
             }
         }
@@ -280,6 +274,9 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
         }
     }
 
+    /* 
+    https://bugs.eclipse.org/bugs/show_bug.cgi?id=479748
+    
     private void checkDocumentBareMethods(Collection<? extends MethodDeclaration> methods) {
         List<MethodDeclaration> docBareMethods = new ArrayList<MethodDeclaration>();
         for (MethodDeclaration methodDeclaration : methods) {
@@ -296,7 +293,8 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
 
         validateQNames(qNames, JAXWSCoreMessages.DOC_BARE_METHODS_UNIQUE_XML_ELEMENTS);
     }
-
+    */
+    
     private SourcePosition getPosition(Object value) {
         if (value instanceof AnnotationValue) {
             return ((AnnotationValue) value).getPosition();
@@ -310,6 +308,9 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
         return null;
     }
 
+    /*
+    https://bugs.eclipse.org/bugs/show_bug.cgi?id=479748
+    
     private void getDocumentBareOperationRequest(MethodDeclaration methodDeclaration, Map<Object, QName> qNames) {
         Collection<ParameterDeclaration> parameters = methodDeclaration.getParameters();
         for (ParameterDeclaration parameterDeclaration : parameters) {
@@ -412,6 +413,7 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
     private boolean returnsVoid(MethodDeclaration methodDeclaration) {
         return methodDeclaration.getReturnType().equals(environment.getTypeUtils().getVoidType());
     }
+    */
 
     private void checkMethodParameters(Collection<? extends MethodDeclaration> methodDeclarations) {
         List<MethodDeclaration> methods = new ArrayList<MethodDeclaration>();
