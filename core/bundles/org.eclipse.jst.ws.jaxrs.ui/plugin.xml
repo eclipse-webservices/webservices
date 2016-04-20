@@ -42,5 +42,17 @@
       provider="jaxrs-user-library-provider"
       class="org.eclipse.jst.ws.jaxrs.ui.internal.project.facet.JAXRSUserLibraryProviderInstallPanel"/>
   </extension>
+  
+  <extension point="org.eclipse.ui.ide.projectConfigurators">
+    <projectConfigurator
+        class="org.eclipse.jst.ws.jaxrs.ui.internal.importer.JaxRsConfigurator"
+        label="JAX-RS">
+	     <activeWhen>
+	        <hasFileRecursively
+	              filename="web.xml">
+	        </hasFileRecursively>
+	     </activeWhen>
+	  </projectConfigurator>
+  </extension>
       
 </plugin>
