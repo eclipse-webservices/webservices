@@ -1032,9 +1032,9 @@ public class FacetUtils
     {
       javaFacetVersion = JavaFacet.VERSION_1_8;
     }
-    else if (jdkComplianceLevel.equals("1.9"))
+    else if (jdkComplianceLevel.equals("9"))
     {
-      javaFacetVersion = JavaFacet.VERSION_1_9;
+      javaFacetVersion = JavaFacet.VERSION_9;
     }
     else
     {
