@@ -1,6 +1,6 @@
 <%
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@
                                                         org.eclipse.wst.ws.internal.explorer.platform.perspective.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.constants.*,
                                                         org.eclipse.wst.ws.internal.explorer.transport.HTTPTransportException,
-                                                        sun.misc.BASE64Decoder,
+                                                        java.util.Base64,
                                                         javax.servlet.http.HttpServletResponse,
                                                         javax.wsdl.*"%>
 
@@ -90,8 +90,7 @@ else
         int basicIndex = httpBasicAuthData.indexOf(HTTPTransport.BASIC);
         if (basicIndex != -1)
         {
-          BASE64Decoder decoder = new BASE64Decoder();
-          httpBasicAuthData = new String(decoder.decodeBuffer(httpBasicAuthData.substring(basicIndex + HTTPTransport.BASIC.length() + 1)));
+          httpBasicAuthData = new String(Base64.getDecoder().decode(httpBasicAuthData.substring(basicIndex + HTTPTransport.BASIC.length() + 1)));
           int colonIndex = httpBasicAuthData.indexOf(HTTPTransport.COLON);
           if (colonIndex != -1)
           {
