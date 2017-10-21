@@ -30,6 +30,20 @@
     <tycho.scmUrl>scm:git:git://git.eclipse.org/gitroot/webservices/webtools.webservices.git</tycho.scmUrl>
   </properties>
 
+  <!-- Bug 526333 - ignore vestigial project settings which appear in Eclipse but are ignored by Tycho, like API access restrictions -->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-compiler-plugin</artifactId>
+        <version>${tycho.version}</version>
+        <configuration>
+          <useProjectSettings>false</useProjectSettings>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <modules>
     <module>bundles/org.eclipse.jst.ws</module>
     <module>bundles/org.eclipse.jst.ws.axis.consumption.core</module>
