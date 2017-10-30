@@ -1,2 +1,7 @@
 # maven
 target/
+bin/
+*.jar
+.settings/
+.classpath
+generatedResults/
