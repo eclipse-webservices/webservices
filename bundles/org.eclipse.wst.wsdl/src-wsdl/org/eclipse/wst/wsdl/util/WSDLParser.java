@@ -784,7 +784,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
       {
         inputSource = super.resolveEntity(publicId, systemId);
       }
-      catch (IOException exception)
+      catch (Exception exception)
       {
         throw new SAXException(exception);
       }
