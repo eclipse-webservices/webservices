@@ -22,7 +22,7 @@
 
   <groupId>org.eclipse.webtools.webservices</groupId>
   <artifactId>org.eclipse.wst.ws_core.feature</artifactId>
-  <version>3.7.100-SNAPSHOT</version>
+  <version>3.7.200-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 
   <build>
