@@ -57,7 +57,18 @@
          </and>
       </constraint>
     </project-facet-version> 
-
+    
+    <project-facet-version facet="jst.jaxrs" version="2.1">
+       <constraint>
+        <and>
+          <requires facet="jst.web" soft="true" version="[4.0"/>
+          <requires
+                facet="jst.java"
+                version="[1.8">
+          </requires> 
+         </and>
+      </constraint>
+    </project-facet-version>
 
     <action id="jst.jaxrs.v10.install" facet="jst.jaxrs" type="INSTALL" version="1.0">
       	<delegate class="org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSFacetInstallDelegate"/>
@@ -91,22 +102,35 @@
  	</action>
  
  
-     <action id="jst.jaxrs.v20.install" facet="jst.jaxrs" type="INSTALL" version="[2.0">
+     <action id="jst.jaxrs.v20.install" facet="jst.jaxrs" type="INSTALL" version="2.0">
       	<delegate class="org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSFacetInstallDelegate"/>
         <config-factory class="org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSFacetInstallDataModelProvider"/>
     </action>  
       
-    <action id="jst.jaxrs.v20.uninstall" facet="jst.jaxrs" type="UNINSTALL" version="[2.0" >
+    <action id="jst.jaxrs.v20.uninstall" facet="jst.jaxrs" type="UNINSTALL" version="2.0" >
 	 	<config-factory class="org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSFacetUninstallConfig$Factory"/>
 	 	<delegate
         class="org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSFacetUninstallDelegate"/>
  	</action>	
- 	<action id="jst.jaxrs.v20.vchange" facet="jst.jaxrs" type="VERSION_CHANGE" version="[2.0" >
+ 	<action id="jst.jaxrs.v20.vchange" facet="jst.jaxrs" type="VERSION_CHANGE" version="2.0" >
 	 	<delegate
         class="org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSFacetVersionChangeDelegate"/>
  	</action>
- 
- 
+ 	
+ 	<action id="jst.jaxrs.v21.install" facet="jst.jaxrs" type="INSTALL" version="[2.1">
+      	<delegate class="org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSFacetInstallDelegate"/>
+        <config-factory class="org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSFacetInstallDataModelProvider"/>
+    </action>  
+      
+    <action id="jst.jaxrs.v21.uninstall" facet="jst.jaxrs" type="UNINSTALL" version="[2.1" >
+	 	<config-factory class="org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSFacetUninstallConfig$Factory"/>
+	 	<delegate
+        class="org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSFacetUninstallDelegate"/>
+ 	</action>	
+ 	<action id="jst.jaxrs.v21.vchange" facet="jst.jaxrs" type="VERSION_CHANGE" version="[2.1" >
+	 	<delegate
+        class="org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSFacetVersionChangeDelegate"/>
+ 	</action>
  	
   </extension> 
   
@@ -134,6 +158,12 @@
     </supported>
   </extension>    
   
+  <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
+    <supported>
+		<runtime-component any="true"/>
+        	<facet id="jst.jaxrs" version="2.1"/> 
+    </supported>
+  </extension>    
   
   <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
     <classpathContainerInitializer

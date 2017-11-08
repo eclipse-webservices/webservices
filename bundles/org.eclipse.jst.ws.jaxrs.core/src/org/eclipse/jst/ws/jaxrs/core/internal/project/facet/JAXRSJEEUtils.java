@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2015 IBM Corporation and others.
+ * Copyright (c) 2009, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -232,7 +232,8 @@ public class JAXRSJEEUtils extends JAXRSUtils {
 	 */
 	public static boolean isWebApp25orHigher(final Object webAppObj) {
 		if (isWebApp25or30(webAppObj) || (webAppObj instanceof WebApp
-				&& ((WebApp) webAppObj).getVersion() == WebAppVersionType._31))
+				&& (((WebApp) webAppObj).getVersion() == WebAppVersionType._31 ||
+				    ((WebApp) webAppObj).getVersion() == WebAppVersionType._40)))
 			return true;
 		return false;
 	}
@@ -249,6 +250,11 @@ public class JAXRSJEEUtils extends JAXRSUtils {
 			if(w.getVersion() == WebAppVersionType._31) {
 				return true;
 			}
+			
+			if(w.getVersion() == WebAppVersionType._40) {
+				return true;
+			}
+
 		}
 		
 		return false;
