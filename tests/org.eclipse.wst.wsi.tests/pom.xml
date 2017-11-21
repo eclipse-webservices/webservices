@@ -41,19 +41,9 @@
             <include>**/*Bucket.java</include>
             <include>**/*Test.java</include>
           </includes>
-          <dependencies>
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>com.ibm.icu</artifactId>
-              <version>0.0.0</version>
-            </dependency>
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>org.eclipse.wst.standard.schemas</artifactId>
-              <version>0.0.0</version>
-            </dependency>
-          </dependencies>
-          <argLine>-Dhttp.proxyHost=proxy.eclipse.org -Dhttp.proxyPort=9898</argLine>
+          <!-- <argLine>-Dhttp.proxyHost=proxy.eclipse.org -Dhttp.proxyPort=9898</argLine> -->
+          <!-- override with -Dsurefire.timeout=... -->
+          <forkedProcessTimeoutInSeconds>120</forkedProcessTimeoutInSeconds>
         </configuration>
       </plugin>
     </plugins>
