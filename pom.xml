@@ -28,7 +28,40 @@
 
   <properties>
     <tycho.scmUrl>scm:git:git://git.eclipse.org/gitroot/webservices/webtools.webservices.git</tycho.scmUrl>
+    <tycho.version>1.0.0</tycho.version>
+    <tycho-extras.version>1.0.0</tycho-extras.version>
   </properties>
+
+  <repositories>
+    <repository>
+      <id>webtools-common-site</id>
+      <layout>p2</layout>
+      <url>${webtools-common-site}</url>
+    </repository>
+    <repository>
+      <id>webtools-servertools-site</id>
+      <layout>p2</layout>
+      <url>${webtools-servertools-site}</url>
+    </repository>
+    <!-- TODO: enable jeetools repo once it exists, since webservices depends on org.eclipse.jem.workbench 
+    <repository>
+      <id>webtools-jeetools-site</id>
+      <layout>p2</layout>
+      <url>${webtools-jeetools-site}</url>
+    </repository> -->
+
+    <!-- To reference parent pom -->
+    <repository>
+      <id>Webtools Repository - Releases</id>
+      <name>Webtools Repository - Releases</name>
+      <url>https://repo.eclipse.org/content/repositories/webtools-releases/</url>
+    </repository>
+    <repository>
+      <id>Webtools Repository - Snapshots</id>
+      <name>Webtools Repository - Snapshots</name>
+      <url>https://repo.eclipse.org/content/repositories/webtools-snapshots/</url>
+    </repository>
+  </repositories>
 
   <!-- Bug 526333 - ignore vestigial project settings which appear in Eclipse but are ignored by Tycho, like API access restrictions -->
   <build>
