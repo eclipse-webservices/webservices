@@ -135,5 +135,8 @@
     <module>tests/org.eclipse.wst.wsdl.validation.tests</module>
     <module>tests/org.eclipse.wst.wsi.tests</module>
     <module>tests/org.eclipse.wst.ws.tests</module>
+
+    <module>site</module>
+    
   </modules>
 </project>
