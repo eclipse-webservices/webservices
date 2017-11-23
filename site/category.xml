@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature id="org.eclipse.wst.ws_wsdl15.feature"><category name="webservices"/></feature>
+   <feature id="org.eclipse.wst.ws_ui.feature"><category name="webservices"/></feature>
+   <feature id="org.eclipse.wst.ws_core.feature"><category name="webservices"/></feature>
+
+   <feature id="org.eclipse.wst.ws_sdk.feature"><category name="webservices-sdk"/></feature>
+   <feature id="org.eclipse.wst.ws_userdoc.feature"><category name="webservices-sdk"/></feature>
+
+   <feature id="org.eclipse.wst.ws_tests.feature"><category name="webservices-tests"/></feature>
+
+   <category-def name="webservices" label="WTP Web Services"/>
+   <category-def name="webservices-sdk" label="WTP Web Services SDK"/>
+   <category-def name="webservices-tests" label="WTP Web Services Tests"/>
+</site>
