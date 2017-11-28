@@ -7,6 +7,12 @@
    <feature id="org.eclipse.wst.ws_sdk.feature"><category name="webservices-sdk"/></feature>
    <feature id="org.eclipse.wst.ws_userdoc.feature"><category name="webservices-sdk"/></feature>
 
+   <bundle id="org.eclipse.jst.ws.axis.infopop"><category name="webservices-sdk"/></bundle>
+   <bundle id="org.eclipse.jst.ws.consumption.infopop"><category name="webservices-sdk"/></bundle>
+   <bundle id="org.eclipse.jst.ws.infopop"><category name="webservices-sdk"/></bundle>
+   <bundle id="org.eclipse.wst.command.env.infopop"><category name="webservices-sdk"/></bundle>
+   <bundle id="org.eclipse.wst.ws.infopop"><category name="webservices-sdk"/></bundle>
+
    <feature id="org.eclipse.wst.ws_tests.feature"><category name="webservices-tests"/></feature>
 
    <category-def name="webservices" label="WTP Web Services"/>
