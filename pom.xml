@@ -126,6 +126,18 @@
     <module>features/org.eclipse.wst.ws_userdoc.feature</module>
     <module>features/org.eclipse.wst.ws_wsdl15.feature</module>
 
+    <module>features/javaee-web/org.eclipse.jst.enterprise_core.feature</module>
+    <module>features/javaee-web/org.eclipse.jst.web_tests.feature</module>
+    <module>features/javaee-web/org.eclipse.jst.doc.user.feature</module>
+    <module>features/javaee-web/org.eclipse.jst.enterprise_sdk.feature</module>
+    <module>features/javaee-web/org.eclipse.jst.enterprise_tests.feature</module>
+    <module>features/javaee-web/org.eclipse.jst.enterprise_ui.feature</module>
+    <module>features/javaee-web/org.eclipse.jst.enterprise_userdoc.feature</module>
+    <module>features/javaee-web/org.eclipse.jst.web_core.feature</module>
+    <module>features/javaee-web/org.eclipse.jst.web_sdk.feature</module>
+    <module>features/javaee-web/org.eclipse.jst.web_ui.feature</module>
+    <module>features/javaee-web/org.eclipse.jst.web_userdoc.feature</module>
+
     <module>tests/org.eclipse.jst.ws.axis.consumption.core.tests</module>
     <module>tests/org.eclipse.jst.ws.tests</module>
     <module>tests/org.eclipse.jst.ws.tests.performance</module>
