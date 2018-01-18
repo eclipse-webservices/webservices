@@ -49,6 +49,11 @@
       <url>${webtools-sourceediting-site}</url>
     </repository>
     <repository>
+      <id>webtools-jsdt-site</id>
+      <layout>p2</layout>
+      <url>${webtools-jsdt-site}</url>
+    </repository>
+    <repository>
       <id>webtools-jsf-site</id>
       <layout>p2</layout>
       <url>${webtools-jsf-site}</url>
