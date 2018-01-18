@@ -43,12 +43,16 @@
       <layout>p2</layout>
       <url>${webtools-servertools-site}</url>
     </repository>
-    <!-- TODO: enable jeetools repo once it exists, since webservices depends on org.eclipse.jem.workbench 
+    <repository>
+      <id>webtools-jsf-site</id>
+      <layout>p2</layout>
+      <url>${webtools-jsf-site}</url>
+    </repository>
     <repository>
       <id>webtools-jeetools-site</id>
       <layout>p2</layout>
       <url>${webtools-jeetools-site}</url>
-    </repository> -->
+    </repository>
 
     <!-- To reference parent pom -->
     <repository>
