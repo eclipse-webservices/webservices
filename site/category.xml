@@ -15,7 +15,22 @@
 
    <feature id="org.eclipse.wst.ws_tests.feature"><category name="webservices-tests"/></feature>
 
+   <!-- javaee-web features -->
+  <feature id="org.eclipse.jst.doc.user.feature"><category name="javaee-web"/></feature>
+  <feature id="org.eclipse.jst.enterprise_core.feature"><category name="javaee-web"/></feature>
+  <feature id="org.eclipse.jst.enterprise_sdk.feature"><category name="javaee-web"/></feature>
+  <feature id="org.eclipse.jst.enterprise_tests.feature"><category name="javaee-web"/></feature>
+  <feature id="org.eclipse.jst.enterprise_ui.feature"><category name="javaee-web"/></feature>
+  <feature id="org.eclipse.jst.enterprise_userdoc.feature"><category name="javaee-web"/></feature>
+  <feature id="org.eclipse.jst.web_core.feature"><category name="javaee-web"/></feature>
+  <feature id="org.eclipse.jst.web_sdk.feature"><category name="javaee-web"/></feature>
+  <feature id="org.eclipse.jst.web_tests.feature"><category name="javaee-web"/></feature>
+  <feature id="org.eclipse.jst.web_ui.feature"><category name="javaee-web"/></feature>
+  <feature id="org.eclipse.jst.web_userdoc.feature"><category name="javaee-web"/></feature>
+
+
    <category-def name="webservices" label="WTP Web Services"/>
    <category-def name="webservices-sdk" label="WTP Web Services SDK"/>
    <category-def name="webservices-tests" label="WTP Web Services Tests"/>
+   <category-def name="javaee-web" label="WTP Web Services - JavaEE Enterprise / Web Features"/>
 </site>
