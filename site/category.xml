@@ -15,6 +15,22 @@
 
    <feature id="org.eclipse.wst.ws_tests.feature"><category name="webservices-tests"/></feature>
 
+   <feature id="org.eclipse.jst.ws.axis2tools.feature"><category name="webservices"/></feature>
+   <feature id="org.eclipse.jst.ws.axis2tools_sdk.feature"><category name="webservices-sdk"/></feature>
+   <feature id="org.eclipse.jst.ws.cxf.feature"><category name="webservices"/></feature>
+   <feature id="org.eclipse.jst.ws.cxf_sdk.feature"><category name="webservices-sdk"/></feature>
+   <feature id="org.eclipse.jst.ws.cxf_tests.feature"><category name="webservices-tests"/></feature>
+   <feature id="org.eclipse.jst.ws.jaxws.assembly.feature"><category name="webservices"/></feature>
+   <feature id="org.eclipse.jst.ws.jaxws.assembly_sdk.feature"><category name="webservices-sdk"/></feature>
+   <feature id="org.eclipse.jst.ws.jaxws.assembly_tests.feature"><category name="webservices-tests"/></feature>
+   <feature id="org.eclipse.jst.ws.jaxws.dom.feature"><category name="webservices"/></feature>
+   <feature id="org.eclipse.jst.ws.jaxws.dom_sdk.feature"><category name="webservices-sdk"/></feature>
+   <feature id="org.eclipse.jst.ws.jaxws.dom_tests.feature"><category name="webservices-tests"/></feature>
+   <feature id="org.eclipse.jst.ws.jaxws.feature"><category name="webservices"/></feature>
+   <feature id="org.eclipse.jst.ws.jaxws_sdk.feature"><category name="webservices-sdk"/></feature>
+   <feature id="org.eclipse.jst.ws.jaxws_tests.feature"><category name="webservices-tests"/></feature>
+   <feature id="org.eclipse.jst.ws.jaxws_userdoc.feature"><category name="webservices"/></feature>
+
    <!-- javaee-web features -->
   <feature id="org.eclipse.jst.doc.user.feature"><category name="javaee-web"/></feature>
   <feature id="org.eclipse.jst.enterprise_core.feature"><category name="javaee-web"/></feature>
@@ -27,7 +43,6 @@
   <feature id="org.eclipse.jst.web_tests.feature"><category name="javaee-web"/></feature>
   <feature id="org.eclipse.jst.web_ui.feature"><category name="javaee-web"/></feature>
   <feature id="org.eclipse.jst.web_userdoc.feature"><category name="javaee-web"/></feature>
-
 
    <category-def name="webservices" label="WTP Web Services"/>
    <category-def name="webservices-sdk" label="WTP Web Services SDK"/>
