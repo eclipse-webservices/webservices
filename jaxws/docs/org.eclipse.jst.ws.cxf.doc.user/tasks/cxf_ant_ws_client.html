@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta name="copyright"
+    content="Copyright (c) 2010 Shane Clarke and others. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Shane Clarke - initial API and implementation">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Creating a Web service client using Ant tasks in the Workbench</title>
+<link href="../book.css" rel="stylesheet" charset="ISO-8859-1"
+    type="text/css">
+<script type="text/javascript" language="JavaScript"
+    src="PLUGINS_ROOT/org.eclipse.help/livehelp.js"></script>
+</head>
+
+<body lang="EN-US">
+<h2>Creating a Web service client using Ant tasks in the Workbench</h2>
+<p>You can use Ant through the Eclipse workspace to generate a Web service client using the CXF run-time environment.</p>
+<p>Before creating the Web service you must:</p>
+<ul>
+    <li>Complete the prerequisites in:<a href="../tasks/ant_tasks.html">Creating Web services and clients using Apache CXF and Ant tasks</a></li>
+ <!--   <li>Create or import a WSDL file into the WebContent folder of the dynamic Web project.</li> -->
+</ul>
+<p>To begin you need to modify the Ant properties file than was imported using the Ant Files wizard in the prerequisites.</p>
+<ol>
+    <li>Edit the <samp class="codeph">cxf_client.properties</samp> file that you imported in the prerequisites step.
+    <ol type="a">
+        <li>Ensure the scenarioType parameter is set to client.</li>
+        <li>Set the initialSelection parameter to the location of your WSDL file.</li>
+        <li>All other parameters are optional and should be deleted if not explicitly set. The default values
+   for the remaining properties will be retrieved from the Dynamic Web project settings and preferences.
+   For additional information on how to set these parameters refer to:
+               <ul>
+                <li><a href="../tasks/cxf_ant_client_prop_ref.html">CXF Web service client Ant task properties file reference</a></li>
+            </ul>
+            <p>Save the properties file.</p>
+        </li>
+    </ol>
+    </li>
+    <li>Select the <samp class="codeph">cxf_client.xml</samp> file and from the top level menu and
+   select <b>Run &gt; External Tools &gt; External Tools Configurations</b>.</li>
+    <li>In the dialog that opens select <b>Ant Build</b> and then select the <b>New launch configuration</b> button in the toolbar.
+   Select the <b>JRE</b> tab and select <b>Run in the same JRE as the workspace</b>.
+   Click <b>Apply</b> and then <b>Run</b>.</li>
+   <li>A <samp class="codeph">Build Successful</samp> message will be output to the console once the Web service has been generated.</li>
+</ol>
+       <p><img src="../images/ngrelt.png" alt="Related tasks" border="0"></p>
+        <a href="../tasks/cxf_ant_ws.html">Creating a Web service using Ant tasks in the Workbench</a>
+ </body>
+</html>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension point="org.eclipse.help.toc">
+      <toc file="topics_api_reference.xml"/>
+      <toc file="topics_extension_points_reference.xml"/>
+   </extension>
+   
+   <extension point="org.eclipse.pde.core.javadoc">
+       <javadoc path="reference/api">
+           <plugin id="org.eclipse.jst.ws.jaxws.dom.runtime"/>
+       </javadoc>
+   </extension>
+   
+</plugin>

@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Annotation Processor</title>
+<style type="text/css">@import url("../../book.css");</style>
+<style type="text/css">@import url("../../schema.css");</style>
+</HEAD>
+<BODY>
+<H1 style="text-align:center">Annotation Processor</H1>
+<p></p>
+<h6 class="CaptionFigColumn SchemaHeader">Identifier: </h6>org.eclipse.jst.ws.annotations.core.annotationProcessor<p></p>
+<h6 class="CaptionFigColumn SchemaHeader">Since: </h6>1.0
+<p></p>
+
+<h6 class="CaptionFigColumn SchemaHeader">Description: </h6>This extension point allows clients to contribute annotation procesoors. These processors are associated with contributed annotation definitions.
+
+The goal of the processor is to validate annotation rules.<p></p>
+<h6 class="CaptionFigColumn SchemaHeader">Configuration Markup:</h6>
+<p></p>
+<p class="code SchemaDtd">&lt;!ELEMENT <a name="e.extension">extension</a> (<a href="#e.processor">processor</a>*)&gt;</p>
+<p class="code SchemaDtd">&lt;!ATTLIST extension</p>
+<p class="code SchemaDtdAttlist">point&nbsp;CDATA #REQUIRED</p><p class="code SchemaDtdAttlist">id&nbsp;&nbsp;&nbsp;&nbsp;CDATA #IMPLIED</p><p class="code SchemaDtdAttlist">name&nbsp;&nbsp;CDATA #IMPLIED</p>&gt;</p>
+<p></p>
+<ul class="ConfigMarkupAttlistDesc">
+</ul>
+<br><p class="code SchemaDtd">&lt;!ELEMENT <a name="e.processor">processor</a> (<a href="#e.description">description</a>?)&gt;</p>
+<p class="code SchemaDtd">&lt;!ATTLIST processor</p>
+<p class="code SchemaDtdAttlist">annotation&nbsp;IDREF #REQUIRED</p><p class="code SchemaDtdAttlist">class&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CDATA #REQUIRED</p>&gt;</p>
+<p></p>
+<ul class="ConfigMarkupAttlistDesc">
+<li><b>annotation</b> - the class name of the annotation definition that this processor handles.</li>
+<li><b>class</b> - the name of the class that implements the contributed procesor. The
+class must be a public subclass of
+<code>org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor</code>and must have a public 0-argument constructor.</li>
+</ul>
+<br><p class="code SchemaDtd">&lt;!ELEMENT <a name="e.description">description</a> (#PCDATA)&gt;</p>
+<p></p>
+<p class="ConfigMarkupElementDesc">
+An optional attribute to hold a short text describing what "rule" the processor handles.</p>
+<br><br>
+<h6 class="CaptionFigColumn SchemaHeader">Examples: </h6>The following is an example of an annotation processor contribution:
+
+<p>
+<pre class="Example"><span class="code SchemaTag">
+   &lt;extension point=</span><span class="code SchemaCstring">&quot;org.eclipse.jst.ws.annotations.core.annotationProcessor&quot;</span><span class="code SchemaTag">&gt;
+      &lt;processor
+            annotation=</span><span class="code SchemaCstring">&quot;javax.jws.WebService&quot;</span><span class="code SchemaTag">
+            class=</span><span class="code SchemaCstring">&quot;org.eclipse.jst.ws.internal.jaxws.core.annotations.validation.WebServiceSEIPresentNoWebMethodRule&quot;</span><span class="code SchemaTag">&gt;
+         &lt;description&gt;
+            %WEBSERVICE_SEI_NO_WEBMETHOS_RULE
+         &lt;/description&gt;
+      &lt;/processor&gt;
+   &lt;/extension&gt;
+</span></pre>
+</p>
+<p></p>
+
+<br>
+<p class="note SchemaCopyright">
+Copyright (c) 2009 Shane Clarke. <br>
+All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at <a href="http://www.eclipse.org/legal/epl-v10.html">http://www.eclipse.org/legal/epl-v10.html</a>
+
+</p>
+</BODY>
+</HTML>

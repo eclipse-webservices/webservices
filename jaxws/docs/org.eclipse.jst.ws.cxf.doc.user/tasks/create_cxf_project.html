@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta name="copyright" content="Copyright (c) 2009 Shane Clarke. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Shane Clarke - initial API and implementation">
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Create a project for CXF Web services</title>
+	<link href="../book.css" rel="stylesheet" charset="ISO-8859-1" type="text/css">
+	<script type="text/javascript" language="JavaScript" src="PLUGINS_ROOT/org.eclipse.help/livehelp.js"></script>
+</head>
+
+<body lang="EN-US">
+<h2>Create a project for CXF Web services</h2>
+<p>To create a Dynamic Web Project and enable it for Apache CXF Web services development perform the following steps:
+<ol>
+<li>
+Select <a class="command-link" href='javascript:executeCommand("org.eclipse.ui.newWizard(newWizardId=org.eclipse.jst.servlet.ui.project.facet.WebProjectWizard)")'>
+<img src="PLUGINS_ROOT/org.eclipse.help/command_link.png" alt="Open the new dynamic web project wizard"><strong>File &gt; New &gt; Project... &gt; Web &gt; Dynamic Web Project</strong></a> from the top level menu
+enter the following information:
+<ol type="a">
+<li>Project name: Enter a name of the project.</li>
+<li>Target Runtime: Select the server you wish to deploy your Web service to. If it's not listed
+click <b>New</b> and browse to the location where it is installed.</li>
+<li>Dynamic Web Module version: Select version 2.5</li>
+<li>Default Configuration: Select the default configuration for your server type.</li>
+<li>EAR Membership: If deploying to Apache Tomcat ensure that the <b>Add project to an EAR</b> check box is not selected.</li>
+<li>Click Finish</li>
+</ol>
+</li>
+<li><a href="../tasks/install_cxf_facet.html">Install the CXF Project Facet</a></li>
+<li><a href="../tasks/manage_cxf_lib_export.html">Manage the exporting of CXF libraries at deployment time</a></li>
+</ol>
+<p><img src="../images/ngrelr.png" alt="Related reference" border="0" ></p>
+<a href="PLUGINS_ROOT/org.eclipse.jst.ws.cxf.doc.user/reference/cxf_facet.html">CXF Project Facet</a><br>
+<p><img src="../images/ngrelt.png" alt="Related tasks" border="0" ></p>
+<a href="../tasks/create_bottomup.html">Create a Web Service from a Java bean using Apache CXF</a><br>
+<a href="../tasks/create_topdown.html">Generate an SEI and a skeleton implementation bean from a WSDL document using Apache CXF</a><br>
+<a href="../tasks/create_client.html">Generate a JAX-WS Web Service Client from a WSDL document using Apache CXF</a><br>
+</body>
+</html>

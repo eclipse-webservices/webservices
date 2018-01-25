@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Tasks" link_to="toc.xml#tasks"> 
+	<topic href="tasks/create_cxf_project.html" label="Create a project for CXF Web services">
+    <topic href="tasks/install_cxf_facet.html" label="Install the CXF Project Facet">
+    </topic>
+    <topic href="tasks/manage_cxf_lib_export.html" label="Manage the exporting of CXF libraries during deployment">
+    </topic>
+    <topic href="tasks/configuring_jaxws_annotation_processing.html" label="Enable JAX-WS Annotation Processing">
+    </topic>
+ </topic>
+	<topic label="Create a Web Service from a Java implementation bean using Apache CXF" href="tasks/create_bottomup.html"/>
+    <topic label="Generate an SEI and a skeleton implementation bean from a WSDL document using Apache CXF" href="tasks/create_topdown.html"/>
+    <topic label="Generate a JAX-WS Web Service Client from a WSDL document using Apache CXF" href="tasks/create_client.html"/>
+    <topic href="tasks/ant_tasks.html" label="Creating Web services and clients using Apache CXF and Ant tasks">
+       <topic href="tasks/cxf_ant_ws.html" label="Creating a Web service using Ant tasks">
+          <topic href="tasks/cxf_ant_td_prop_ref.html" label="Top-down CXF Web service Ant task properties file reference">
+          </topic>
+          <topic href="tasks/cxf_ant_bu_prop_ref.html" label="Bottom-up CXF Web service Ant task properties file reference">
+          </topic>
+       </topic>
+       <topic href="tasks/cxf_ant_ws_client.html" label="Creating a Web service client using Ant tasks">
+          <topic href="tasks/cxf_ant_client_prop_ref.html" label="CXF Web service client Ant task properties file reference">
+          </topic>
+       </topic>
+       <topic href="tasks/cxf_ant_cmd.html" label="Using the Ant Tasks at the Command Line">
+       </topic>
+    </topic>
+    <topic href="tasks/create_jaxws_handler.html" label="Create a JAX-WS Handler">
+    </topic>
+</toc>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Reference" link_to="../org.eclipse.jst.ws.jaxws.doc.user/tocreference.xml#api_reference">
+	<topic label="JAX-WS DOM API Reference" href="reference/api/overview-summary.html">
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/dom/runtime/package-summary.html" label="org.eclipse.jst.ws.jaxws.dom.runtime"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/dom/runtime/api/package-summary.html" label="org.eclipse.jst.ws.jaxws.dom.runtime.api"/>
+	</topic>
+
+</toc>

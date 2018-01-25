@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet title="Create a project for CXF Web services">
+   <intro
+         href="/org.eclipse.platform.doc.user/reference/ref-cheatsheets.htm">
+      <description>
+            This cheat sheet will demonstrate how to create a Dynamic Web Project and enable it for CXF JAX-WS Web service development.
+            <br/>
+            <br/>
+If you need help at any step, click the help button in the top right corner (?).
+      </description>
+   </intro>
+   <item
+         href="/org.eclipse.jst.j2ee.doc.user/topics/cjpers.html"
+         skip="true"
+         title="Open the Java EE perspective">
+      <description>
+         When working with JAX-WS Web services, you should use the Java EE perspective. If you already have the Java EE perspective active, you may skip this step by clicking the <b>Click to Skip</b> button. If not, select <b>Window -&gt; Open Perspective -&gt; Other...</b> from the main menu and  choose <b>Java EE</b> in the resulting <b>Open Perspective</b> dialog box.
+      </description>
+      <command
+            required="false"
+            serialization="org.eclipse.ui.perspectives.showPerspective(org.eclipse.ui.perspectives.showPerspective.perspectiveId=org.eclipse.jst.j2ee.J2EEPerspective)"/>
+   </item>
+   <item
+         dialog="true"
+         href="/org.eclipse.jst.ws.cxf.doc.user/tasks/create_cxf_project.html"
+         skip="true"
+         title="Create a Dynamic Web Project">
+      <description>
+         Before creating a JAX-WS Web Service, we need a project to put it in. Perform the following steps to create an Dynamic Web Project.
+<br/>
+<br/>
+Select <b>File -&gt; New -&gt; Project...</b> from the main menu, expand the <b>Web</b> category within the resulting <b>New Project</b> dialog box and choose <b>Dynamic Web Project</b>.
+<br/>
+<br/>
+On the first page of the wizard enter a <b>Project name:</b>, select Apache Tomcat as the <b>Target runtime</b> and click <b>Finish</b>.
+      </description>
+      <command
+            required="false"
+            serialization="org.eclipse.ui.newWizard(newWizardId=org.eclipse.jst.servlet.ui.project.facet.WebProjectWizard)"/>
+   </item>
+   <item
+         href="/org.eclipse.jst.ws.cxf.doc.user/tasks/install_cxf_facet.html"
+         skip="true"
+         title="Enable JAX-WS Web service developement">
+      <description>
+         Enable a Dynamic Web Project for Apache CXF Web services development by right-clicking on the project and selecting <b>Properties</b>.
+<br/>
+<br/>
+In the <b>Project Facets</b> page enable the <b>CXF 2.x Web Services</b> facet by selecting the check box and click <b>OK</b>.
+      </description>
+   </item>
+</cheatsheet>

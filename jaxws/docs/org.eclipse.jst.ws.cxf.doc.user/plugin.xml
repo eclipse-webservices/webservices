@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension point="org.eclipse.help.toc">
+      <toc file="tocgettingstarted.xml"/>
+      <toc file="toctasks.xml"/>
+      <toc file="tocreference.xml"/>
+   </extension>
+   
+   <extension point="org.eclipse.ui.cheatsheets.cheatSheetContent">
+      <cheatsheet
+            category="org.eclipse.jst.ws.jaxws"
+            composite="true"
+            contentFile="$nl$/cheatsheets/bottomUp-cxf-composite.xml"
+            id="org.eclipse.jst.ws.jaxws.cxf.bottomup"
+            name="%cheatsheet.cxf.bottomup.composite">
+      </cheatsheet>
+      <cheatsheet
+            category="org.eclipse.jst.ws.jaxws"
+            composite="true"
+            contentFile="$nl$/cheatsheets/topdown-cxf-composite.xml"
+            id="org.eclipse.jst.ws.jaxws.cxf.topdown"
+            name="%cheatsheet.cxf.topdown.composite">
+      </cheatsheet>
+      <cheatsheet
+            category="org.eclipse.jst.ws.jaxws"
+            composite="true"
+            contentFile="$nl$/cheatsheets/generate-cxf-wsdl-client-composite.xml"
+            id="org.eclipse.jst.ws.jaxws.cxf.topdown.client"
+            name="%cheatsheet.cxf.topdown.client.composite">
+      </cheatsheet>
+   </extension>
+
+</plugin>

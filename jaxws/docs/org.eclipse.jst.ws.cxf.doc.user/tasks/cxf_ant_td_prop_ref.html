@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta name="copyright" content="Copyright (c) 2010 Shane Clarke and others. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Shane Clarke - initial API and implementation">
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Top-down CXF Web service Ant task properties file reference</title>
+	<link href="../book.css" rel="stylesheet" charset="ISO-8859-1" type="text/css">
+</head>
+
+<body lang="EN-US">
+<h2>Top-down CXF Web service Ant task properties file reference</h2>
+
+<p>The <kbd class="userinput">cxf_tdjava.properties</kbd> file is used
+to pass data to the Web services Ant tasks when creating a CXF Web service. 
+This file shows the available options.</p>
+
+    <div class="section"><h4 class="sectiontitle">Parameters</h4><dl>
+    <dt class="dlterm">ScenarioType</dt>
+
+    <dd><span class="synph"> Options: <samp class="codeph">service</samp> </span></dd>
+
+    <dd class="ddexpand">This is a required element that tells the Ant task if it is creating a
+    Web service or a Web service client.</dd>
+
+    <dt class="dlterm">InitialSelection</dt>
+
+    <dd>Enter URI to the WSDL file. This URI may be a workspace relative URI or point to a remote URI. 
+    For example <kbd class="userinput">/dynamicWebProjectName/WebContent/myService.wsdl</kbd> or <kbd class="userinput">http://localhost:8080/dynamicWebProjectName/services/MyServicePort?wsdl</kbd></dd>
+
+    <dt class="dlterm">ListRuntimes</dt>
+
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp> <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp> is selected, the list of valid runtime options
+    will be provided when the Ant task is run.</dd>
+
+    <dt class="dlterm">ListServers</dt>
+
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp> <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp> is selected, the list of valid server options
+    will be provided when the Ant task is run.</dd>
+
+    <dt class="dlterm">Service.RuntimeId</dt>
+
+    <dd>This is the ID of the CXF Web service runtime. This parameter should not modified.</dd>
+
+    <dt class="dlterm">Service.ServerId</dt>
+
+    <dd>Options:<ul class="simple">
+            <li><samp class="codeph">org.eclipse.jst.server.tomcat.x</samp> (where <samp class="codeph">x</samp> is <samp class="codeph">60</samp> or <samp class="codeph">70</samp>)</li>
+
+            <li><samp class="codeph">org.eclipse.jst.server.generic.jbossx</samp> (where <samp class="codeph">x</samp> is <samp class="codeph">42</samp> or <samp class="codeph">5</samp>)</li>
+        </ul>
+    </dd>
+
+    <dd class="ddexpand">This is the ID of the target server. Delete or comment out this parameter
+    to have the Ant task select the correct value based on the server settings
+    of the Dynamic Web project.</dd>
+
+    <dt class="dlterm">ServiceProjectName</dt>
+
+    <dd>By default the service project is given the name of the WSDL file from which it is created. 
+    Use this parameter to create the service project with a different name.</dd>
+
+    <dt class="dlterm">ServiceEarProjectName</dt>
+
+    <dd>By default the service EAR project is given the name of the WSDL file from which it is created.
+    Use this parameter to create the service EAR project with a different name.</dd>
+
+    <dt class="dlterm">Mappings</dt>
+
+    <dd>Enter the workspace relative URI to a property file containing mappings.</dd>
+
+    <dd class="ddexpand">Mappings are used to override the WSDL namespace to package name mapping of the generated Java classes. 
+    The content of the properties file must be of the format wsdl-namespace=package. You will need to escape some special characters in the
+    properties files.  For example <samp class="codeph">http://someNamespace=somePackage</samp> should
+    be <samp class="codeph">http\://someNamespace=somePackage</samp>.  Otherwise, the colon
+    (:) would be treated as delimiter resulting in trying to map <samp class="codeph">http</samp> to <samp class="codeph">//someNamespace=somePackage</samp>.</dd>
+
+    <dt class="dlterm">JavaOutput</dt>
+
+    <dd>Enter the workspace relative URI to an existing Java source folder for
+    the generated Java code.</dd>
+
+    <dt class="dlterm">ServiceName</dt>
+
+    <dd class="ddexpand">Specify the name of the WSDL service for which code is to be generated.
+    The default is to generate code for every service in the WSDL document</dd>
+
+    <dt class="dlterm">GenServer</dt>
+
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+    
+    <dd class="ddexpand">If <samp class="codeph">true</samp>
+    a server mainline that uses JAX-WS APIs will be generated.</dd>
+
+    <dt class="dlterm">GenImpl</dt>
+    
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+    
+    <dd class="ddexpand">If <samp class="codeph">true</samp> the
+    starting point code for an implementation object will be generated.</dd>
+
+    <dt class="dlterm">DefaultValues</dt>
+    
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+    
+    <dd class="ddexpand">If <samp class="codeph">true</samp> the
+    default values will be generated in the implementation and client.
+    Ignored if implementation or client is not being generated</dd>
+
+    <dt class="dlterm">ExtSOAPHeaders</dt>
+    
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+    
+    <dd class="ddexpand">If <samp class="codeph">true</samp>
+    processing of extended soap header message binding will be enabled.</dd>
+
+    <dt class="dlterm">DefaultNamespace</dt>
+    
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp>
+    loading of the default namespace package name mapping will be enabled.</dd>
+
+    <dt class="dlterm">DefaultExcludesNamespace</dt>
+    
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp> the
+    loading of the default excludes namespace mapping will be enabled.</dd>
+
+    <dt class="dlterm">AutoNameResolution</dt>
+    
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp>
+    Auto Name Resolution will be enabled.</dd>
+
+    <dt class="dlterm">XJC Args: Specify the arguments to be passed directly to the XJC</dt>
+
+    <dt class="dlterm">xjc_dv</dt>
+    
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp>
+    fields will be initialised with their default values.</dd>
+
+    <dt class="dlterm">xjc_ts</dt>
+    
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp>
+    a toString() method will be added to generated classes.</dd>
+
+    <dt class="dlterm">xjc_ts_multi</dt>
+    
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp> the
+    toString() method will produce multi line output.</dd>
+
+    <dt class="dlterm">xjc_ts_simple</dt>
+    
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp> the
+    toString() method will produce single line terse output.</dd>
+
+    <dt class="dlterm">xjc_locator</dt>
+    
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp> the
+    source location support for generated code will be enabled.</dd>
+
+    <dt class="dlterm">xjc_sync_methods</dt>
+    
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp>
+    accessor methods will be generated with the 'synchronized' keyword.</dd>
+
+    <dt class="dlterm">xjc_mark_generated</dt>
+    
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp>
+    @Generated annotations will be added to the generated code.</dd>
+
+    <dt class="dlterm">Bindings</dt>
+
+    <dd>Binding Files. Comma delimited string of absolute paths in the 
+    local file system of JAXWS or JAXB binding files.</dd>
+
+</dl>
+</div>
+</body>
+</html>

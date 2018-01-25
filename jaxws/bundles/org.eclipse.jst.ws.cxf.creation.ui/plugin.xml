@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension point="org.eclipse.jst.ws.consumption.ui.runtimes">
+      <runtime
+        id="org.eclipse.jst.ws.cxf.cxfWebServiceRT"
+        label="%CXF_WS_RUNTIME_LABEL"
+        serverRequired="false"/>
+    </extension>
+
+	<!-- define support for CXF JAX-WS Java First and WSDL First in web projects -->
+    <extension point="org.eclipse.jst.ws.consumption.ui.serviceRuntimes">
+      <serviceRuntime
+        id="org.eclipse.jst.ws.cxf.creation.java" 
+        serviceImplementationTypeId="org.eclipse.jst.ws.wsImpl.java"
+        runtimeId="org.eclipse.jst.ws.cxf.cxfWebServiceRT"
+        bottomUp="true"
+        topDown="true"
+        class="org.eclipse.jst.ws.internal.cxf.creation.ui.wsrt.CXFWebServiceRuntime">
+
+        <required-facet-version facet="jst.web" version="2.4" allow-newer="true"/>
+        <required-facet-version facet="jst.java" version="5.0" allow-newer="true"/>
+        <required-facet-version facet="cxf.core" version="1.0" allow-newer="true"/>
+      </serviceRuntime>
+    </extension>
+
+    <!-- define support for CXF Java clients in Web projects -->
+    <extension point="org.eclipse.jst.ws.consumption.ui.clientRuntimes">
+       <clientRuntime
+          id="org.eclipse.jst.ws.cxf.consumption.web"
+          clientImplementationTypeId="org.eclipse.jst.ws.client.type.java"
+          runtimeId="org.eclipse.jst.ws.cxf.cxfWebServiceRT"
+          class="org.eclipse.jst.ws.internal.cxf.creation.ui.wsrt.CXFWebServiceRuntime">
+
+          <required-facet-version facet="jst.web" version="2.4" allow-newer="true"/>
+          <required-facet-version facet="jst.java" version="5.0" allow-newer="true"/>
+          <required-facet-version facet="cxf.core" version="1.0" allow-newer="true"/>
+       </clientRuntime>
+    </extension> 
+    
+    <!-- bugs #243286 #243290 -->
+	<extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory
+             class="org.eclipse.jst.ws.internal.cxf.creation.ui.widgets.WSDL2JavaProjectSelectionWidgetFactory"
+             id="ProjectSelectionConfig"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaProjectSelectionCommand"/>
+    </extension> 
+
+    <extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory
+             class="org.eclipse.jst.ws.internal.cxf.creation.ui.widgets.Java2WSSelectSEIWidgetFactory"
+             id="Java2WSPreCheckConfig"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.cxf.creation.core.commands.Java2WSSelectSEICommand">
+       </widgetFactory>
+    </extension>
+    
+   <extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory
+             class="org.eclipse.jst.ws.internal.cxf.creation.ui.widgets.JAXWSAnnotateWidgetFactory"
+             id="JAXWSAnnotateConfig"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.cxf.creation.core.commands.JAXWSAnnotateJavaCommand">
+       </widgetFactory>
+    </extension>
+ 
+    <extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory
+             class="org.eclipse.jst.ws.internal.cxf.creation.ui.widgets.Java2WSConfigWidgetFactory"
+             id="Java2WSConfig"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.cxf.creation.core.commands.Java2WSCommand">
+       </widgetFactory>
+    </extension>
+    
+    <extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory
+             class="org.eclipse.jst.ws.internal.cxf.creation.ui.widgets.WSDL2JavaConfigWidgetFactory"
+             id="WSDL2JavaConfig"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaCommand">
+       </widgetFactory>
+    </extension>
+    
+    <!-- JAVA2WS -->
+    <extension point="org.eclipse.wst.command.env.antDataMapping">
+       <map
+             key="GenClient"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.Java2WSCommand"
+             property="GenerateClient"
+             transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"/>
+       <map
+             key="GenServer"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.Java2WSCommand"
+             property="GenerateServer"
+             transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"/>
+       <map
+             key="GenWrapperFaultBeans"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.Java2WSCommand"
+             property="GenerateWrapperFaultBeans"
+             transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"/>
+       <map
+             key="GenWSDL"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.Java2WSCommand"
+             property="GenerateWSDL"
+             transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"/>
+       <map
+             key="WsdlFileName"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.Java2WSCommand"
+             property="WsdlFileName"/>
+       <map
+             key="GenXSDImports"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.Java2WSCommand"
+             property="GenerateXSDImports"
+             transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"/>
+       <map
+             key="UseSOAP12Binding"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.Java2WSCommand"
+             property="UseSOAP12Binding"
+             transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"/>
+    </extension>
+
+    <!-- WSDL2Java -->
+    <extension point="org.eclipse.wst.command.env.antDataMapping">
+       <map
+             key="Mappings"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaCommand"
+             property="IncludedNamespaces"
+             transform="org.eclipse.jst.ws.internal.cxf.core.env.ant.MappingsTransformer"/>
+       <map
+             key="Bindings"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaCommand"
+             property="BindingFiles"
+             transform="org.eclipse.jst.ws.internal.cxf.core.env.ant.BindingsTransformer"/>
+       <map
+             key="JavaOutput"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaCommand"
+             property="JavaSourceFolder"/>
+       <map
+             key="ServiceName"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaCommand"
+             property="ServiceName"/>
+       <map
+             key="GenServer"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaCommand"
+             property="GenerateServer"
+             transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"/>
+       <map
+             key="GenImpl"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaCommand"
+             property="GenerateImplementation"
+             transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"/>
+       <map
+             key="DefaultValues"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaCommand"
+             property="UseDefaultValues"
+             transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"/>
+       <map
+             key="ExtSOAPHeaders"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaCommand"
+             property="ProcessSOAPHeaders"
+             transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"/>
+       <map
+             key="DefaultNamespace"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaCommand"
+             property="LoadDefaultNamespacePackageNameMapping"
+             transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"/>
+       <map
+             key="DefaultExcludesNamespace"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaCommand"
+             property="LoadDefaultExcludesNamepsaceMapping"
+             transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"/>
+       <map
+             key="AutoNameResolution"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaCommand"
+             property="AutoNameResolution"
+             transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"/>
+       <map
+             key="xjc_dv"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaCommand"
+             property="XjcUseDefaultValues"
+             transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"/>
+       <map
+             key="xjc_ts"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaCommand"
+             property="XjcToString"
+             transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"/>
+       <map
+             key="xjc_ts_multi"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaCommand"
+             property="XjcToStringMultiLine"
+             transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"/>
+       <map
+             key="xjc_ts_simple"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaCommand"
+             property="XjcToStringSimple"
+             transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"/>
+       <map
+             key="xjc_locator"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaCommand"
+             property="XjcLocator"
+             transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"/>
+       <map
+             key="xjc_sync_methods"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaCommand"
+             property="XjcSyncMethods"
+             transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"/>
+       <map
+             key="xjc_mark_generated"
+             operation="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaCommand"
+             property="XjcMarkGenerated"
+             transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"/>
+    </extension>
+
+ </plugin>

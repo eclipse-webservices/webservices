@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Reference" link_to="toc.xml#reference">
+   <link toc="../org.eclipse.jst.ws.cxf.doc.user/tocreference.xml"/>
+   <topic href="reference/annotation_processors.html" label="Annotation Validation"/>
+   <topic href="reference/annotation_view.html" label="Annotation Properties View"/>
+   <topic label="Developer Documentation">
+      <topic label="API Reference">
+         <anchor id="api_reference"/>
+      </topic>
+      <topic label="Extension Points Reference">
+         <anchor id="extension_points_reference"/>
+      </topic>
+   </topic>
+</toc>

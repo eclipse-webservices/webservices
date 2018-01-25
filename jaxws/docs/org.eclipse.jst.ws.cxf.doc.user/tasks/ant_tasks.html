@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta name="copyright"
+	content="Copyright (c) 2010 Shane Clarke and others. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Shane Clarke - initial API and implementation">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Creating Web services and clients using Apache CXF and Ant tasks</title>
+<link href="../book.css" rel="stylesheet" charset="ISO-8859-1"
+	type="text/css">
+<script type="text/javascript" language="JavaScript"
+	src="PLUGINS_ROOT/org.eclipse.help/livehelp.js"></script>
+</head>
+
+<body lang="EN-US">
+<h2>Creating Web services and clients using Apache CXF and Ant
+tasks</h2>
+<p>In addition to using the Web services wizards it is also possible to generate Ant files which you can use to create Web services and
+clients using the Apache CXF runtime environment. The Ant tasks can be run in the Eclipse workspace using Run As > Ant Build... or they can be
+run headless through the command line.</p>
+<h3>Prerequisites:</h3>
+<ol>
+	<li>Install and configure the Apache CXF runtime environment. See
+	the <a
+		href="PLUGINS_ROOT/org.eclipse.jst.ws.jaxws.doc.user/gettingstarted/requirements.html">Requirements
+	and Installation</a> page for more details.</li>
+	<li>Create a Dynamic Web Project for the Web Service or client and enable it for Apache CXF Web services development as described here: <a
+		href="../tasks/create_cxf_project.html">Create a project for CXF Web services</a>.</li>
+	<li>Import the required Ant files into your workspace:
+	<ol>
+		<li>Use the existing Dynamic Web Project created above or create a new  project.</li>
+		<li>Import the Ant files by selecting <a class="command-link" href='javascript:executeCommand("org.eclipse.ui.newWizard(newWizardId=org.eclipse.wst.command.env.ui.AntFileImportWizard)")'>
+        <img src="PLUGINS_ROOT/org.eclipse.help/command_link.png" alt="Open the ant files wizard"><strong>File &gt; New &gt; Other... &gt; Web Services &gt; Ant Files</strong></a> from the top level menu.</li>
+		<li>Select the following:
+		<ul>
+			<li>Apache CXF as the Web service runtime.</li>
+			<li>The Web service or client type.</li>
+			<li>The folder into which the Ant files will be generated.</li>
+		</ul>
+		<p>Click <b>Finish</b>. The wizard will generate two files into the selected folder.</p>
+		<ol>
+			<li>An Ant file: One of <samp class="codeph">cxf_bujava.xml</samp> (bottom-up), <samp class="codeph">cxf_tdjava.xml</samp> (top-down) or <samp class="codeph">cxf_client.xml</samp> (client).</li>
+			<li>An Ant properties file which is referenced by the Ant file: One of <samp class="codeph">cxf_bujava.properties</samp> (bottom-up), <samp class="codeph">cxf_tdjava.properties</samp> (top-down) or <samp class="codeph">cxf_client.properties</samp> (client)</li>
+		</ol>
+		</li>
+	</ol>
+</ol>
+		<p><img src="../images/ngrelt.png" alt="Related tasks" border="0"></p>
+		<a href="../tasks/cxf_ant_ws.html">Creating a Web service using Ant tasks in the Workbench</a>
+		<br>
+		<a href="../tasks/cxf_ant_ws_client.html">Creating a Web service client using Ant tasks in the Workbench</a>
+		<br>
+        <a href="../tasks/cxf_ant_cmd.html">Using the Ant Tasks at the Command Line</a>
+        <br>
+</body>
+</html>

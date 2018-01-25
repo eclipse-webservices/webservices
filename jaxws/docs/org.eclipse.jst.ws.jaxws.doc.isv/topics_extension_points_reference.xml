@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Reference" link_to="../org.eclipse.jst.ws.jaxws.doc.user/tocreference.xml#extension_points_reference">
+
+	<topic label="Annotations Framework Extension Points Reference" href="reference/extension-points/index.html">
+	  <topic href="reference/extension-points/org_eclipse_jst_ws_annotations_core_annotationCategory.html" label="org.eclipse.jst.ws.annotations.core.annotationCategory"/>
+      <topic href="reference/extension-points/org_eclipse_jst_ws_annotations_core_annotationDefinition.html" label="org.eclipse.jst.ws.annotations.core.annotationDefinition"/>
+      <topic href="reference/extension-points/org_eclipse_jst_ws_annotations_core_annotationInitializer.html" label="org.eclipse.jst.ws.annotations.core.annotationInitializer"/>
+      <topic href="reference/extension-points/org_eclipse_jst_ws_annotations_core_annotationProcessor.html" label="org.eclipse.jst.ws.annotations.core.annotationProcessor"/>
+	</topic>
+</toc>

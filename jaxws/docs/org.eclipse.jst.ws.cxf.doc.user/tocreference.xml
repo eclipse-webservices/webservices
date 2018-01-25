@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Reference" link_to="toc.xml#reference"> 
+	<topic label="Preferences" href="reference/preferences.html">
+        <topic label="Java2WS" href="reference/java2ws_tab.html"/>
+        <topic label="WSDL2Java" href="reference/wsdl2java_tab.html"/>
+        <topic label="JAX-WS" href="reference/jaxws_tab.html"/>
+        <topic label="Endpoint Config" href="reference/endpoint_config_tab.html"/>
+        <topic label="Server and runtime" href="reference/server_runtime.html"/>
+    </topic>
+    <topic href="reference/cxf_facet.html" label="CXF Project Facet">
+ </topic>
+</toc>

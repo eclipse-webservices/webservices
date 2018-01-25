@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta name="copyright" content="Copyright (c) 2009 Shane Clarke. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Shane Clarke - initial API and implementation">
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Manage the exporting of CXF libraries at deployment time</title>
+	<link href="../book.css" rel="stylesheet" charset="ISO-8859-1" type="text/css">
+</head>
+
+<body lang="EN-US">
+<h2>Manage the exporting of CXF libraries at deployment time</h2>
+<p>By default projects configured with the CXF facet are setup to resolve the CXF libraries to the WEB-INF/lib folder at deployment time.</p>
+<p>This however greatly increases the size of the deployed web module. If the web or application server you are deploying to is already configured with the Apache CXF libraries you
+can disable this option in the Apache CXF preferences.</p>
+<p>To enable or disable this functionality in a existing <b>Dynamic Web Project</b> already configured with the CXF Facet right-click on the project and choose <b>Properties</b>.</p>
+<p><img src="./images/deployment_assembly.png" alt="Deployment Assembly"></p>
+Select the <b>Deployment Assembly</b> properties page and remove the <b>Apache CXF Library</b>.
+<h3>Using CXF 2.6.0</h3>
+<p>The spring-web jar is not included in CXF 2.6.0. This jar is required in order to deploy projects configured with CXF 2.6.0 to web and application servers.</p>
+<p>A workaround for this is to use the <b>Deployment Assembly</b> property page to add the dependency.</p>
+<p>The jar file can be found under the  <b>/org/springframework/spring-web/</b> directory in a Maven 2 repository or under the lib directory of an earlier or later CXF install.</p>
+<p>The spring-web jar has been added back in to the lib directory in CXF 2.6.1.</p>
+<p><img src="../images/ngrelr.png" alt="Related reference" border="0" ></p>
+<a href="PLUGINS_ROOT/org.eclipse.jst.ws.cxf.doc.user/reference/cxf_facet.html">CXF Project Facet</a><br>
+</body>
+</html>

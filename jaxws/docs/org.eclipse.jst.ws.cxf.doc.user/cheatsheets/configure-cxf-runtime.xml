@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet title="Configure the Apache CXF Runtime">
+   <intro
+         href="/org.eclipse.platform.doc.user/reference/ref-cheatsheets.htm">
+      <description>
+            This cheat sheet will demonstrate how to install and configure the Apache CXF runtime in the workbench.
+            <br/>
+            <br/>
+If you need help at any step, click the help button in the top right corner (?).
+      </description>
+   </intro>
+   <item
+         href="/org.eclipse.jst.ws.jaxws.doc.user/gettingstarted/requirements.html"
+         skip="true"
+         title="Download and install the Apache CXF runtime">
+      <description>
+         Download and install the Apache CXF runtime version 2.1.x or 2.2.x from the following site: http://cxf.apache.org/. Selecting  the &quot;Click to perform&quot; button below will open a web browser at that location.
+      </description>
+      <command
+            required="false"
+            serialization="org.eclipse.ui.browser.openBrowser(url=http://cxf.apache.org/)"/>
+   </item>
+   <item
+         href="/org.eclipse.jst.ws.cxf.doc.user/reference/preferences.html"
+         skip="true"
+         title="Configure Apache CXF in the workbench"
+         dialog="true">
+      <description>
+         Apache CXF must be configured in the workbench before using it to create JAX-WS Web services.
+<br/>
+<br/>
+Select <b>Window-&gt;Preferences</b> from the main menu, expand the <b>Web Services</b> outline tree node within the resulting dialog, and choose <b>CXF 2.x Preferences</b>. Select the &quot;Click to perform&quot; button to do this automatically.
+<br/>
+<br/>
+Browse to the location where you installed Apache  CXF and then click <b>OK</b> in the Preferences dialog.
+      </description>
+      <command
+            required="false"
+            serialization="org.eclipse.ui.window.preferences(preferencePageId=org.eclipse.jst.ws.cxf.ui.CXFRuntimePreferencesPage)"/>
+   </item>
+   <item
+         href="/org.eclipse.jst.ws.cxf.doc.user/reference/server_runtime.html"
+         skip="true"
+         title="Set Apache CXF as the default runtime"
+         dialog="true">
+      <description>
+         To set Apache CXF as the default Web service runtime in the workbench select <b>Window-&gt;Preferences</b> from the main menu, expand the <b>Web Services</b> outline tree node within the resulting dialog, and choose <b>Server and Runtime</b>. Selecting the &quot;Click to perform&quot; button will open this preference page.
+<br/>
+<br/>
+In the <b>Web service runtime</b> drop down list select &quot;Apache CXF 2.x&quot; and click <b>OK</b>.
+      </description>
+      <command
+            required="false"
+            serialization="org.eclipse.ui.window.preferences(preferencePageId=org.eclipse.jst.ws.internal.consumption.ui.preferences.ServerRuntimePreferencePage)"/>
+   </item>
+</cheatsheet>

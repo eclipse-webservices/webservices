@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet
+      title="Generate a JAX-WS Client from a WSDL document using Apache CXF">
+   <intro
+         href="/org.eclipse.platform.doc.user/reference/ref-cheatsheets.htm">
+      <description>
+         This cheat sheet will guide you through the individual steps to generate a JAX-WS client from a WSDL document using Apache CXF.
+      </description>
+   </intro>
+   <item
+         dialog="true"
+         href="/org.eclipse.jst.ws.cxf.doc.user/tasks/create_client.html"
+         title="Generate a JAX-WS client from a WSDL document">
+      <description>
+         To generate a JAX-WS client from a WSDL document perform the following steps.
+         
+      </description>
+      <subitem label="Select &quot;File -&gt; New -&gt; Other...&quot; from the main menu, expand the &quot;Web Services&quot; category and choose &quot;Web Service Client&quot;. Click &quot;OK&quot;. Select the &quot;Click to perform&quot; button below to do this automatically.">
+         <command
+               required="false"
+               serialization="org.eclipse.ui.newWizard(newWizardId=org.eclipse.jst.ws.internal.consumption.ui.wizard.client.clientwizard)"/>
+      </subitem>
+      <subitem
+            label="Enter the URI to the remote WSDL file that will be used to generate the client.">
+      </subitem>
+      <subitem
+            label="Select &quot;Java Proxy&quot; as the &quot;Client type&quot;.">
+      </subitem>
+      <subitem
+            label="Verify that &quot;Apache CXF 2.x&quot; is selected as the &quot;Web service runtime&quot;.">
+      </subitem>
+      <subitem
+            label="Select the &quot;Client project&quot; link to choose the project in to which the JAX-WS client will be generated.">
+      </subitem>
+      <subitem
+            label="Move the client slider position to &quot;Develop Client&quot; and click &quot;Finish&quot;.">
+      </subitem>
+   </item>
+   <item
+         href="/org.eclipse.jdt.doc.user/gettingStarted/qs-12.htm"
+         title="Run the JAX-WS client">
+      <description>
+         Before running the client check the operation parameters that CXF generated for you and edit if necessary.
+<br/>
+<br/>
+To <b>run</b> your client, right-click on the client in the Project Explorer and select <b>Run As &gt; Java Application</b>. A new console view will open and display the responses of the operation invocations.
+      </description>
+   </item>
+</cheatsheet>

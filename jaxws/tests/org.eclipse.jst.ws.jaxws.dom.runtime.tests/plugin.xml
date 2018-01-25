@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+    Copyright (c) 2009 by SAP AG, Walldorf. 
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        SAP AG - initial API and implementation
+ -->
+
+<fragment>
+   <extension
+         id="supportedruntimetest"
+         name="Testing"
+         point="org.eclipse.jst.ws.jaxws.dom.runtime.domruntimes">
+      <implementation class="org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.TestWsDOMRuntimeExtension"/>
+      <project_facet 
+      	 id="jst.webb"
+      	 version="1.0.0.0"/>
+      <project_facet 
+      	 id="test.facet"/>
+   </extension>
+   <extension
+         id="supportedruntimetest1"
+         name="Testing1"
+         point="org.eclipse.jst.ws.jaxws.dom.runtime.domruntimes">
+      <implementation class="org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.TestWsDOMRuntimeExtension"/>
+      <project_facet 
+      	 id="jst.webb"
+      	 version="1.0.0.0"/>
+      <project_facet 
+      	 id="test.facett"/>
+   </extension>
+   <extension
+         id="supportedruntimetest2"
+         name="Testing2"
+         point="org.eclipse.jst.ws.jaxws.dom.runtime.domruntimes">
+      <implementation class="org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.WsDOMRuntimeRegistryTest"/>
+      <project_facet 
+      	 id="jst.webb"
+      	 version="1.0.0.0"/>
+      <project_facet 
+      	 id="test.facett"/>
+   </extension>
+</fragment>

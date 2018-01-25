@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="Copyright (c) 2008 IONA Technologies PLC&#xD;&#xA;All rights reserved. This program and the accompanying materials&#xD;&#xA;are made available under the terms of the Eclipse Public License v1.0&#xD;&#xA;which accompanies this distribution, and is available at&#xD;&#xA;http://www.eclipse.org/legal/epl-v10.html&#xD;&#xA; &#xD;&#xA;Contributors:&#xD;&#xA;IONA Technologies PLC - initial API and implementation"
+    modelDirectory="/org.eclipse.jst.ws.cxf.core/src" modelPluginID="org.eclipse.jst.ws.cxf.core"
+    modelName="CXF" rootExtendsInterface="" rootImplementsInterface="" suppressEMFTypes="true"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" copyrightFields="false"
+    language="">
+  <foreignModel>CXF.ecore</foreignModel>
+  <genPackages prefix="CXF" basePackage="org.eclipse.jst.ws.internal.cxf.core" disposableProviderFactory="true"
+      ecorePackage="CXF.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="CXF.ecore#//Frontend">
+      <genEnumLiterals ecoreEnumLiteral="CXF.ecore#//Frontend/JAXWS"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="CXF.ecore#//DataBinding">
+      <genEnumLiterals ecoreEnumLiteral="CXF.ecore#//DataBinding/JAXB"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="CXF.ecore#//URL"/>
+    <genDataTypes ecoreDataType="CXF.ecore#//Definition"/>
+    <genDataTypes ecoreDataType="CXF.ecore#//Map">
+      <genTypeParameters ecoreTypeParameter="CXF.ecore#//Map/T"/>
+      <genTypeParameters ecoreTypeParameter="CXF.ecore#//Map/T1"/>
+    </genDataTypes>
+    <genDataTypes ecoreDataType="CXF.ecore#//IMethod"/>
+    <genClasses image="false" ecoreClass="CXF.ecore#//CXFContext">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/defaultRuntimeLocation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/defaultRuntimeType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/defaultRuntimeVersion"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/verbose"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/generateAntBuildFile"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/generateClient"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/generateServer"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/databinding"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/frontend"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/useSpringApplicationContext"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/exportCXFClasspathContainer"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFContext/installations"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="CXF.ecore#//CXFDataModel">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFDataModel/projectName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFDataModel/resourceDirectory"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFDataModel/classDirectory"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFDataModel/wsdlFileName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFDataModel/wsdlURL"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFDataModel/configWsdlLocation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFDataModel/fullyQualifiedJavaClassName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFDataModel/fullyQualifiedJavaInterfaceName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFDataModel/configId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFDataModel/targetNamespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFDataModel/endpointName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFDataModel/serviceName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFDataModel/wsdlDefinition"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFDataModel/wsdlLocation"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="CXF.ecore#//Java2WSContext">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSContext/soap12Binding"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSContext/generateXSDImports"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSContext/generateWSDL"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSContext/generateWrapperFaultBeans"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSContext/annotationProcessingEnabled"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSContext/generateWebMethodAnnotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSContext/generateWebParamAnnotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSContext/generateRequestWrapperAnnotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSContext/generateResponseWrapperAnnotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSContext/generateWebResultAnnotation"/>
+    </genClasses>
+    <genClasses ecoreClass="CXF.ecore#//Java2WSDataModel">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSDataModel/classpath"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSDataModel/javaStartingPoint"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSDataModel/useServiceEndpointInterface"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSDataModel/extractInterface"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSDataModel/serviceEndpointInterfaceName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSDataModel/methodMap"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSDataModel/annotationMap"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSDataModel/sourceDirectory"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//Java2WSDataModel/portName"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="CXF.ecore#//WSDL2JavaContext">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaContext/generateImplementation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaContext/processSOAPHeaders"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaContext/loadDefaultNamespacePackageNameMapping"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaContext/loadDefaultExcludesNamepsaceMapping"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaContext/validate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaContext/wsdlVersion"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaContext/useDefaultValues"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaContext/xjcArgs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaContext/noAddressBinding"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaContext/xjcUseDefaultValues"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaContext/xjcToString"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaContext/xjcToStringMultiLine"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaContext/xjcToStringSimple"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaContext/xjcLocator"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaContext/xjcSyncMethods"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaContext/xjcMarkGenerated"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaContext/xjcEpisodeFile"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaContext/autoNameResolution"/>
+    </genClasses>
+    <genClasses ecoreClass="CXF.ecore#//WSDL2JavaDataModel">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaDataModel/includedNamespaces"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaDataModel/bindingFiles"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaDataModel/excludedNamespaces"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaDataModel/catalogFile"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//WSDL2JavaDataModel/javaSourceFolder"/>
+    </genClasses>
+    <genClasses ecoreClass="CXF.ecore#//CXFInstall">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFInstall/version"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFInstall/location"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CXF.ecore#//CXFInstall/type"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

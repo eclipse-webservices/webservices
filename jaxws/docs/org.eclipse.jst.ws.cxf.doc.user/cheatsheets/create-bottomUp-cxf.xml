@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet title="Create a Web Service from a Java implementation bean using Apache CXF">
+   <intro href="/org.eclipse.platform.doc.user/reference/ref-cheatsheets.htm">
+      <description>
+         This cheat sheet will demonstrate how to use the Web Services wizard to create a Web service from a Java implementation bean using the Apache CXF runtime and to deploy that service to an Apache Tomcat server and test it using the Web Services Explorer.
+         <br/>
+         <br/>
+If you need help at any step, click the help button in the top right corner (?).
+      </description>
+   </intro>
+   <item
+         href="/org.eclipse.jdt.doc.user/gettingStarted/qs-9.htm"
+         title="Create or Import a Java implementation bean">
+      <description>
+         Create or import a Java bean that will be used as the Web service implementation into the source folder of a Dynamic Web Project that has been enabled for Apache CXF Web services development.
+      </description>
+   </item>
+   <item
+         dialog="true"
+         href="/org.eclipse.jst.ws.cxf.doc.user/tasks/create_bottomup.html"
+         title="Create a Web service from a Java implementation bean">
+      <description>
+         To create a Web service from a Java implementation bean perform the following steps:
+      </description>
+      <subitem
+            label="Select &quot;File -&gt; New -&gt; Other...&quot; from the main menu, expand the &quot;Web Services&quot; category and select &quot;Web Service&quot;. Click &quot;OK&quot; to launch the Web Services wizard or select the &quot;Click to perform&quot; button to do this automatically.">
+         <command
+               required="false"
+               serialization="org.eclipse.ui.newWizard(newWizardId=org.eclipse.jst.ws.creation.ui.wizard.serverwizard)"/>
+      </subitem>
+      <subitem
+            label="Select &quot;Bottom up Java bean Web Service&quot; as the &quot;Web service type&quot;.">
+      </subitem>
+      <subitem
+            label="Browse to select the Service Implementation.">
+      </subitem>
+      <subitem
+            label="Verify that &quot;Apache CXF 2.x&quot; is selected as the Web service runtime.">
+      </subitem>
+      <subitem
+            label="Move the service slider to the &quot;Test service&quot; stage.">
+      </subitem>
+      <subitem
+            label="Accept all other default values on this page and click &quot;Next &gt;&quot;.">
+      </subitem>
+      <subitem
+            label="On the Service Endpoint Interface configuration page select the &quot;Use a Service Endpoint Interface&quot; check box followed by the &quot;Create an SEI&quot; button. Enter a name for the SEI, &quot;Select All&quot; the methods and click &quot;Finish&quot;.">
+      </subitem>
+   </item>
+   <item
+         href="/org.eclipse.jst.ws.consumption.ui.doc.user/tasks/ttestwsdl.html"
+         skip="true"
+         title="Test the Web service with the Web Services Explorer">
+      <description>
+         The Web Services Wizard will launch the <b>Web Services Explorer</b> after successfully creating and deploying your Web service to Apache Tomcat.
+<br/>
+<br/>
+To test the Web service select an opertaion in the <b>Web Services Explorer</b>, fill in the required information and click <b>Go</b>.
+<br/>
+<br/>
+The result will be displayed in the <b>Status</b> pane.
+      </description>
+   </item>
+  <onCompletion>
+     Congratulations!  You just created a JAX-WS Web service!
+  </onCompletion>
+</cheatsheet>

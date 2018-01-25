@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta name="copyright" content="Copyright (c) 2009 Shane Clarke. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Shane Clarke - initial API and implementation">
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Java2WS Preferences</title>
+	<link href="../book.css" rel="stylesheet" charset="ISO-8859-1" type="text/css">
+</head>
+
+<body lang="EN-US">
+<h2>Java2WS Preferences</h2>
+<p>The <strong>Java2WS</strong> tab provides settings that control the CXF java2ws tool (for CXF 2.1.x runtimes and above). When a CXF 2.0.x runtime is selected this page displays a subset of the available setting that provides control of the CXF java2wsdl tool.</p>
+<p><img src="./images/java2ws_tab.png" alt="Java2WS tab" > </p>
+<p></p>
+    <table border="1" cellspacing="0" cellpadding="5" summary="Java search actions">
+      <thead>
+        <tr>
+          <td>
+            <p><span class="control">Option</span></p>
+          </td>
+
+          <td>
+            <p><span class="control">Description</span></p>
+          </td>
+          
+          <td>
+            <p><span class="control">Default</span></p>
+          </td>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td valign="top">
+            <p>Default Frontend</p>
+          </td>
+
+          <td valign="top">
+            <p>Specifies the front end to use. Currently only the jaxws front end is supported</p>
+          </td>
+          
+          <td valign="top">
+            <p>jaxws</p>
+          </td>
+        </tr>
+
+        <tr>
+          <td valign="top">
+            <p>Default Databinding</p>
+          </td>
+
+          <td valign="top">
+            <p>Specifies the data binding to use. Currently only the jaxb data binding is supported</p>
+          </td>
+
+          <td valign="top">
+            <p>jaxb</p>
+          </td>
+        </tr>
+
+        <tr>
+          <td valign="top">
+            <p>Generate Client</p>
+          </td>
+
+          <td valign="top">
+            <p>Select to generate a client mainline using JAX-WS APIs</p>
+          </td>
+          
+          <td valign="top">
+            <p>false</p>
+          </td>
+        </tr>
+
+        <tr>
+          <td valign="top">
+            <p>Generate Server</p>
+          </td>
+
+          <td valign="top">
+            <p>Select to generate a server mainline using JAX-WS APIs</p>
+          </td>
+          
+          <td valign="top">
+            <p>false</p>
+          </td>
+        </tr>
+        
+        <tr>
+          <td valign="top">
+            <p>Generate Wrapper and Fault Beans</p>
+          </td>
+
+          <td valign="top">
+            <p>Select to generate wrapper and fault beans</p>
+          </td>
+          
+          <td valign="top">
+            <p>true</p>
+          </td>
+        </tr>        
+
+        <tr>
+          <td valign="top">
+            <p>Generate WSDL</p>
+          </td>
+
+          <td valign="top">
+            <p>Select to generate a WSDL document</p>
+          </td>
+          
+          <td valign="top">
+            <p>true</p>
+          </td>
+        </tr>
+
+        <tr>
+          <td valign="top">
+            <p>Default SOAP Binding</p>
+          </td>
+
+          <td valign="top">
+            <p>Specify the SOAP binding to include in the generated WSDL document. SOAP 1.1 and SOAP 1.2 supported</p>
+          </td>
+
+          <td valign="top">
+            <p>SOAP 1.1</p>
+          </td>
+        </tr>
+
+        <tr>
+          <td valign="top">
+            <p>Generate separate XSD for the types</p>
+          </td>
+
+          <td valign="top">
+            <p>Select to output schemas to separate files when generating a WSDL document</p>
+          </td>
+
+          <td valign="top">
+            <p>true</p>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+<p>The options on this tab are presented in the web services wizard when creating a bottom-up web service with the Apache CXF runtime.</p>
+<p>The options there can be changed from their default values for the web service being created.</p>
+<p><img src="../images/ngrelt.png" alt="Related tasks" border="0" ></p>
+<a href="../tasks/create_bottomup.html">Create a Web Service from a Java implementation bean using Apache CXF</a><br>
+</body>
+</html>

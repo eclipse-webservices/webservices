@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.eclipse.jst.ws.jaxb.core;singleton:=true
+Bundle-Vendor: %pluginProvider
+Bundle-Version: 1.0.200.qualifier
+Bundle-ClassPath: .
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Activator: org.eclipse.jst.ws.internal.jaxb.core.JAXBCorePlugin
+Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.4.0,4.0.0)",
+ org.eclipse.jst.ws.annotations.core;bundle-version="1.1.0"
+Bundle-ActivationPolicy: lazy

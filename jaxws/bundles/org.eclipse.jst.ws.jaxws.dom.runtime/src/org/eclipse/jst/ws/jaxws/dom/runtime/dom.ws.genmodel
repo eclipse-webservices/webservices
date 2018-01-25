@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="org.eclipse.jst.ws.jaxws.dom.runtime/src"
+    editDirectory="org.eclipse.jst.ws.jaxws.dom.ui/src" editorDirectory="org.eclipse.jst.ws.jaxws.dom.runtime.editor/src"
+    modelPluginID="org.eclipse.jst.ws.jaxws.dom.runtime" modelName="Dom" editPluginClass="org.eclipse.jst.ws.jaxws.dom.ui.internal.plugin.DomUi"
+    editorPluginClass="org.eclipse.jst.ws.jaxws.dom.ui.navigator.generated.DomEditorPlugin"
+    nonNLSMarkers="true" testsDirectory="org.eclipse.jst.ws.jaxws.dom.runtime.tests/src"
+    importerID="org.eclipse.emf.importer.java" complianceLevel="5.0" copyrightFields="false"
+    providerRootExtendsClass="">
+  <foreignModel>@model</foreignModel>
+  <genPackages prefix="Dom" basePackage="org.eclipse.jst.ws.jaxws" disposableProviderFactory="true"
+      interfacePackageSuffix="runtime.api" metaDataPackageSuffix="runtime.api" classPackageSuffix="runtime.internal.impl"
+      utilityPackageSuffix="runtime.util" providerPackageSuffix="ui" generateExampleClass="false"
+      ecorePackage="dom.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="dom.ecore#//WebParamKind">
+      <genEnumLiterals ecoreEnumLiteral="dom.ecore#//WebParamKind/IN"/>
+      <genEnumLiterals ecoreEnumLiteral="dom.ecore#//WebParamKind/INOUT"/>
+      <genEnumLiterals ecoreEnumLiteral="dom.ecore#//WebParamKind/OUT"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="dom.ecore#//SOAPBindingStyle">
+      <genEnumLiterals ecoreEnumLiteral="dom.ecore#//SOAPBindingStyle/DOCUMENT"/>
+      <genEnumLiterals ecoreEnumLiteral="dom.ecore#//SOAPBindingStyle/RPC"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="dom.ecore#//SOAPBindingUse">
+      <genEnumLiterals ecoreEnumLiteral="dom.ecore#//SOAPBindingUse/LITERAL"/>
+      <genEnumLiterals ecoreEnumLiteral="dom.ecore#//SOAPBindingUse/ENCODED"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="dom.ecore#//SOAPBindingParameterStyle">
+      <genEnumLiterals ecoreEnumLiteral="dom.ecore#//SOAPBindingParameterStyle/WRAPPED"/>
+      <genEnumLiterals ecoreEnumLiteral="dom.ecore#//SOAPBindingParameterStyle/BARE"/>
+    </genEnums>
+    <genClasses ecoreClass="dom.ecore#//IDOM">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom.ecore#//IDOM/webServiceProjects"/>
+    </genClasses>
+    <genClasses ecoreClass="dom.ecore#//IJavaWebServiceElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IJavaWebServiceElement/implementation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IJavaWebServiceElement/name"/>
+    </genClasses>
+    <genClasses ecoreClass="dom.ecore#//IServiceEndpointInterface">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IServiceEndpointInterface/implicit"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom.ecore#//IServiceEndpointInterface/implementingWebServices"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom.ecore#//IServiceEndpointInterface/webMethods"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IServiceEndpointInterface/targetNamespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IServiceEndpointInterface/soapBindingStyle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IServiceEndpointInterface/soapBindingUse"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IServiceEndpointInterface/soapBindingParameterStyle"/>
+    </genClasses>
+    <genClasses ecoreClass="dom.ecore#//IWebMethod">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom.ecore#//IWebMethod/parameters"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IWebMethod/excluded"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IWebMethod/soapBindingStyle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IWebMethod/soapBindingUse"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IWebMethod/soapBindingParameterStyle"/>
+    </genClasses>
+    <genClasses ecoreClass="dom.ecore#//IWebParam">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IWebParam/kind"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IWebParam/typeName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IWebParam/partName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IWebParam/targetNamespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IWebParam/header"/>
+    </genClasses>
+    <genClasses ecoreClass="dom.ecore#//IWebService">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom.ecore#//IWebService/serviceEndpoint"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IWebService/targetNamespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IWebService/portName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IWebService/wsdlLocation"/>
+    </genClasses>
+    <genClasses ecoreClass="dom.ecore#//IWebServiceProject">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom.ecore#//IWebServiceProject/webServices"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom.ecore#//IWebServiceProject/serviceEndpointInterfaces"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IWebServiceProject/name"/>
+    </genClasses>
+    <genClasses ecoreClass="dom.ecore#//IWebType"/>
+  </genPackages>
+</genmodel:GenModel>

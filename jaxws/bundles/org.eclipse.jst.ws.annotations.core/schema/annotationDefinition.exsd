@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.jst.ws.annotations.core" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.jst.ws.annotations.core" id="annotationDefinition" name="Annotation Definition"/>
+      </appInfo>
+      <documentation>
+         This extension point allows clients to contribute annotations &lt;? extends java.lang.annotation.Annotation&gt; which are in turn consumed by the UI.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="annotation" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="annotation">
+      <complexType>
+         <sequence>
+            <element ref="targetFilter" minOccurs="0" maxOccurs="7"/>
+         </sequence>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the fully qualified annotation class name that extends &lt;code&gt;java.lang.annotation.Annotation&lt;/code&gt;
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="java.lang.annotation.Annotation:"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="category" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the id of a &lt;tt&gt;annotationCategory&lt;/tt&gt;
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="identifier" basedOn="org.eclipse.jst.ws.annotations.core.annotationCategory/category/@id"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The simple name of the annotation class.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="restrictedTo">
+            <annotation>
+               <documentation>
+                  Used in addition to the java.lang.annotation.ElementType(s) that are specified in the value element of the  @Target annotation on the contributed annotation to add further restrictions.
+               </documentation>
+            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="CLASS_ONLY">
+                  </enumeration>
+                  <enumeration value="INTERFACE_ONLY">
+                  </enumeration>
+                  <enumeration value="ENUM_ONLY">
+                  </enumeration>
+               </restriction>
+            </simpleType>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="targetFilter">
+      <complexType>
+         <attribute name="target" use="required">
+            <annotation>
+               <documentation>
+                  The annotations core automatically knows where to permit annotations as it inspects the contributed annotation and
+                  reads the @Target that has been defined for it. These filters are only used when there might be an extra restriction
+                  you want to add, for example, if version 2 of an annotation allows adding the annotation to a field, and then version
+                  3 deprecates that usage, you can add a filter here to disallow the usage in the UI.
+               </documentation>
+            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="TYPE">
+                  </enumeration>
+                  <enumeration value="FIELD">
+                  </enumeration>
+                  <enumeration value="METHOD">
+                  </enumeration>
+                  <enumeration value="PARAMETER">
+                  </enumeration>
+                  <enumeration value="CONSTRUCTOR">
+                  </enumeration>
+                  <enumeration value="LOCAL_VARIABLE">
+                  </enumeration>
+                  <enumeration value="ANNOTATION_TYPE">
+                  </enumeration>
+                  <enumeration value="PACKAGE">
+                  </enumeration>
+               </restriction>
+            </simpleType>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         1.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         The following is an example of an annotation definition contribution:
+
+&lt;p&gt;
+&lt;pre&gt;
+   &lt;extension point=&quot;org.eclipse.jst.ws.annotations.core.annotationDefinition&quot;&gt;
+      &lt;annotation
+            category=&quot;jaxws.category&quot;
+            class=&quot;javax.jws.WebService&quot;
+            name=&quot;WebService&quot;&gt;
+      &lt;/annotation&gt;
+   &lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2009 Shane Clarke. &lt;br&gt;
+All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at &lt;a href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>
