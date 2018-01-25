@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Arbortext, Inc., 1988-2006, v.4002-->
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "task.dtd">
+<task id="tsampappa" xml:lang="en-us">
+<title>Generating a <tm tmclass="special" tmowner="Sun Microsystems, Inc."
+tmtype="tm" trademark="Java">Java</tm> client proxy and a sample application
+from a WSDL document using the Axis2 runtime environment</title>
+<titlealts>
+<searchtitle>Generating an Apache Axis2 Java client proxy from a WSDL document</searchtitle>
+</titlealts>
+<shortdesc>The Web Service Client wizard assists you in generating a <tm tmclass="special"
+tmowner="Sun Microsystems, Inc." tmtype="tm" trademark="Java">Java</tm> bean
+proxy and a sample application. The sample Web application demonstrates how
+to code a proxy file.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm keyref="taxis2client|1|Axis2runtimeenvironmentWebserviceclients"
+status="unchanged">Axis2 runtime environment<indexterm>Web services<indexterm>clients</indexterm></indexterm></indexterm>
+<indexterm keyref="taxis2client|2|WebservicesAxis2runtimeenvironmentWebserviceclients"
+status="unchanged">Web services<indexterm>Axis2 runtime environment<indexterm>Web
+service clients</indexterm></indexterm></indexterm></keywords>
+</metadata></prolog>
+<taskbody>
+<prereq><p>Prerequisites:</p><ol>
+<li conref="taxis2bu.dita#twsbeana/installaxis2link"></li>
+<li conref="taxis2bu.dita#twsbeana/createtomcatlink"></li>
+<li>Discover and import a WSDL document into the Web project. You can only
+use a WSDL file that contains a service element.</li>
+</ol></prereq>
+<context>To generate a <tm tmclass="special" tmowner="Sun Microsystems, Inc."
+tmtype="tm" trademark="Java">Java</tm> client proxy and a sample application
+from a discovered WSDL document:</context>
+<steps>
+<step><cmd>Switch to the Java EE perspective (<uicontrol>Window > Open Perspective
+> Java EE</uicontrol>).</cmd></step>
+<step><cmd>In the Navigator view, select the Web project in which you want
+to generate a sample application.</cmd></step>
+<step><cmd>Click  <uicontrol>File > New > Other</uicontrol>. Select  <uicontrol>Web
+Services</uicontrol> in order to display the various Web service wizards.
+Select the  <uicontrol>Web Service Client</uicontrol> wizard. Click  <uicontrol>Next</uicontrol>.</cmd>
+</step>
+<step><cmd>Web Services page: </cmd>
+<substeps>
+<substep><cmd>Enter the URI to the WSDL, WSIL, or HTML file that will be used
+to generate the client.</cmd></substep>
+<substep><cmd>Select the type of proxy to be generated</cmd></substep>
+<substep><cmd>Select the stages of Web services development that you want
+to complete using the slider:</cmd><info><ul>
+<li>Develop: this will develop the WSDL definition and implementation of the
+Web service. This includes such tasks as creating the modules which will contain
+the generated code and <tm tmclass="special" tmowner="Sun Microsystems, Inc."
+tmtype="tm" trademark="Java">Java</tm> files, as well as copying the Axis
+JARs..</li>
+<li>Assemble: this ensures the project that will host the Web service or client
+gets associated to an EAR when required by the target application server.</li>
+<li>Deploy: this will create the deployment code for the service.</li>
+<li>Install: this will install and configure the Web module and EARs on the
+target server.</li>
+<li>Start: this will start the server once the service has been installed
+on it. The server-config.wsdd file will be generated.</li>
+<li>Test: this will provide various options for testing the service, such
+as using the Web Service Explorer or sample JSPs.</li>
+</ul></info></substep>
+<substep><cmd>Select your server: the default server is displayed. If you
+want to deploy your client to a different server click the link to specify
+a different server.</cmd></substep>
+<substep><cmd>Select your runtime: ensure the Apache Axis2 runtime is selected.</cmd>
+</substep>
+<substep><cmd>Select the client project: the project containing the project
+selected in your workspace is displayed. To select a different project and
+EAR click on the project link.</cmd><info>Ensure that the project selected
+as the Client Web Project is different from the Service Web Project, or the
+service will be overwritten by the client's generated artifacts.</info></substep>
+<substep><cmd>Monitor the Web service: this will send the Web service traffic
+through the TCP/IP Monitor, which allows you to watch the SOAP traffic generated
+by the Web service and to test this traffic for WS-I compliance. Alternately
+you can manually set up a TCP/IP monitor as described in <xref href="../../org.eclipse.wst.wsi.ui.doc.user/tasks/tmonitor.dita"
+scope="peer">Using the TCP/IP Monitor to test Web services</xref></cmd></substep>
+</substeps>
+</step>
+<step conref="taxis2bu.dita#twsbeana/axis2clientpagelink"><cmd>Axis2 Client
+Web service configuration page: Use this page to select the following options: </cmd>
+<substeps>
+<substep><cmd>Service Name: </cmd></substep>
+<substep><cmd>Port Name: </cmd></substep>
+<substep><cmd>Databinding Name: Only the Axis2 Databinding Framework (ADB)
+is supported at this time.</cmd></substep>
+<substep><cmd>Custom package name: You can change the package name in this
+field.</cmd></substep>
+<substep><cmd>Client mode: You can choose if the client is synchronous, asynchronous,
+or both.</cmd></substep>
+<substep><cmd>Generate test case to test the service: If you select this,
+the Axis2 emitter will generate JUnit testcases matching the WSDL provided
+to the client. These JUnit testcases will be generated to a newly added source
+directory to the client project called <uicontrol>test</uicontrol>. </cmd>
+</substep>
+<substep><cmd>Generate all types for all elements referred by schemas:</cmd>
+</substep>
+<substep><cmd>Namespace to package mapping: Use this table to review or edit
+the mappings between packages and namespaces.</cmd></substep>
+</substeps>
+</step>
+<step><cmd>Web Service Client Test page: Use this page to select the following
+options: </cmd>
+<substeps>
+<substep><cmd>Select your test facility. You can test the generated proxy
+in the Web Service Explorer, or the Universal Test Client.</cmd></substep>
+<substep><cmd>Select  <uicontrol>Run test on server</uicontrol> to start the
+server for you automatically.</cmd></substep>
+</substeps>
+</step>
+<step><cmd>Click  <uicontrol>Finish</uicontrol>. If you have selected to test
+the proxy, the test client will open in a browser window.</cmd></step>
+</steps>
+<result><p>The generated <tm tmclass="special" tmowner="Sun Microsystems, Inc."
+tmtype="tm" trademark="Java">Java</tm> bean proxy provides a remote procedure
+call interface to the Web service. The sample Web application demonstrates
+how to code the proxy file.</p><p>Once you have generated your <tm tmclass="special"
+tmowner="Sun Microsystems, Inc." tmtype="tm" trademark="Java">Java</tm> client
+proxy, you may test the methods of the Web service through the proxy using
+Web Services sample JSPs or the Universal test client.</p><ul outputclass="wsclienttestoptions">
+<li>If you have selected to test the generated proxy using Web service JSPs,
+the proxy is launched in a Web browser at the following URL: <codeph>http://localhost: <varname>port</varname>/ <varname>WebProject</varname>Client/sample<i
+>BeanName</i>/ <varname>WebServiceName</varname>/TestClient.jsp</codeph> You
+can use this sample application to test the Web service by selecting a method,
+entering a value for the method, and clicking  <uicontrol>Invoke</uicontrol>.
+The result of the method will display in the results pane.</li>
+<li>If you have selected to test the Web service using the Web Services Explorer,
+the Explorer will open. Select the operation you want to test, enter the required
+information, and click  <b>Go</b>. The result will display in the Status pane.</li>
+</ul><p>For more information on creating a Web project, refer to the Web application
+development documentation.</p></result>
+</taskbody>
+<related-links>
+<linklist><title>Related Concepts</title>
+<link href="../../org.eclipse.jst.ws.doc.user/concepts/cwsinwsa.dita" scope="peer">
+<linktext> Tools for Web services development</linktext></link>
+<link href="../../org.eclipse.jst.ws.doc.user/concepts/cws.dita" scope="peer">
+<linktext>Web services development</linktext></link>
+</linklist>
+<linklist><title>Related Tasks</title>
+<link href="../../org.eclipse.jst.ws.consumption.ui.doc.user/tasks/tuddiexp.dita"
+scope="peer"><linktext> Using the Web Services Explorer</linktext></link>
+</linklist>
+</related-links>
+</task>

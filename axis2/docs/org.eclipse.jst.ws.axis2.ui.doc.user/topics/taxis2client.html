@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="Copyright (c) 2000, 2008 IBM Corporation and others. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: IBM Corporation - initial API and implementation" />
+<meta name="DC.rights.owner" content="(C) Copyright 2000, 2008" />
+<meta content="public" name="security" />
+<meta content="index,follow" name="Robots" />
+<meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
+<meta content="task" name="DC.Type" />
+<meta name="DC.Title" content="Generating a Java client proxy and a sample application from a WSDL document using the Axis2 runtime environment" />
+<meta name="abstract" content="The Web Service Client wizard assists you in generating a Java bean proxy and a sample application. The sample Web application demonstrates how to code a proxy file." />
+<meta name="description" content="The Web Service Client wizard assists you in generating a Java bean proxy and a sample application. The sample Web application demonstrates how to code a proxy file." />
+<meta content="Axis2 runtime environment, Web services, clients, Web service clients" name="DC.subject" />
+<meta content="Axis2 runtime environment, Web services, clients, Web service clients" name="keywords" />
+<meta scheme="URI" name="DC.Relation" content="../topics/caxis2tover.html" />
+<meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/concepts/cwsinwsa.html" />
+<meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/concepts/cws.html" />
+<meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.consumption.ui.doc.user/tasks/tuddiexp.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="tsampappa" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../org.eclipse.wst.doc.user/common.css" type="text/css" rel="stylesheet" />
+<title>Generating an Apache Axis2 Java client proxy from a WSDL document</title>
+</head>
+<body id="tsampappa"><a name="tsampappa"><!-- --></a>
+
+
+<h1 class="topictitle1">Generating a Java client proxy and a sample application
+from a WSDL document using the Axis2 runtime environment</h1>
+
+
+
+
+<div><p>The Web Service Client wizard assists you in generating a Java™ bean
+proxy and a sample application. The sample Web application demonstrates how
+to code a proxy file.</p>
+
+<div class="p"><p>Prerequisites:</p>
+<ol>
+<li>You must have installed the Apache Axis2 runtime
+environment as described in: <a href="caxis2tover.html" title="This runtime environment is for users who prefer to develop for&#10;the open Apache Axis platform. Both Axis1 and Axis2 are supported by the Web&#10;services tools.">Creating Web services with the Apache Axis2 runtime environments</a></li>
+
+<li>If you are using the Apache Jakarta Tomcat servlet
+container as your server, you must install it, configure an instance of it,
+and create a Web project targeted to it as described in: <a href="../../org.eclipse.jst.ws.axis.ui.doc.user/topics/ttomcatserv.html">Creating an Apache Tomcat server and Web project</a></li>
+
+<li>Discover and import a WSDL document into the Web project. You can only
+use a WSDL file that contains a service element.</li>
+
+</ol>
+</div>
+
+<div class="section">To generate a Java client proxy and a sample application
+from a discovered WSDL document:</div>
+
+<ol>
+<li><span>Switch to the Java EE perspective (<span class="uicontrol">Window &gt; Open Perspective
+&gt; Java EE</span>).</span></li>
+
+<li><span>In the Navigator view, select the Web project in which you want
+to generate a sample application.</span></li>
+
+<li><span>Click  <span class="uicontrol">File &gt; New &gt; Other</span>. Select  <span class="uicontrol">Web
+Services</span> in order to display the various Web service wizards.
+Select the  <span class="uicontrol">Web Service Client</span> wizard. Click  <span class="uicontrol">Next</span>.</span>
+</li>
+
+<li><span>Web Services page: </span>
+<ol type="a">
+<li class="substepexpand"><span>Enter the URI to the WSDL, WSIL, or HTML file that will be used
+to generate the client.</span></li>
+
+<li class="substepexpand"><span>Select the type of proxy to be generated</span></li>
+
+<li class="substepexpand"><span>Select the stages of Web services development that you want
+to complete using the slider:</span> <ul>
+<li>Develop: this will develop the WSDL definition and implementation of the
+Web service. This includes such tasks as creating the modules which will contain
+the generated code and Java files, as well as copying the Axis
+JARs..</li>
+
+<li>Assemble: this ensures the project that will host the Web service or client
+gets associated to an EAR when required by the target application server.</li>
+
+<li>Deploy: this will create the deployment code for the service.</li>
+
+<li>Install: this will install and configure the Web module and EARs on the
+target server.</li>
+
+<li>Start: this will start the server once the service has been installed
+on it. The server-config.wsdd file will be generated.</li>
+
+<li>Test: this will provide various options for testing the service, such
+as using the Web Service Explorer or sample JSPs.</li>
+
+</ul>
+</li>
+
+<li class="substepexpand"><span>Select your server: the default server is displayed. If you
+want to deploy your client to a different server click the link to specify
+a different server.</span></li>
+
+<li class="substepexpand"><span>Select your runtime: ensure the Apache Axis2 runtime is selected.</span>
+</li>
+
+<li class="substepexpand"><span>Select the client project: the project containing the project
+selected in your workspace is displayed. To select a different project and
+EAR click on the project link.</span> Ensure that the project selected
+as the Client Web Project is different from the Service Web Project, or the
+service will be overwritten by the client's generated artifacts.</li>
+
+<li class="substepexpand"><span>Monitor the Web service: this will send the Web service traffic
+through the TCP/IP Monitor, which allows you to watch the SOAP traffic generated
+by the Web service and to test this traffic for WS-I compliance. Alternately
+you can manually set up a TCP/IP monitor as described in <a href="../../org.eclipse.wst.wsi.ui.doc.user/tasks/tmonitor.html">Using the TCP/IP Monitor to test Web services</a></span></li>
+
+</ol>
+
+</li>
+
+<li><span>Axis2 Client Web service configuration
+page: Use this page to select the following options: </span>
+<ol type="a">
+<li><span>Service Name: accept the default.</span></li>
+
+<li><span>Port Name: accept the default.</span></li>
+
+<li><span>Databinding Name: only the Axis2 Databinding Framework (ADB)
+is supported at this time.</span></li>
+
+<li><span>Custom package name: You can change the package name in this
+field.</span></li>
+
+<li><span>Client mode: You can choose if the client is synchronous, asynchronous,
+or both.</span></li>
+
+<li><span>Generate test case to test the service: If you select this,
+the Axis2 emitter will generate JUnit testcases matching the WSDL provided
+to the client. These JUnit testcases will be generated to a newly added source
+directory to the client project called <span class="uicontrol">test</span>. </span>
+</li>
+
+<li><span>Generate all types for all elements referred by schemas</span>
+</li>
+
+<li><span>Namespace to package mapping: Use this table to review or edit
+the mappings between packages and namespaces.</span></li>
+
+</ol>
+
+</li>
+
+<li><span>Web Service Client Test page: Use this page to select the following
+options: </span>
+<ol type="a">
+<li><span>Select your test facility. You can test the generated proxy
+in the Web Service Explorer, or the Universal Test Client.</span></li>
+
+<li><span>Select  <span class="uicontrol">Run test on server</span> to start the
+server for you automatically.</span></li>
+
+</ol>
+
+</li>
+
+<li><span>Click  <span class="uicontrol">Finish</span>. If you have selected to test
+the proxy, the test client will open in a browser window.</span></li>
+
+</ol>
+
+<div class="section"><p>The generated Java bean proxy provides a remote procedure
+call interface to the Web service. The sample Web application demonstrates
+how to code the proxy file.</p>
+<p>Once you have generated your Java client
+proxy, you may test the methods of the Web service through the proxy using
+Web Services sample JSPs or the Universal test client.</p>
+<ul class="wsclienttestoptions">
+<li>If you have selected to test the generated proxy using Web service JSPs,
+the proxy is launched in a Web browser at the following URL: <samp class="codeph">http://localhost: <var class="varname">port</var>/ <var class="varname">WebProject</var>Client/sample<em>BeanName</em>/ <var class="varname">WebServiceName</var>/TestClient.jsp</samp> You
+can use this sample application to test the Web service by selecting a method,
+entering a value for the method, and clicking  <span class="uicontrol">Invoke</span>.
+The result of the method will display in the results pane.</li>
+
+<li>If you have selected to test the Web service using the Web Services Explorer,
+the Explorer will open. Select the operation you want to test, enter the required
+information, and click  <strong>Go</strong>. The result will display in the Status pane.</li>
+
+</ul>
+<p>For more information on creating a Web project, refer to the Web application
+development documentation.</p>
+</div>
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../topics/caxis2tover.html" title="This runtime environment is for users who prefer to develop for the open Apache Axis platform. Both Axis1 and Axis2 are supported by the Web services tools.">Creating Web services with the Apache Axis2 runtime environments</a></div>
+</div>
+
+<div class="linklist"><strong>Related Concepts</strong><br />
+
+<div><a href="../../org.eclipse.jst.ws.doc.user/concepts/cwsinwsa.html"> Tools for Web services development</a></div>
+<div><a href="../../org.eclipse.jst.ws.doc.user/concepts/cws.html">Web services development</a></div></div>
+
+<div class="linklist"><strong>Related Tasks</strong><br />
+
+<div><a href="../../org.eclipse.jst.ws.consumption.ui.doc.user/tasks/tuddiexp.html"> Using the Web Services Explorer</a></div></div>
+</div>
+
+</body>
+</html>

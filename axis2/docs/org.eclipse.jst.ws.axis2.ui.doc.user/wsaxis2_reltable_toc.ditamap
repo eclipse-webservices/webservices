@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Arbortext, Inc., 1988-2006, v.4002-->
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN"
+ "map.dtd">
+<map id="axis2webservicesreltable" title="Reltable for Axis Web services docs">
+<reltable>
+<relheader>
+<relcolspec type="concept"></relcolspec>
+<relcolspec type="task"></relcolspec>
+<relcolspec type="reference"></relcolspec>
+</relheader>
+<relrow>
+<relcell collection-type="family">
+<topicref href="topics/caxis2tover.dita" navtitle="Creating Web services with the Apache Axis2 runtime environment">
+</topicref>
+</relcell>
+<relcell>
+<topicref href="topics/taxis2bu.dita" navtitle="Creating an Axis2 Web service from a Java bean">
+</topicref>
+<topicref href="topics/taxis2td.dita" navtitle="Creating an Axis2 Web service from WSDL">
+</topicref>
+<topicref href="topics/taxis2client.dita" navtitle="Creating an Axis2 Web service client">
+</topicref>
+</relcell>
+<relcell></relcell>
+</relrow>
+<relrow>
+<relcell>
+<topicref href="../org.eclipse.jst.ws.axis.ui.doc.user/topics/caxistover.dita"
+navtitle="Creating Web services with the Apache Axis1 runtime environment"
+scope="peer"></topicref>
+<topicref href="topics/caxis2tover.dita" navtitle="Creating Web services with the Apache Axis2 runtime environment"
+scope="local"></topicref>
+</relcell>
+<relcell></relcell>
+<relcell></relcell>
+</relrow>
+</reltable>
+</map>

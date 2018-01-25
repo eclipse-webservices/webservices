@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+	<extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+      <widgetFactory   
+        id="BeanExampleConfig"
+        insertBeforeCommandId="org.eclipse.jst.ws.axis2.creation.core.command.Axis2BUCommand"
+        class="org.eclipse.jst.ws.internal.axis2.creation.ui.wsrt.Axis2BeanConfigWidgetFactory"/>
+    </extension> 
+    
+	<extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+      <widgetFactory   
+        id="SkelExampleConfig"
+        insertBeforeCommandId="org.eclipse.jst.ws.axis2.creation.core.command.Axis2TDCommand"
+        class="org.eclipse.jst.ws.internal.axis2.creation.ui.wsrt.Axis2SkelConfigWidgetFactory" />
+    </extension> 
+    
+    <extension point="org.eclipse.jst.ws.consumption.ui.runtimes">
+      <runtime
+        id="org.eclipse.jst.ws.axis2.creation.axis2WebServiceRT"
+        label="%LABEL_RUNTIME_AXIS_2"
+        serverRequired="false"/>
+    </extension>
+
+
+	<!-- define support for Axis2 Java bean bottom up and top-down support in web projects -->
+    <extension point="org.eclipse.jst.ws.consumption.ui.serviceRuntimes">
+      <serviceRuntime
+        id="org.eclipse.jst.ws.axis2.creation.java" 
+        serviceImplementationTypeId="org.eclipse.jst.ws.wsImpl.java"
+        runtimeId="org.eclipse.jst.ws.axis2.creation.axis2WebServiceRT"
+        bottomUp="true"
+        topDown="true"
+        class="org.eclipse.jst.ws.internal.axis2.creation.ui.wsrt.Axis2WebServiceRuntime">
+
+        <required-facet-version facet="jst.web" version="2.3" allow-newer="true"/>
+        <required-facet-version facet="axis2.core" version="1.1" allow-newer="true" />
+        <required-facet-version facet="axis2.ext" version="1.1" allow-newer="true" />
+
+      </serviceRuntime>
+    </extension>   
+        
+    <!-- define support for Axis Java clients in Web projects -->
+    <extension point="org.eclipse.jst.ws.consumption.ui.clientRuntimes">
+      <clientRuntime
+        id="org.eclipse.jst.ws.axis2.consumption.web"
+        clientImplementationTypeId="org.eclipse.jst.ws.client.type.java"
+        runtimeId="org.eclipse.jst.ws.axis2.creation.axis2WebServiceRT"
+        class="org.eclipse.jst.ws.internal.axis2.creation.ui.wsrt.Axis2WebServiceRuntime">
+
+        <required-facet-version facet="jst.web" version="2.3" allow-newer="true" />
+        <required-facet-version facet="axis2.core" version="1.1" allow-newer="true" />
+        <required-facet-version facet="axis2.ext" version="1.1" allow-newer="true" />
+
+      </clientRuntime>
+    </extension>     
+    
+</plugin>

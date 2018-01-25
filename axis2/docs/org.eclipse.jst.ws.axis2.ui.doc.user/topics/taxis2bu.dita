@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Arbortext, Inc., 1988-2006, v.4002-->
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "../../dtd/task.dtd">
+<task id="twsbeana" xml:lang="en-us">
+<title>Creating a Web service from a <tm tmclass="special" tmowner="Sun Microsystems, Inc."
+tmtype="tm" trademark="Java">Java</tm> bean using the Apache Axis2 runtime
+environment</title>
+<titlealts>
+<searchtitle>Creating a Web service from a Java bean using the Apache Axis2
+runtime environment</searchtitle>
+</titlealts>
+<shortdesc>The Web Service wizard assists you in creating a new Web service,
+configuring it for deployment, and deploying the Web service to a server.
+Once your Web service is deployed, the wizard assists you in generating the
+client proxy and sample application to test the Web service. When you have
+completed testing, you can publish your Web service to a UDDI Business Registry
+using the Export wizard.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>Axis2 runtime environment<indexterm>Web services<indexterm>Java
+beans</indexterm></indexterm></indexterm><indexterm>Web services<indexterm>Axis2
+runtime environment<indexterm>creating a Web service</indexterm></indexterm></indexterm>
+</keywords>
+</metadata></prolog>
+<taskbody>
+<prereq><p>Prerequisites:<ol>
+<li id="installaxis2link">You must have installed the Apache Axis2 runtime
+environment as described in: <xref href="caxis2tover.dita" scope="local"></xref></li>
+<li id="createtomcatlink">If you are using the Apache Jakarta Tomcat servlet
+container as your server, you must install it, configure an instance of it,
+and create a Web project targeted to it as described in: <xref href="../../org.eclipse.jst.ws.axis.ui.doc.user/topics/ttomcatserv.dita"
+scope="peer">Creating an Apache Tomcat server and Web project</xref></li>
+<li>Create or import a bean into the <tm tmclass="special" tmowner="Sun Microsystems, Inc."
+tmtype="tm" trademark="Java">Java</tm> source folder of the Web project. To
+import, select the <b><tm tmclass="special" tmowner="Sun Microsystems, Inc."
+tmtype="tm" trademark="Java">Java</tm> Resources: src</b> folder, and from
+the file menu select <menucascade><uicontrol>Import</uicontrol><uicontrol>General</uicontrol>
+<uicontrol>File System</uicontrol></menucascade> and browse to where your
+package is.</li>
+</ol></p></prereq>
+<context>To create a Web service from a bean using the Apache Axis2 runtime
+environment:</context>
+<steps>
+<step><cmd>Switch to the Java EE perspective (<uicontrol>Window > Open Perspective
+> Java EE</uicontrol>).</cmd></step>
+<step><cmd>In the Project Explorer view, select the bean that you created
+or imported into the source folder of your Web project.</cmd></step>
+<step><cmd>Click  <uicontrol>File > New > Other</uicontrol>.</cmd><info>Select<uicontrol>Web
+Services</uicontrol> in order to display the various Web service wizards.
+Select the  <uicontrol>Web Service</uicontrol> wizard. Click  <uicontrol>Next</uicontrol>.</info>
+</step>
+<step><cmd>Web Services page: select  <uicontrol>Bottom up Java bean Web service</uicontrol> as
+your Web service type, and select the <tm tmclass="special" tmowner="Sun Microsystems, Inc."
+tmtype="tm" trademark="Java">Java</tm> bean from which the service will be
+created.</cmd>
+<substeps id="createstep4ul">
+<substep><cmd>Select the stages of Web services development that you want
+to complete using the slider:</cmd><info><ul>
+<li>Develop: this will develop the WSDL definition and implementation of the
+Web service. This includes such tasks as creating the modules which will contain
+the generated code, WSDL files, deployment descriptors, and <tm tmclass="special"
+tmowner="Sun Microsystems, Inc." tmtype="tm" trademark="Java">Java</tm> files
+when appropriate.</li>
+<li>Assemble: this ensures the project that will host the Web service or client
+gets associated to an EAR when required by the target application server.</li>
+<li>Deploy: this will create the deployment code for the service.</li>
+<li>Install: this will install and configure the Web module and EARs on the
+target server.</li>
+<li>Start: this will start the server once the service has been installed
+on it. The server-config.wsdd file will be generated.</li>
+<li>Test: this will provide various options for testing the service, such
+as using the Web Service Explorer or sample JSPs.</li>
+</ul></info></substep>
+<substep><cmd>Select your server: the default server is displayed. If you
+want to deploy your service to a different server click the link to specify
+a different server.</cmd></substep>
+<substep><cmd>Select your runtime: ensure the Apache Axis2 runtime is selected.</cmd>
+</substep>
+<substep><cmd>Select the service project: the project selected in your workspace
+is displayed. To select a different project click on the project link. If
+you are deploying to <tm tmclass="ibm" tmowner="IBM Corporation" tmtype="reg"
+trademark="WebSphere">WebSphere</tm> Application Server you will also be asked
+to select the EAR associated with the project.</cmd><info>Ensure that the
+project selected as the Client Web Project is different from the Service Web
+Project, or the service will be overwritten by the client's generated artifacts.</info>
+</substep>
+<substep><cmd>If you want to create a client, select the type of proxy to
+be generated and repeat the above steps for the client.</cmd></substep>
+<substep><cmd>Publish the Web service: this will launch the Web Services Explorer
+to publish your Web service to a UDDI registry.</cmd></substep>
+<substep><cmd>Monitor the Web service: this will send the Web service traffic
+through the TCP/IP Monitor, which allows you to watch the SOAP traffic generated
+by the Web service and to test this traffic for WS-I compliance. Alternately
+you can manually set up a TCP/IP monitor as described in <xref href="../../org.eclipse.wst.wsi.ui.doc.user/tasks/tmonitor.dita"
+scope="peer">Using the TCP/IP Monitor to test Web services</xref></cmd></substep>
+</substeps>
+</step>
+<step><cmd>Axis2 Web Service <tm tmclass="special" tmowner="Sun Microsystems, Inc."
+tmtype="tm" trademark="Java">Java</tm> Bean Configuration page: If you have
+a custom services.xml file you can point to it on this page, or you can have
+the wizard create a default services.xml file for you.</cmd></step>
+<step><cmd>Web Service Test page: If you selected to test the Web service,
+select the test facility for the generated Web service.</cmd><info>This will
+open the Web service in the Web Services Explorer. Select the operation you
+want to test, enter the required information, and click<uicontrol>Go</uicontrol>.
+The result will display in the Status pane. Click  <uicontrol>Next</uicontrol>.</info>
+</step>
+<step id="axis2clientpagelink"><cmd>Axis2 Client Web service configuration
+page: Use this page to select the following options: </cmd>
+<substeps>
+<substep><cmd>Service Name: accept the default.</cmd></substep>
+<substep><cmd>Port Name: accept the default.</cmd></substep>
+<substep><cmd>Databinding Name: only the Axis2 Databinding Framework (ADB)
+is supported at this time.</cmd></substep>
+<substep><cmd>Custom package name: You can change the package name in this
+field.</cmd></substep>
+<substep><cmd>Client mode: You can choose if the client is synchronous, asynchronous,
+or both.</cmd></substep>
+<substep><cmd>Generate test case to test the service: If you select this,
+the Axis2 emitter will generate JUnit testcases matching the WSDL provided
+to the client. These JUnit testcases will be generated to a newly added source
+directory to the client project called <uicontrol>test</uicontrol>. </cmd>
+</substep>
+<substep><cmd>Generate all types for all elements referred by schemas</cmd>
+</substep>
+<substep><cmd>Namespace to package mapping: Use this table to review or edit
+the mappings between packages and namespaces.</cmd></substep>
+</substeps>
+</step>
+<step><cmd>Web Service Client Test page: Use this page to select the following
+options: </cmd>
+<substeps>
+<substep><cmd>Select your test facility. You can test the generated proxy
+in the Web Service Explorer, or the Universal Test Client.</cmd></substep>
+<substep><cmd>Select  <uicontrol>Run test on server</uicontrol> to start the
+server for you automatically.</cmd></substep>
+</substeps>
+</step>
+<step><cmd>Web Service Publication page: Select whether or not you want to
+publish this Web service to a UDDI registry. Click <uicontrol>Finish</uicontrol>.</cmd>
+</step>
+</steps>
+<result id="axiswscreateresult"><p>After the Web service has been created,
+the following may occur depending on the options you selected: <ul>
+<li>If you have selected to test the Web service using the Web Services Explorer,
+the Explorer will open. Select the operation you want to test, enter the required
+information, and click  <b>Go</b>. The result will display in the Status pane.</li>
+<li>If you have selected to publish the Web service, the Web Services Explorer
+is launched displaying the page required to publish your Web service. Follow
+the instructions in  <varname>Publishing the Web service</varname> to complete
+this task.</li>
+</ul></p></result>
+<postreq><p> <uicontrol>Important:</uicontrol> If your methods contain types,
+not supported by the sample, such as arrays, indexed properties, and collections,
+the methods will be omitted from the sample and you will receive a warning
+message.</p></postreq>
+</taskbody>
+<related-links>
+<linklist><title>Related Concepts</title>
+<link href="../../org.eclipse.jst.ws.doc.user/concepts/cwsinwsa.dita" scope="peer">
+<linktext> Tools for Web services development</linktext></link>
+<link href="../../org.eclipse.jst.ws.doc.user/concepts/cws.dita" scope="peer">
+<linktext>Web services development</linktext></link>
+</linklist>
+<linklist><title>Related Tasks</title>
+<link href="../../org.eclipse.jst.ws.doc.user/tasks/toverws.dita" scope="peer">
+<linktext> Developing Web services</linktext></link>
+<link href="../../org.eclipse.jst.ws.consumption.ui.doc.user/tasks/tuddiexp.dita"
+scope="peer"><linktext> Using the Web Services Explorer</linktext></link>
+</linklist>
+</related-links>
+</task>

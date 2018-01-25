@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Arbortext, Inc., 1988-2006, v.4002-->
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "../../dtd/task.dtd">
+<task id="tsklwsdla" xml:lang="en-us">
+<title>Creating a <tm tmclass="special" tmowner="Sun Microsystems, Inc." tmtype="tm"
+trademark="Java">Java</tm> bean skeleton from a WSDL document using the Apache
+Axis2 runtime environment</title>
+<titlealts>
+<searchtitle>Creating a Java bean skeleton from a WSDL document using the
+Apache Axis2 runtime environment</searchtitle>
+</titlealts>
+<shortdesc>The Web service wizard assists you in creating a skeleton bean
+from an existing WSDL document. The skeleton bean contains a set of methods
+that correspond to the operations described in the WSDL document. When the
+bean is created, each method has a trivial implementation that you replace
+by editing the bean.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm keyref="taxis2td|1|Axis2runtimeenvironmentskeletonWebservices"
+status="unchanged">Axis2 runtime environment<indexterm>Web services<indexterm>skeleton</indexterm></indexterm></indexterm>
+<indexterm keyref="taxis2td|2|WebservicesAxis2runtimeenvironmentskeletonWebservices"
+status="unchanged">Web services<indexterm>Axis2 runtime environment<indexterm>skeleton
+Web services</indexterm></indexterm></indexterm></keywords>
+</metadata></prolog>
+<taskbody>
+<prereq><p>Prerequisites:</p><ol>
+<li conref="taxis2bu.dita#twsbeana/installaxis2link"></li>
+<li conref="taxis2bu.dita#twsbeana/createtomcatlink"></li>
+<li>Create or import a WSDL file into the Web Content folder of the Web project.
+You can only use a WSDL file that contains a service element.</li>
+</ol></prereq>
+<context>To create a Web service from a WSDL file using the Apache Axis2 runtime
+environment:</context>
+<steps>
+<step><cmd>Switch to the Java EE perspective (<uicontrol>Window > Open Perspective
+> Java EE</uicontrol>).</cmd></step>
+<step><cmd>In the Project Explorer view, select the WSDL file that you created
+or imported into the Web Content folder of your Web project.</cmd></step>
+<step><cmd>Click  <uicontrol>File > New > Other</uicontrol>. Select  <uicontrol>Web
+Services</uicontrol> in order to display the various Web service wizards.
+Select the  <uicontrol>Web Service</uicontrol> wizard. Click  <uicontrol>Next</uicontrol>.</cmd>
+</step>
+<step><cmd>Web Services page: select  <uicontrol>Top down Java bean Web service</uicontrol> as
+your Web service type, and enter the URI to the WSDL, WSIL, or HTML file that
+will be used to generate the service.</cmd>
+<substeps conref="taxis2bu.dita#twsbeana/createstep4ul">
+<substep><cmd></cmd></substep>
+</substeps>
+</step>
+<step><cmd>Axis2 Web Service Skeleton <tm tmclass="special" tmowner="Sun Microsystems, Inc."
+tmtype="tm" trademark="Java">Java</tm> Bean Configuration page: Select the
+folder where the generated <tm tmclass="special" tmowner="Sun Microsystems, Inc."
+tmtype="tm" trademark="Java">Java</tm> will be stored. If you want to review
+or edit the mappings between packages and namespaces, select the  <uicontrol>Define
+custom mapping for namespace to package</uicontrol> check box. Click  <uicontrol>Next</uicontrol>.</cmd>
+<substeps>
+<substep><cmd>Service Name: accept the default.</cmd></substep>
+<substep><cmd>Port Name:accept the default.</cmd></substep>
+<substep><cmd>Databinding Name: Only the Axis2 Databinding Framework (ADB)
+is supported at this time.</cmd></substep>
+<substep><cmd>Custom package name: You can change the package name in this
+field.</cmd></substep>
+<substep><cmd>Generate an Interface for Skeleton</cmd></substep>
+<substep><cmd>Generate all types for all elements referred by schemas</cmd>
+</substep>
+<substep><cmd>Namespace to package mapping: Use this table to review or edit
+the mappings between packages and namespaces.</cmd></substep>
+</substeps>
+</step>
+<step><cmd>Test Web Service page: If you selected to test the Web service,
+select the test facility for the generated Web service. This will open the
+Web service in the Web Services Explorer. Select the operation you want to
+test, enter the required information, and click  <uicontrol>Go</uicontrol>.
+The result will display in the Status pane. Click  <uicontrol>Next</uicontrol>.</cmd>
+</step>
+<step conref="taxis2bu.dita#twsbeana/axis2clientpagelink"><cmd>Axis2 Client
+Web service configuration page: Use this page to select the following options: </cmd>
+<substeps>
+<substep><cmd>Service Name: </cmd></substep>
+<substep><cmd>Port Name: </cmd></substep>
+<substep><cmd>Databinding Name: Only the Axis2 Databinding Framework (ADB)
+is supported at this time.</cmd></substep>
+<substep><cmd>Custom package name: You can change the package name in this
+field.</cmd></substep>
+<substep><cmd>Client mode: You can choose if the client is synchronous, asynchronous,
+or both.</cmd></substep>
+<substep><cmd>Generate test case to test the service: If you select this,
+the Axis2 emitter will generate JUnit testcases matching the WSDL provided
+to the client. These JUnit testcases will be generated to a newly added source
+directory to the client project called <uicontrol>test</uicontrol>. </cmd>
+</substep>
+<substep><cmd>Generate all types for all elements referred by schemas:</cmd>
+</substep>
+<substep><cmd>Namespace to package mapping: Use this table to review or edit
+the mappings between packages and namespaces.</cmd></substep>
+</substeps>
+</step>
+<step><cmd>Web Service Client Test page: Use this page to select the following
+options: </cmd>
+<substeps>
+<substep><cmd>Select your test facility. You can test the generated proxy
+in the Web Service Explorer, or the Universal Test Client.</cmd></substep>
+<substep><cmd>Select  <uicontrol>Run test on server</uicontrol> to start the
+server for you automatically.</cmd></substep>
+</substeps>
+</step>
+<step><cmd>Web Service Publication page: If you have selected to publish your
+Web service to a UDDI registry, use this page to launch the Web Services Explorer
+and select the UDDI registry to which the Web service will be published. Click
+ <uicontrol>Finish</uicontrol>.</cmd></step>
+</steps>
+<result conref="taxis2bu.dita#twsbeana/axiswscreateresult">After the Web service
+has been created, the following may occur depending on the options you selected: <ul>
+<li>If you have selected to test the generated proxy using Web service JSPs,
+the proxy is launched in a Web browser at the following URL: <codeph>http://localhost: <varname>port</varname>/ <varname>WebProject</varname>Client/sample<i
+>BeanName</i>/<varname>WebServiceName</varname>/TestClient.jsp</codeph> You
+can use this sample application to test the Web service by selecting a method,
+entering a value for the method, and clicking  <uicontrol>Invoke</uicontrol>.
+The result of the method will display in the results pane.</li>
+<li>If you have selected to test the Web service using the Web Services Explorer,
+the Explorer will open. Select the operation you want to test, enter the required
+information, and click  <b>Go</b>. The result will display in the Status pane.</li>
+<li>If you have selected to publish the Web service, the Web Services Explorer
+is launched displaying the page required to publish your Web service. Follow
+the instructions in <varname>Publishing the Web service</varname> to complete
+this task.</li>
+</ul></result>
+</taskbody>
+<related-links>
+<linklist><title>Related Concepts</title>
+<link href="../../org.eclipse.jst.ws.doc.user/concepts/cwsinwsa.dita" scope="peer">
+<linktext> Tools for Web services development</linktext></link>
+<link href="../../org.eclipse.jst.ws.doc.user/concepts/cws.dita" scope="peer">
+<linktext>Web services development</linktext></link>
+</linklist>
+<linklist><title>Related Tasks</title>
+<link href="../../org.eclipse.jst.ws.doc.user/tasks/toverws.dita" scope="peer">
+<linktext> Developing Web services</linktext></link>
+<link href="../../org.eclipse.jst.ws.consumption.ui.doc.user/tasks/tuddiexp.dita"
+scope="peer"><linktext> Using the Web Services Explorer</linktext></link>
+</linklist>
+</related-links>
+</task>

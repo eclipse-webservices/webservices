@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+   
+	<extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory   
+             id="Axis2ClientConfig"
+             insertBeforeCommandId="org.eclipse.jst.ws.axis2.consumption.core.command.Axis2WebservicesServerCommand"
+             class="org.eclipse.jst.ws.internal.axis2.consumption.ui.wsrt.Axis2ClientConfigWidgetFactory"/>
+    </extension> 
+    <extension point="org.eclipse.wst.command.env.antDataMapping">
+        <map
+              key="ClientProjectName"
+              operation="org.eclipse.jst.ws.axis2.creation.core.command.Axis2ClientDefaultingCommand"
+              property="ClientProject"
+              transform="org.eclipse.jst.ws.internal.common.StringToIProjectTransformer"/>
+    </extension> 
+
+</plugin>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Arbortext, Inc., 1988-2006, v.4002-->
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "concept.dtd">
+<concept id="axisoverview" xml:lang="en-us">
+<title>Creating Web services with the Apache Axis2 runtime environments</title>
+<shortdesc>This runtime environment is for users who prefer to develop for
+the open Apache Axis platform. Both Axis1 and Axis2 are supported by the Web
+services tools.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm keyref="caxis2tover|1|AxisruntimeenvironmentWebservicesoverview"
+status="unchanged">Axis2 runtime environment<indexterm>Web services<indexterm>overview</indexterm></indexterm></indexterm>
+<indexterm keyref="caxis2tover|2|WebservicesAxisruntimeenvironment" status="unchanged">Web
+services<indexterm>Axis2 runtime environment<indexterm>overview</indexterm></indexterm></indexterm>
+</keywords>
+</metadata></prolog>
+<conbody>
+<section><title>Apache Axis2 Overview</title><p>Axis2 evolved from the Apache
+Axis1.x architecture and is more flexible, configurable, and efficient, while
+retaining the positive aspects of Apache Axis1.x architecture.</p><p>The Web
+service tools provided with this product support the following specifications
+when creating Apache Axis2 Web services and clients:<ul>
+<li>SOAP 1.1 and 1.2</li>
+<li>WSDL 1.1, including both SOAP and HTTP bindings </li>
+<li>HTTP transports</li>
+</ul>The levels of Axis2 currently supported by the tools is 1.2 and 1.3.
+Axis2 can be deployed to any server that supports <tm tmclass="special" tmowner="Sun Microsystems, Inc."
+tmtype="tm" trademark="Java">Java</tm> Servlet 2.2 specification or higher,
+including <tm tmclass="ibm" tmowner="IBM Corporation" tmtype="reg" trademark="IBM">IBM</tm> <tm
+tmclass="ibm" tmowner="IBM Corporation" tmtype="reg" trademark="WebSphere">WebSphere</tm> Application
+Server 6.1, and Apache Tomcat server. For more information on Axis2, refer
+to <xref format="html" href="http://ws.apache.org/axis2/" scope="external">http://ws.apache.org/axis2</xref>. </p><p>The
+support for Apache Axis2 is limited to validation that the application is
+invoking the Axis2 emitters correctly. Support for other Axis2 issues should
+be directed to <xref format="html" href="http://ws.apache.org/axis2/" scope="external">http://ws.apache.org/axis2</xref></p></section>
+<section><title>Installing the Apache Axis2 runtime</title><p>Unlike creating
+Web services in the Apache Axis1.x runtime, before creating a Web service
+using Apache Axis2 you must download the Axis2 runtime and install it the
+workbench using the Web services Axis2 preferences page.<ol>
+<li>Download Apache Axis2 v1.2 or v1.3 from the following site: <xref format="html"
+href="http://ws.apache.org/axis2/download.cgi" scope="external">http://ws.apache.org/axis2/download.cgi</xref>.</li>
+<li>Follow the instructions in the appropriate Apache Axis2 installation guide: <ul>
+<li>Apache Axis2 v1.2<xref format="html" href="http://ws.apache.org/axis2/1_2/installationguide.html"
+scope="external">http://ws.apache.org/axis2/1_2/installationguide.html</xref></li>
+<li>Apache Axis2 v1.3<xref format="html" href="http://ws.apache.org/axis2/1_3/installationguide.html"
+scope="external">http://ws.apache.org/axis2/1_3/installationguide.html</xref></li>
+</ul></li>
+<li>Once the Apache Axis2 runtime is installed, you need to associate it with
+the workbench. In the workbench, open <menucascade><uicontrol>Window</uicontrol>
+<uicontrol>Preferences</uicontrol><uicontrol>Web services</uicontrol><uicontrol>Axis2
+Preferences</uicontrol></menucascade>. On the <uicontrol>Axis2 Runtime</uicontrol> tab,
+browse to the location where you installed Apache Axis2. A message will display
+if the runtime is installed successfully.</li>
+</ol></p></section>
+<section><title>Creating projects for Axis2 Web services</title><p>The Web
+service wizards will automatically add the correct facets to a dynamic Web
+project. However if you want to manually create a dynamic Web project enabled
+for Axis2 Web service development complete the following:<ol>
+<li>Create the service Web project by clicking <uicontrol>File > New > Project
+> Dynamic Web project</uicontrol>. Enter the following information: <ol>
+<li>Project Name: Type a project name</li>
+<li>If you are deploying to a Tomcat server, ensure that <uicontrol>Add project
+to an EAR</uicontrol> is not selected. If you do not clear this checkbox you
+will be unable to select the Tomcat server. If you are deploying to <tm tmclass="ibm"
+tmowner="IBM Corporation" tmtype="reg" trademark="WebSphere">WebSphere</tm> Application
+server you will need to add the project to an EAR.</li>
+<li>Target runtime: Select the version of the server to which you will deploy
+your Web service. If it is not listed, click <uicontrol>New</uicontrol> and
+browse to the location where it is installed.</li>
+<li>Configurations: Select the default configuration for your server type.</li>
+<li>Click <uicontrol>Finish</uicontrol>.</li>
+</ol></li>
+<li>Add the Axis2 facet. Right-click your project and click <menucascade>
+<uicontrol>Properties</uicontrol><uicontrol>Project Facets</uicontrol><uicontrol>Modify
+project</uicontrol><uicontrol>Axis2 Web Services</uicontrol></menucascade>,
+and click <uicontrol>Finish</uicontrol>.</li>
+<li>If you have chosen to deploy to a server in which the Axis2 JAR files
+will reside on the server (such as WebSphere Application Server), you must
+change the classloading for the EAR from PARENT_FIRST to PARENT_LAST. Expand
+the EAR associated with your Axis2 project, and launch its deployment descriptor.
+On the <uicontrol>Deployment</uicontrol> tab, expand the <uicontrol>Application</uicontrol> section.
+Change the <uicontrol>Classloader mode</uicontrol> field to PARENT_LAST and
+save your changes.</li>
+</ol></p></section>
+</conbody>
+<related-links>
+<linklist><title>Related Concepts</title>
+<link href="../../org.eclipse.jst.ws.doc.user/concepts/cws.dita" scope="peer">
+<linktext>Web services</linktext></link>
+<link href="../../org.eclipse.jst.ws.doc.user/concepts/cwsinwsa.dita" scope="peer">
+<linktext>Tools for Web services development</linktext></link>
+<link href="../../org.eclipse.jst.ws.doc.user/concepts/cjaxrpc.dita" scope="peer">
+<linktext>JAX-RPC</linktext></link>
+</linklist>
+<linklist><title>Related Tasks</title>
+<link href="../../org.eclipse.jst.ws.doc.user/tasks/toverws.dita" scope="peer">
+<linktext> Developing Web services</linktext></link>
+</linklist>
+</related-links>
+</concept>

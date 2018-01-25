@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="Copyright (c) 2000, 2008 IBM Corporation and others. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: IBM Corporation - initial API and implementation" />
+<meta name="DC.rights.owner" content="(C) Copyright 2000, 2008" />
+<meta content="public" name="security" />
+<meta content="index,follow" name="Robots" />
+<meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
+<meta content="task" name="DC.Type" />
+<meta name="DC.Title" content="Creating a Web service from a Java bean using the Apache Axis2 runtime environment" />
+<meta name="abstract" content="The Web Service wizard assists you in creating a new Web service, configuring it for deployment, and deploying the Web service to a server. Once your Web service is deployed, the wizard assists you in generating the client proxy and sample application to test the Web service. When you have completed testing, you can publish your Web service to a UDDI Business Registry using the Export wizard." />
+<meta name="description" content="The Web Service wizard assists you in creating a new Web service, configuring it for deployment, and deploying the Web service to a server. Once your Web service is deployed, the wizard assists you in generating the client proxy and sample application to test the Web service. When you have completed testing, you can publish your Web service to a UDDI Business Registry using the Export wizard." />
+<meta content="Axis2 runtime environment, Web services, Java beans, Axis2 runtime environment, creating a Web service" name="DC.subject" />
+<meta content="Axis2 runtime environment, Web services, Java beans, Axis2 runtime environment, creating a Web service" name="keywords" />
+<meta scheme="URI" name="DC.Relation" content="../topics/caxis2tover.html" />
+<meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/concepts/cwsinwsa.html" />
+<meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/concepts/cws.html" />
+<meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/tasks/toverws.html" />
+<meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.consumption.ui.doc.user/tasks/tuddiexp.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="twsbeana" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../org.eclipse.wst.doc.user/common.css" type="text/css" rel="stylesheet" />
+<title>Creating a Web service from a Java bean using the Apache Axis2
+runtime environment</title>
+</head>
+<body id="twsbeana"><a name="twsbeana"><!-- --></a>
+
+
+<h1 class="topictitle1">Creating a Web service from a Java bean using the Apache Axis2 runtime
+environment</h1>
+
+
+
+
+<div><p>The Web Service wizard assists you in creating a new Web service,
+configuring it for deployment, and deploying the Web service to a server.
+Once your Web service is deployed, the wizard assists you in generating the
+client proxy and sample application to test the Web service. When you have
+completed testing, you can publish your Web service to a UDDI Business Registry
+using the Export wizard.</p>
+
+<div class="p"><div class="p">Prerequisites:<ol>
+<li id="twsbeana__installaxis2link"><a name="twsbeana__installaxis2link"><!-- --></a>You must have installed the Apache Axis2 runtime
+environment as described in: <a href="caxis2tover.html" title="This runtime environment is for users who prefer to develop for&#10;the open Apache Axis platform. Both Axis1 and Axis2 are supported by the Web&#10;services tools.">Creating Web services with the Apache Axis2 runtime environments</a></li>
+
+<li id="twsbeana__createtomcatlink"><a name="twsbeana__createtomcatlink"><!-- --></a>If you are using the Apache Jakarta Tomcat servlet
+container as your server, you must install it, configure an instance of it,
+and create a Web project targeted to it as described in: <a href="../../org.eclipse.jst.ws.axis.ui.doc.user/topics/ttomcatserv.html">Creating an Apache Tomcat server and Web project</a></li>
+
+<li>Create or import a bean into the Java™ source folder of the Web project. To
+import, select the <strong>Java Resources: src</strong> folder, and from
+the file menu select <span class="menucascade"><span class="uicontrol">Import</span> &gt; <span class="uicontrol">General</span>
+ &gt; <span class="uicontrol">File System</span></span> and browse to where your
+package is.</li>
+
+</ol>
+</div>
+</div>
+
+<div class="section">To create a Web service from a bean using the Apache Axis2 runtime
+environment:</div>
+
+<ol>
+<li class="stepexpand"><span>Switch to the Java EE perspective (<span class="uicontrol">Window &gt; Open Perspective
+&gt; Java EE</span>).</span></li>
+
+<li class="stepexpand"><span>In the Project Explorer view, select the bean that you created
+or imported into the source folder of your Web project.</span></li>
+
+<li class="stepexpand"><span>Click  <span class="uicontrol">File &gt; New &gt; Other</span>.</span> Select<span class="uicontrol">Web
+Services</span> in order to display the various Web service wizards.
+Select the  <span class="uicontrol">Web Service</span> wizard. Click  <span class="uicontrol">Next</span>.
+</li>
+
+<li class="stepexpand"><span>Web Services page: select  <span class="uicontrol">Bottom up Java bean Web service</span> as
+your Web service type, and select the Java bean from which the service will be
+created.</span>
+<a name="twsbeana__createstep4ul"><!-- --></a><ol type="a" id="twsbeana__createstep4ul">
+<li class="substepexpand"><span>Select the stages of Web services development that you want
+to complete using the slider:</span> <ul>
+<li>Develop: this will develop the WSDL definition and implementation of the
+Web service. This includes such tasks as creating the modules which will contain
+the generated code, WSDL files, deployment descriptors, and Java files
+when appropriate.</li>
+
+<li>Assemble: this ensures the project that will host the Web service or client
+gets associated to an EAR when required by the target application server.</li>
+
+<li>Deploy: this will create the deployment code for the service.</li>
+
+<li>Install: this will install and configure the Web module and EARs on the
+target server.</li>
+
+<li>Start: this will start the server once the service has been installed
+on it. The server-config.wsdd file will be generated.</li>
+
+<li>Test: this will provide various options for testing the service, such
+as using the Web Service Explorer or sample JSPs.</li>
+
+</ul>
+</li>
+
+<li class="substepexpand"><span>Select your server: the default server is displayed. If you
+want to deploy your service to a different server click the link to specify
+a different server.</span></li>
+
+<li class="substepexpand"><span>Select your runtime: ensure the Apache Axis2 runtime is selected.</span>
+</li>
+
+<li class="substepexpand"><span>Select the service project: the project selected in your workspace
+is displayed. To select a different project click on the project link. If
+you are deploying to WebSphere<sup>®</sup> Application Server you will also be asked
+to select the EAR associated with the project.</span> Ensure that the
+project selected as the Client Web Project is different from the Service Web
+Project, or the service will be overwritten by the client's generated artifacts.
+</li>
+
+<li class="substepexpand"><span>If you want to create a client, select the type of proxy to
+be generated and repeat the above steps for the client.</span></li>
+
+<li class="substepexpand"><span>Publish the Web service: this will launch the Web Services Explorer
+to publish your Web service to a UDDI registry.</span></li>
+
+<li class="substepexpand"><span>Monitor the Web service: this will send the Web service traffic
+through the TCP/IP Monitor, which allows you to watch the SOAP traffic generated
+by the Web service and to test this traffic for WS-I compliance. Alternately
+you can manually set up a TCP/IP monitor as described in <a href="../../org.eclipse.wst.wsi.ui.doc.user/tasks/tmonitor.html">Using the TCP/IP Monitor to test Web services</a></span></li>
+
+</ol>
+
+</li>
+
+<li class="stepexpand"><span>Axis2 Web Service Java Bean Configuration page: If you have
+a custom services.xml file you can point to it on this page, or you can have
+the wizard create a default services.xml file for you.</span></li>
+
+<li class="stepexpand"><span>Web Service Test page: If you selected to test the Web service,
+select the test facility for the generated Web service.</span> This will
+open the Web service in the Web Services Explorer. Select the operation you
+want to test, enter the required information, and click<span class="uicontrol">Go</span>.
+The result will display in the Status pane. Click  <span class="uicontrol">Next</span>.
+</li>
+
+<li class="stepexpand" id="twsbeana__axis2clientpagelink"><a name="twsbeana__axis2clientpagelink"><!-- --></a><span>Axis2 Client Web service configuration
+page: Use this page to select the following options: </span>
+<ol type="a">
+<li><span>Service Name: accept the default.</span></li>
+
+<li><span>Port Name: accept the default.</span></li>
+
+<li><span>Databinding Name: only the Axis2 Databinding Framework (ADB)
+is supported at this time.</span></li>
+
+<li><span>Custom package name: You can change the package name in this
+field.</span></li>
+
+<li><span>Client mode: You can choose if the client is synchronous, asynchronous,
+or both.</span></li>
+
+<li><span>Generate test case to test the service: If you select this,
+the Axis2 emitter will generate JUnit testcases matching the WSDL provided
+to the client. These JUnit testcases will be generated to a newly added source
+directory to the client project called <span class="uicontrol">test</span>. </span>
+</li>
+
+<li><span>Generate all types for all elements referred by schemas</span>
+</li>
+
+<li><span>Namespace to package mapping: Use this table to review or edit
+the mappings between packages and namespaces.</span></li>
+
+</ol>
+
+</li>
+
+<li class="stepexpand"><span>Web Service Client Test page: Use this page to select the following
+options: </span>
+<ol type="a">
+<li><span>Select your test facility. You can test the generated proxy
+in the Web Service Explorer, or the Universal Test Client.</span></li>
+
+<li><span>Select  <span class="uicontrol">Run test on server</span> to start the
+server for you automatically.</span></li>
+
+</ol>
+
+</li>
+
+<li class="stepexpand"><span>Web Service Publication page: Select whether or not you want to
+publish this Web service to a UDDI registry. Click <span class="uicontrol">Finish</span>.</span>
+</li>
+
+</ol>
+
+<div class="section" id="twsbeana__axiswscreateresult"><a name="twsbeana__axiswscreateresult"><!-- --></a><div class="p">After the Web service has been created,
+the following may occur depending on the options you selected: <ul>
+<li>If you have selected to test the Web service using the Web Services Explorer,
+the Explorer will open. Select the operation you want to test, enter the required
+information, and click  <strong>Go</strong>. The result will display in the Status pane.</li>
+
+<li>If you have selected to publish the Web service, the Web Services Explorer
+is launched displaying the page required to publish your Web service. Follow
+the instructions in  <var class="varname">Publishing the Web service</var> to complete
+this task.</li>
+
+</ul>
+</div>
+</div>
+
+<div class="section"><p> <span class="uicontrol">Important:</span> If your methods contain types,
+not supported by the sample, such as arrays, indexed properties, and collections,
+the methods will be omitted from the sample and you will receive a warning
+message.</p>
+</div>
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../topics/caxis2tover.html" title="This runtime environment is for users who prefer to develop for the open Apache Axis platform. Both Axis1 and Axis2 are supported by the Web services tools.">Creating Web services with the Apache Axis2 runtime environments</a></div>
+</div>
+
+<div class="linklist"><strong>Related Concepts</strong><br />
+
+<div><a href="../../org.eclipse.jst.ws.doc.user/concepts/cwsinwsa.html"> Tools for Web services development</a></div>
+<div><a href="../../org.eclipse.jst.ws.doc.user/concepts/cws.html">Web services development</a></div></div>
+
+<div class="linklist"><strong>Related Tasks</strong><br />
+
+<div><a href="../../org.eclipse.jst.ws.doc.user/tasks/toverws.html"> Developing Web services</a></div>
+<div><a href="../../org.eclipse.jst.ws.consumption.ui.doc.user/tasks/tuddiexp.html"> Using the Web Services Explorer</a></div></div>
+</div>
+
+</body>
+</html>
