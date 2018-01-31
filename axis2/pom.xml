@@ -26,7 +26,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <tycho.scmUrl>scm:git:git://git.eclipse.org/gitroot/webservices/webtools.webservices.axis2.git</tycho.scmUrl>
+    <tycho.scmUrl>scm:git:git://git.eclipse.org/gitroot/webservices/webtools.webservices.git</tycho.scmUrl>
   </properties>
 
   <modules>
