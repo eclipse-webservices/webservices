@@ -90,6 +90,6 @@
     <module>features/org.eclipse.wst.ws_userdoc.feature</module>
     <module>features/org.eclipse.wst.ws_wsdl15.feature</module>
 
-    <module>features/javaee-web</module>
+    <!-- <module>features/javaee-web</module> -->
   </modules>
 </project>

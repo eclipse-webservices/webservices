@@ -32,7 +32,7 @@
    <feature id="org.eclipse.jst.ws.jaxws_userdoc.feature"><category name="webservices"/></feature>
 
    <!-- javaee-web features -->
-  <feature id="org.eclipse.jst.doc.user.feature"><category name="javaee-web"/></feature>
+  <!-- <feature id="org.eclipse.jst.doc.user.feature"><category name="javaee-web"/></feature>
   <feature id="org.eclipse.jst.enterprise_core.feature"><category name="javaee-web"/></feature>
   <feature id="org.eclipse.jst.enterprise_sdk.feature"><category name="javaee-web"/></feature>
   <feature id="org.eclipse.jst.enterprise_tests.feature"><category name="javaee-web"/></feature>
@@ -42,7 +42,7 @@
   <feature id="org.eclipse.jst.web_sdk.feature"><category name="javaee-web"/></feature>
   <feature id="org.eclipse.jst.web_tests.feature"><category name="javaee-web"/></feature>
   <feature id="org.eclipse.jst.web_ui.feature"><category name="javaee-web"/></feature>
-  <feature id="org.eclipse.jst.web_userdoc.feature"><category name="javaee-web"/></feature>
+  <feature id="org.eclipse.jst.web_userdoc.feature"><category name="javaee-web"/></feature> -->
 
    <category-def name="webservices" label="WTP Web Services"/>
    <category-def name="webservices-sdk" label="WTP Web Services SDK"/>
