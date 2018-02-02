@@ -22,7 +22,7 @@
 
   <groupId>org.eclipse.webtools.webservices</groupId>
   <artifactId>org.eclipse.jst.ws.cxf.tests</artifactId>
-  <version>1.0.100-SNAPSHOT</version>
+  <version>1.0.101-SNAPSHOT</version>
   <packaging>eclipse-test-plugin</packaging>
 
   <properties>
@@ -46,34 +46,7 @@
               <artifactId>org.eclipse.sdk.ide</artifactId>
               <version>0.0.0</version>
             </dependency>
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>org.eclipse.jst.j2ee.web</artifactId>
-              <version>0.0.0</version>
-            </dependency>
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>org.eclipse.jst.jee.web</artifactId>
-              <version>0.0.0</version>
-            </dependency>
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>org.eclipse.jst.ws.jaxb.core</artifactId>
-              <version>0.0.0</version>
-            </dependency>
           </dependencies>
-          <bundleStartLevel>
-            <bundle>
-              <id>org.eclipse.jst.ws.jaxb.core</id>
-              <level>4</level>
-              <autoStart>true</autoStart>
-            </bundle>
-            <bundle>
-              <id>org.eclipse.jst.ws.jaxws.utils</id>
-              <level>4</level>
-              <autoStart>true</autoStart>
-            </bundle>
-          </bundleStartLevel>
         </configuration>
       </plugin>
     </plugins>
