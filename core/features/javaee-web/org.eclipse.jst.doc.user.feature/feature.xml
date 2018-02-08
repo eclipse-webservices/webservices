@@ -22,76 +22,18 @@
       <update label="%updateSiteName" url="http://download.eclipse.org/webtools/updates/"/>
    </url>
 
-   <plugin
-         id="org.eclipse.jst.ejb.doc.user"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.j2ee.infopop"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.j2ee.doc.user"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.jsp.ui.infopop"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.server.ui.infopop"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.server.ui.doc.user"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.ws.axis.infopop"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.ws.axis.ui.doc.user"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.ws.consumption.infopop"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.ws.consumption.ui.doc.user"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.ws.infopop"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.ws.doc.user"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
+   <requires>
+      <import plugin="org.eclipse.jst.ejb.doc.user"/>
+      <import plugin="org.eclipse.jst.j2ee.infopop"/>
+      <import plugin="org.eclipse.jst.j2ee.doc.user"/>
+      <import plugin="org.eclipse.jst.jsp.ui.infopop"/>
+      <import plugin="org.eclipse.jst.server.ui.infopop"/>
+      <import plugin="org.eclipse.jst.server.ui.doc.user"/>
+      <import plugin="org.eclipse.jst.ws.axis.infopop"/>
+      <import plugin="org.eclipse.jst.ws.axis.ui.doc.user"/>
+      <import plugin="org.eclipse.jst.ws.consumption.infopop"/>
+      <import plugin="org.eclipse.jst.ws.consumption.ui.doc.user"/>
+      <import plugin="org.eclipse.jst.ws.infopop"/>
+      <import plugin="org.eclipse.jst.ws.doc.user"/>
+   </requires>
 </feature>

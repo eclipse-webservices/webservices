@@ -19,23 +19,10 @@
       %license
    </license>
 
-   <includes
-         id="org.eclipse.wst.ws_sdk.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.jst.web_ui.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.jst.web_ui.feature.source"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.jsf.doc.dev"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
+   <requires>
+      <import feature="org.eclipse.wst.ws_sdk.feature"/>
+      <import feature="org.eclipse.jst.web_ui.feature"/>
+      <import feature="org.eclipse.jst.web_ui.feature.source"/>
+      <import plugin="org.eclipse.jst.jsf.doc.dev"/>
+   </requires>
 </feature>

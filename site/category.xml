@@ -1,38 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature id="org.eclipse.wst.ws_wsdl15.feature"><category name="webservices"/></feature>
-   <feature id="org.eclipse.wst.ws_ui.feature"><category name="webservices"/></feature>
-   <feature id="org.eclipse.wst.ws_core.feature"><category name="webservices"/></feature>
+  <feature id="org.eclipse.wst.ws_wsdl15.feature"><category name="webservices"/></feature>
+  <feature id="org.eclipse.wst.ws_ui.feature"><category name="webservices"/></feature>
+  <feature id="org.eclipse.wst.ws_core.feature"><category name="webservices"/></feature>
 
-   <feature id="org.eclipse.wst.ws_sdk.feature"><category name="webservices-sdk"/></feature>
-   <feature id="org.eclipse.wst.ws_userdoc.feature"><category name="webservices-sdk"/></feature>
+  <feature id="org.eclipse.wst.ws_sdk.feature"><category name="webservices-sdk"/></feature>
+  <feature id="org.eclipse.wst.ws_userdoc.feature"><category name="webservices-sdk"/></feature>
 
-   <bundle id="org.eclipse.jst.ws.axis.infopop"><category name="webservices-sdk"/></bundle>
-   <bundle id="org.eclipse.jst.ws.consumption.infopop"><category name="webservices-sdk"/></bundle>
-   <bundle id="org.eclipse.jst.ws.infopop"><category name="webservices-sdk"/></bundle>
-   <bundle id="org.eclipse.wst.command.env.infopop"><category name="webservices-sdk"/></bundle>
-   <bundle id="org.eclipse.wst.ws.infopop"><category name="webservices-sdk"/></bundle>
+  <bundle id="org.eclipse.jst.ws.axis.infopop"><category name="webservices-sdk"/></bundle>
+  <bundle id="org.eclipse.jst.ws.consumption.infopop"><category name="webservices-sdk"/></bundle>
+  <bundle id="org.eclipse.jst.ws.infopop"><category name="webservices-sdk"/></bundle>
+  <bundle id="org.eclipse.wst.command.env.infopop"><category name="webservices-sdk"/></bundle>
+  <bundle id="org.eclipse.wst.ws.infopop"><category name="webservices-sdk"/></bundle>
 
-   <feature id="org.eclipse.wst.ws_tests.feature"><category name="webservices-tests"/></feature>
+  <bundle id="org.eclipse.jst.ws"/>
+  <bundle id="org.eclipse.jst.ws.annotations.core"/>
+  <bundle id="org.eclipse.jst.ws.axis2.consumption.core"/>
+  <bundle id="org.eclipse.jst.ws.axis2.consumption.ui"/>
+  <bundle id="org.eclipse.jst.ws.axis2.core"/>
+  <bundle id="org.eclipse.jst.ws.axis2.creation.core"/>
+  <bundle id="org.eclipse.jst.ws.axis2.creation.ui"/>
+  <bundle id="org.eclipse.jst.ws.axis2.ui"/>
+  <bundle id="org.eclipse.jst.ws.axis.consumption.core"/>
+  <bundle id="org.eclipse.jst.ws.axis.consumption.ui"/>
+  <bundle id="org.eclipse.jst.ws.axis.creation.ui"/>
+  <bundle id="org.eclipse.jst.ws.consumption"/>
+  <bundle id="org.eclipse.jst.ws.consumption.ui"/>
+  <bundle id="org.eclipse.jst.ws.creation.ejb.ui"/>
+  <bundle id="org.eclipse.jst.ws.creation.ui"/>
+  <bundle id="org.eclipse.jst.ws.cxf.consumption.core"/>
+  <bundle id="org.eclipse.jst.ws.cxf.consumption.ui"/>
+  <bundle id="org.eclipse.jst.ws.cxf.core"/>
+  <bundle id="org.eclipse.jst.ws.cxf.creation.core"/>
+  <bundle id="org.eclipse.jst.ws.cxf.creation.ui"/>
+  <bundle id="org.eclipse.jst.ws.cxf.ui"/>
+  <bundle id="org.eclipse.jst.ws.jaxb.core"/>
+  <bundle id="org.eclipse.jst.ws.jaxrs.core"/>
+  <bundle id="org.eclipse.jst.ws.jaxrs.ui"/>
+  <bundle id="org.eclipse.jst.ws.jaxws.core"/>
+  <bundle id="org.eclipse.jst.ws.jaxws.dom.integration"/>
+  <bundle id="org.eclipse.jst.ws.jaxws.dom.runtime"/>
+  <bundle id="org.eclipse.jst.ws.jaxws.dom.ui"/>
+  <bundle id="org.eclipse.jst.ws.jaxws.ui"/>
+  <bundle id="org.eclipse.jst.ws.jaxws.utils"/>
+  <bundle id="org.eclipse.jst.ws.uddiregistry"/>
+  <bundle id="org.eclipse.jst.ws.ui"/>
+  <bundle id="org.eclipse.wst.command.env"/>
+  <bundle id="org.eclipse.wst.command.env.core"/>
+  <bundle id="org.eclipse.wst.command.env.ui"/>
+  <bundle id="org.eclipse.wst.ws"/>
+  <bundle id="org.eclipse.wst.wsdl"/>
+  <bundle id="org.eclipse.wst.wsdl.ui"/>
+  <bundle id="org.eclipse.wst.wsdl.validation"/>
+  <bundle id="org.eclipse.wst.ws.explorer"/>
+  <bundle id="org.eclipse.wst.wsi"/>
+  <bundle id="org.eclipse.wst.wsi.ui"/>
+  <bundle id="org.eclipse.wst.ws.parser"/>
+  <bundle id="org.eclipse.wst.ws.service.policy"/>
+  <bundle id="org.eclipse.wst.ws.service.policy.ui"/>
+  <bundle id="org.eclipse.wst.ws.ui"/>
 
-   <feature id="org.eclipse.jst.ws.axis2tools.feature"><category name="webservices"/></feature>
-   <feature id="org.eclipse.jst.ws.axis2tools_sdk.feature"><category name="webservices-sdk"/></feature>
-   <feature id="org.eclipse.jst.ws.cxf.feature"><category name="webservices"/></feature>
-   <feature id="org.eclipse.jst.ws.cxf_sdk.feature"><category name="webservices-sdk"/></feature>
-   <feature id="org.eclipse.jst.ws.cxf_tests.feature"><category name="webservices-tests"/></feature>
-   <feature id="org.eclipse.jst.ws.jaxws.assembly.feature"><category name="webservices"/></feature>
-   <feature id="org.eclipse.jst.ws.jaxws.assembly_sdk.feature"><category name="webservices-sdk"/></feature>
-   <feature id="org.eclipse.jst.ws.jaxws.assembly_tests.feature"><category name="webservices-tests"/></feature>
-   <feature id="org.eclipse.jst.ws.jaxws.dom.feature"><category name="webservices"/></feature>
-   <feature id="org.eclipse.jst.ws.jaxws.dom_sdk.feature"><category name="webservices-sdk"/></feature>
-   <feature id="org.eclipse.jst.ws.jaxws.dom_tests.feature"><category name="webservices-tests"/></feature>
-   <feature id="org.eclipse.jst.ws.jaxws.feature"><category name="webservices"/></feature>
-   <feature id="org.eclipse.jst.ws.jaxws_sdk.feature"><category name="webservices-sdk"/></feature>
-   <feature id="org.eclipse.jst.ws.jaxws_tests.feature"><category name="webservices-tests"/></feature>
-   <feature id="org.eclipse.jst.ws.jaxws_userdoc.feature"><category name="webservices"/></feature>
+  <bundle id="org.eclipse.jst.ws.axis.ui.doc.user"/>
+  <bundle id="org.eclipse.jst.ws.consumption.ui.doc.user"/>
+  <bundle id="org.eclipse.jst.ws.doc.user"/>
+  <bundle id="org.eclipse.jst.ws.axis.consumption.core.tests"/>
+  <bundle id="org.eclipse.jst.ws.tests"/>
+  <bundle id="org.eclipse.jst.ws.tests.performance"/>
 
-   <!-- javaee-web features -->
-  <!-- <feature id="org.eclipse.jst.doc.user.feature"><category name="javaee-web"/></feature>
+  <feature id="org.eclipse.wst.ws_tests.feature"><category name="webservices-tests"/></feature>
+
+  <feature id="org.eclipse.jst.ws.axis2tools.feature"><category name="webservices"/></feature>
+  <feature id="org.eclipse.jst.ws.axis2tools_sdk.feature"><category name="webservices-sdk"/></feature>
+  <feature id="org.eclipse.jst.ws.cxf.feature"><category name="webservices"/></feature>
+  <feature id="org.eclipse.jst.ws.cxf_sdk.feature"><category name="webservices-sdk"/></feature>
+  <feature id="org.eclipse.jst.ws.cxf_tests.feature"><category name="webservices-tests"/></feature>
+  <feature id="org.eclipse.jst.ws.jaxws.assembly.feature"><category name="webservices"/></feature>
+  <feature id="org.eclipse.jst.ws.jaxws.assembly_sdk.feature"><category name="webservices-sdk"/></feature>
+  <feature id="org.eclipse.jst.ws.jaxws.assembly_tests.feature"><category name="webservices-tests"/></feature>
+  <feature id="org.eclipse.jst.ws.jaxws.dom.feature"><category name="webservices"/></feature>
+  <feature id="org.eclipse.jst.ws.jaxws.dom_sdk.feature"><category name="webservices-sdk"/></feature>
+  <feature id="org.eclipse.jst.ws.jaxws.dom_tests.feature"><category name="webservices-tests"/></feature>
+  <feature id="org.eclipse.jst.ws.jaxws.feature"><category name="webservices"/></feature>
+  <feature id="org.eclipse.jst.ws.jaxws_sdk.feature"><category name="webservices-sdk"/></feature>
+  <feature id="org.eclipse.jst.ws.jaxws_tests.feature"><category name="webservices-tests"/></feature>
+  <feature id="org.eclipse.jst.ws.jaxws_userdoc.feature"><category name="webservices"/></feature>
+
+  <!-- javaee-web features -->
+  <feature id="org.eclipse.jst.doc.user.feature"><category name="javaee-web"/></feature>
   <feature id="org.eclipse.jst.enterprise_core.feature"><category name="javaee-web"/></feature>
   <feature id="org.eclipse.jst.enterprise_sdk.feature"><category name="javaee-web"/></feature>
   <feature id="org.eclipse.jst.enterprise_tests.feature"><category name="javaee-web"/></feature>
@@ -42,10 +96,10 @@
   <feature id="org.eclipse.jst.web_sdk.feature"><category name="javaee-web"/></feature>
   <feature id="org.eclipse.jst.web_tests.feature"><category name="javaee-web"/></feature>
   <feature id="org.eclipse.jst.web_ui.feature"><category name="javaee-web"/></feature>
-  <feature id="org.eclipse.jst.web_userdoc.feature"><category name="javaee-web"/></feature> -->
+  <feature id="org.eclipse.jst.web_userdoc.feature"><category name="javaee-web"/></feature>
 
-   <category-def name="webservices" label="WTP Web Services"/>
-   <category-def name="webservices-sdk" label="WTP Web Services SDK"/>
-   <category-def name="webservices-tests" label="WTP Web Services Tests"/>
-   <category-def name="javaee-web" label="WTP Web Services - JavaEE Enterprise / Web Features"/>
+  <category-def name="webservices" label="WTP Web Services"/>
+  <category-def name="webservices-sdk" label="WTP Web Services SDK"/>
+  <category-def name="webservices-tests" label="WTP Web Services Tests"/>
+  <category-def name="javaee-web" label="WTP Web Services - JavaEE Enterprise / Web Features"/>
 </site>

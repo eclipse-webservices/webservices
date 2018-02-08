@@ -19,52 +19,14 @@
       %license
    </license>
 
-   <plugin
-         id="org.eclipse.jst.j2ee.core.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.j2ee.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.jsp.core.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.jsp.tests.encoding"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.jsp.ui.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.servlet.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jem.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.jee.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
+   <requires>
+      <import plugin="org.eclipse.jst.j2ee.core.tests"/>
+      <import plugin="org.eclipse.jst.j2ee.tests"/>
+      <!-- test failures so disable for now <import plugin="org.eclipse.jst.jsp.core.tests"/> -->
+      <import plugin="org.eclipse.jst.jsp.tests.encoding"/>
+      <import plugin="org.eclipse.jst.jsp.ui.tests"/>
+      <import plugin="org.eclipse.jst.servlet.tests"/>
+      <import plugin="org.eclipse.jem.tests"/>
+      <import plugin="org.eclipse.jst.jee.tests"/>
+   </requires>
 </feature>

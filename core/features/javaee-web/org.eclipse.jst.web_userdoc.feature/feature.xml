@@ -19,11 +19,7 @@
       %license
    </license>
 
-   <plugin
-         id="org.eclipse.jst.jsf.doc.user"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
+   <requires>
+      <import plugin="org.eclipse.jst.jsf.doc.user"/>
+   </requires>
 </feature>

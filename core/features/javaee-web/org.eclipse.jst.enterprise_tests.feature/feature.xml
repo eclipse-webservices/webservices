@@ -19,42 +19,12 @@
       %license
    </license>
 
-   <plugin
-         id="org.eclipse.jst.validation.sample"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.validation.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.ws.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.ws.tests.performance"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jst.ws.axis.consumption.core.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jst.ejb.ui.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
+   <requires>
+      <import plugin="org.eclipse.jst.validation.sample"/>
+      <import plugin="org.eclipse.jst.validation.test"/>
+      <import plugin="org.eclipse.jst.ws.tests"/>
+      <import plugin="org.eclipse.jst.ws.tests.performance"/>
+      <import plugin="org.eclipse.jst.ws.axis.consumption.core.tests"/>
+      <import plugin="org.eclipse.jst.ejb.ui.tests"/>
+   </requires>
 </feature>

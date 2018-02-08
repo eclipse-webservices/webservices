@@ -19,58 +19,15 @@
       %license
    </license>
 
-   <includes
-         id="org.eclipse.wst.ws_ui.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.jst.web_userdoc.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.jst.web_core.feature"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.wst.jsdt.web.support.jsp"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jst.common.annotations.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jst.common.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jst.jsp.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jst.jsp.ui.infopop"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.jsdt.debug.rhino.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
+   <requires>
+      <import feature="org.eclipse.wst.ws_ui.feature"/>
+      <import feature="org.eclipse.jst.web_userdoc.feature"/>
+      <import feature="org.eclipse.jst.web_core.feature"/>
+      <import plugin="org.eclipse.wst.jsdt.web.support.jsp"/>
+      <import plugin="org.eclipse.jst.common.annotations.ui"/>
+      <import plugin="org.eclipse.jst.common.ui"/>
+      <import plugin="org.eclipse.jst.jsp.ui"/>
+      <import plugin="org.eclipse.jst.jsp.ui.infopop"/>
+      <import plugin="org.eclipse.wst.jsdt.debug.rhino.ui"/>
+   </requires>
 </feature>

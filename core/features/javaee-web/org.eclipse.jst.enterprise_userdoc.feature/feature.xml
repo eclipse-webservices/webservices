@@ -19,39 +19,11 @@
       %license
    </license>
 
-   <plugin
-         id="org.eclipse.jst.ejb.doc.user"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jst.j2ee.doc.user"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jst.ws.axis.ui.doc.user"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jst.ws.consumption.ui.doc.user"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jst.ws.doc.user"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
+   <requires>
+      <import plugin="org.eclipse.jst.ejb.doc.user"/>
+      <import plugin="org.eclipse.jst.j2ee.doc.user"/>
+      <import plugin="org.eclipse.jst.ws.axis.ui.doc.user"/>
+      <import plugin="org.eclipse.jst.ws.consumption.ui.doc.user"/>
+      <import plugin="org.eclipse.jst.ws.doc.user"/>
+   </requires>
 </feature>

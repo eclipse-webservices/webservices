@@ -95,7 +95,9 @@
     <module>core</module>
     <module>jaxws</module>
     <module>axis2</module>
-    <module>site</module>
-    
+
+    <module>core/features/javaee-web</module>
+
+    <module>site</module>    
   </modules>
 </project>

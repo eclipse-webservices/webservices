@@ -19,12 +19,9 @@
       %license
    </license>
 
-   <includes
-         id="org.eclipse.jst.enterprise_ui.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.jst.enterprise_ui.feature.source"
-         version="0.0.0"/>
+   <requires>
+      <import feature="org.eclipse.jst.enterprise_ui.feature"/>
+      <import feature="org.eclipse.jst.enterprise_ui.feature.source"/>
+   </requires>
 
 </feature>

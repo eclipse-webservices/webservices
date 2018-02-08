@@ -40,13 +40,6 @@
           <argLine>-XX:MaxPermSize=128m</argLine>
           <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
-          <dependencies>
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>org.eclipse.sdk.ide</artifactId>
-              <version>0.0.0</version>
-            </dependency>
-          </dependencies>
         </configuration>
       </plugin>
     </plugins>
