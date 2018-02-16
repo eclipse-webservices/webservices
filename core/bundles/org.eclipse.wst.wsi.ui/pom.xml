@@ -22,6 +22,6 @@
 
   <groupId>org.eclipse.webtools.webservices</groupId>
   <artifactId>org.eclipse.wst.wsi.ui</artifactId>
-  <version>1.0.600-SNAPSHOT</version>
+  <version>1.0.601-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 </project>

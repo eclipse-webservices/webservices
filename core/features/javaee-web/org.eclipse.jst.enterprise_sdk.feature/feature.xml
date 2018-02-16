@@ -21,7 +21,6 @@
 
    <requires>
       <import feature="org.eclipse.jst.enterprise_ui.feature"/>
-      <import feature="org.eclipse.jst.enterprise_ui.feature.source"/>
    </requires>
 
 </feature>

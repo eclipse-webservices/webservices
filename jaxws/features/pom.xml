@@ -13,17 +13,33 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.eclipse.webtools.webservices</groupId>
     <artifactId>org.eclipse.webtools.webservices.jaxws</artifactId>
     <version>3.6.0-SNAPSHOT</version>
-    <relativePath>../../</relativePath>
   </parent>
 
   <groupId>org.eclipse.webtools.webservices</groupId>
-  <artifactId>org.eclipse.jst.ws.cxf.feature</artifactId>
-  <version>1.1.301-SNAPSHOT</version>
-  <packaging>eclipse-feature</packaging>
+  <artifactId>org.eclipse.webtools.webservices.jaxws.features</artifactId>
+  <version>3.6.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>org.eclipse.jst.ws.cxf.feature</module>
+    <module>org.eclipse.jst.ws.cxf_sdk.feature</module>
+    <module>org.eclipse.jst.ws.cxf_tests.feature</module>
+    <module>org.eclipse.jst.ws.jaxws.assembly.feature</module>
+    <module>org.eclipse.jst.ws.jaxws.assembly_sdk.feature</module>
+    <module>org.eclipse.jst.ws.jaxws.assembly_tests.feature</module>
+    <module>org.eclipse.jst.ws.jaxws.dom.feature</module>
+    <module>org.eclipse.jst.ws.jaxws.dom_sdk.feature</module>
+    <module>org.eclipse.jst.ws.jaxws.dom_tests.feature</module>
+    <module>org.eclipse.jst.ws.jaxws.feature</module>
+    <module>org.eclipse.jst.ws.jaxws_sdk.feature</module>
+    <module>org.eclipse.jst.ws.jaxws_tests.feature</module>
+    <module>org.eclipse.jst.ws.jaxws_userdoc.feature</module>
+  </modules>
 
   <build>
     <plugins>
@@ -38,13 +54,6 @@
             <goals>
               <goal>source-feature</goal>
             </goals>
-            <configuration>
-              <excludes>
-                  <feature id="org.eclipse.jst.ws.jaxws_userdoc.feature"/>
-                  <plugin id="javax.xml.stream"/>
-                  <plugin id="javax.xml.ws"/>
-              </excludes>
-            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -54,7 +63,7 @@
         <version>${tycho.version}</version>
         <executions>
           <execution>
-            <id>attach-p2-metadata</id>
+            <id>attached-p2-metadata</id>
             <phase>package</phase>
             <goals>
               <goal>p2-metadata</goal>
