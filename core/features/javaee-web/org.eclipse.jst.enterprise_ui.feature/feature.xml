@@ -25,12 +25,9 @@
       <import feature="org.eclipse.jst.enterprise_core.feature"/>
       <import plugin="org.eclipse.jst.ws"/>
       <import plugin="org.eclipse.jst.j2ee.ui"/>
-      <import plugin="org.eclipse.jst.ws.axis.creation.ui"/>
-      <import plugin="org.eclipse.jst.ws.axis.consumption.ui"/>
       <import plugin="org.eclipse.jst.j2ee.jca.ui"/>
       <import plugin="org.eclipse.jst.j2ee.navigator.ui"/>
       <import plugin="org.eclipse.jst.j2ee.webservice.ui"/>
-      <import plugin="org.eclipse.jst.ws.axis.consumption.core"/>
       <import plugin="org.eclipse.jst.servlet.ui"/>
       <import plugin="org.eclipse.jst.ws.ui"/>
       <import plugin="org.eclipse.jst.ws.uddiregistry"/>
@@ -54,5 +51,10 @@
       <import plugin="org.eclipse.jst.ejb.ui.infopop"/>
       <import plugin="org.eclipse.jst.ws.jaxrs.core"/>
       <import plugin="org.eclipse.jst.ws.jaxrs.ui"/>
+
+      <!-- deprecated axis 1.x bundles -->
+      <import plugin="org.eclipse.jst.ws.axis.consumption.core"/>
+      <import plugin="org.eclipse.jst.ws.axis.consumption.ui"/>
+      <import plugin="org.eclipse.jst.ws.axis.creation.ui"/>
    </requires>
 </feature>

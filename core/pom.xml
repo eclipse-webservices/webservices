@@ -31,9 +31,12 @@
 
   <modules>
     <module>bundles/org.eclipse.jst.ws</module>
+
+    <!-- deprecated axis 1.x bundles -->
     <module>bundles/org.eclipse.jst.ws.axis.consumption.core</module>
     <module>bundles/org.eclipse.jst.ws.axis.consumption.ui</module>
     <module>bundles/org.eclipse.jst.ws.axis.creation.ui</module>
+
     <module>bundles/org.eclipse.jst.ws.consumption</module>
     <module>bundles/org.eclipse.jst.ws.consumption.ui</module>
     <module>bundles/org.eclipse.jst.ws.creation.ejb.ui</module>
@@ -71,7 +74,9 @@
     <module>docs/org.eclipse.wst.ws.infopop</module>
     <module>docs/org.eclipse.wst.wsi.ui.doc.user</module>
 
+      <!-- deprecated axis 1.x bundles -->
     <module>tests/org.eclipse.jst.ws.axis.consumption.core.tests</module>
+
     <module>tests/org.eclipse.jst.ws.tests</module>
     <module>tests/org.eclipse.jst.ws.tests.performance</module>
     <module>tests/org.eclipse.wst.wsdl.tests</module>

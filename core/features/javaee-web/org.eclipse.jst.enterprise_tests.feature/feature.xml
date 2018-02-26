@@ -24,8 +24,9 @@
       <import plugin="org.eclipse.jst.validation.test"/>
       <import plugin="org.eclipse.jst.ws.tests"/>
       <import plugin="org.eclipse.jst.ws.tests.performance"/>
-      <import plugin="org.eclipse.jst.ws.axis.consumption.core.tests"/>
       <import plugin="org.eclipse.jst.ejb.ui.tests"/>
-   </requires>
 
+      <!-- deprecated axis 1.x bundles -->
+      <import plugin="org.eclipse.jst.ws.axis.consumption.core.tests"/>
+   </requires>
 </feature>
