@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 by SAP AG, Walldorf. 
+ * Copyright (c) 2009, 2018 by SAP AG, Walldorf. 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IJavaElement;
@@ -37,10 +36,9 @@ import org.eclipse.ui.PlatformUI;
 
 public class JobUtils
 {
-	@SuppressWarnings("deprecation")
 	public static void waitForJobsInterruptable() throws InterruptedException
 	{
-		while (Platform.getJobManager().currentJob() != null)
+		while (Job.getJobManager().currentJob() != null)
 		{
 			delay(5);
 		}

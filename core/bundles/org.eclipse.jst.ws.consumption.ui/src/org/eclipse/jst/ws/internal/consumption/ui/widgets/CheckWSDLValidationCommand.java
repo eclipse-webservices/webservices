@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
@@ -39,7 +38,7 @@ public class CheckWSDLValidationCommand extends AbstractDataModelOperation
   {
     IEnvironment env = getEnvironment();
     
-    IJobManager    jobManager     = Platform.getJobManager();
+    IJobManager    jobManager     = Job.getJobManager();
 	  Job[]          jobs           = jobManager.find( ValidateWSDLJob.VALIDATE_WSDL_JOB_FAMILY );
 	  ValidateWSDLJob existingValidateWSDLJob = null;
 	  

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2009 IBM Corporation and others.
+ * Copyright (c) 2004, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,6 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobManager;
@@ -322,7 +321,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   
   private void handleStopValidationButton()
   {
-	  IJobManager    jobManager     = Platform.getJobManager();
+	  IJobManager    jobManager     = Job.getJobManager();
 	  Job[]          jobs           = jobManager.find( ValidateWSDLJob.VALIDATE_WSDL_JOB_FAMILY );
 	  ValidateWSDLJob existingValidateWSDLJob = null;
 	  
@@ -440,7 +439,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
 	  if ((PersistentWSDLValidationContext.VALIDATE_ALL_WSDL.equals(validationSelection)) ||
 			  (PersistentWSDLValidationContext.VALIDATE_REMOTE_WSDL.equals(validationSelection) && isRemote)) {
 
-		  IJobManager    jobManager     = Platform.getJobManager();
+		  IJobManager    jobManager     = Job.getJobManager();
 		  Job[]          jobs           = jobManager.find( ValidateWSDLJob.VALIDATE_WSDL_JOB_FAMILY );
 		  ValidateWSDLJob existingValidateWSDLJob = null;
 		  

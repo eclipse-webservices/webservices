@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ package org.eclipse.jst.ws.internal.consumption.ui.server;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobManager;
@@ -191,7 +190,7 @@ public class StartServerWidget extends SimpleWidgetDataContributor
   // Connect to an existing server thread otherwise start a new one.
   private void startServerJob()
   {
-	IJobManager    jobManager     = Platform.getJobManager();
+	IJobManager    jobManager     = Job.getJobManager();
 	Job[]          jobs           = jobManager.find( StartServerFamily );
 	StartServerJob startServerJob = null;
 	
