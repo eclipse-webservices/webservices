@@ -34,10 +34,6 @@ public final class IJAXRSCoreConstants {
 	 */
 	public final static String FACET_VERSION_1_0 = "1.0"; //$NON-NLS-1$
 	/**
-	 * The constant id for a JAXRS 1.0 project
-	 */
-	public final static String JAXRS_VERSION_1_0 = FACET_VERSION_1_0;
-	/**
 	 * The facet version for a JAX-RS 1.1 project 
 	 */
 	public final static String FACET_VERSION_1_1 = "1.1"; //$NON-NLS-1$
@@ -51,9 +47,13 @@ public final class IJAXRSCoreConstants {
 	public final static String FACET_VERSION_2_1 = "2.1"; //$NON-NLS-1$
 
 	/**
-	 * The constant id for a JAXRS 1.1 project
+	 * The more intuitive constant ids for a JAXRS project
 	 */
+	public final static String JAXRS_VERSION_1_0 = FACET_VERSION_1_0;
 	public final static String JAXRS_VERSION_1_1 = FACET_VERSION_1_1;
+	public final static String JAXRS_VERSION_2_0 = FACET_VERSION_2_0;
+	public final static String JAXRS_VERSION_2_1 = FACET_VERSION_2_1;
+
 	public static final String NO_OP_LIBRARY_ID = "jaxrs-no-op-library-provider"; //$NON-NLS-1$
 
 	private IJAXRSCoreConstants() {
