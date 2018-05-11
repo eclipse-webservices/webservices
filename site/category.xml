@@ -123,6 +123,94 @@
   <bundle id="org.eclipse.wst.wsi.ui.doc.user"/>
   <bundle id="org.jmock"/>
 
+  <!-- == == sources == == -->
+
+  <bundle id="org.eclipse.jst.ws.source"/>
+  <bundle id="org.eclipse.jst.ws.annotations.core.source"/>
+
+  <!-- deprecated axis 1.x bundles -->
+  <bundle id="org.eclipse.jst.ws.axis.consumption.core.source"/>
+  <bundle id="org.eclipse.jst.ws.axis.consumption.core.tests.source"/>
+  <bundle id="org.eclipse.jst.ws.axis.consumption.ui.source"/>
+  <bundle id="org.eclipse.jst.ws.axis.creation.ui.source"/>
+
+  <bundle id="org.eclipse.jst.ws.axis.infopop.source"/>
+  <bundle id="org.eclipse.jst.ws.axis.ui.doc.user.source"/>
+  <bundle id="org.eclipse.jst.ws.axis2.consumption.core.source"/>
+  <bundle id="org.eclipse.jst.ws.axis2.consumption.ui.source"/>
+  <bundle id="org.eclipse.jst.ws.axis2.core.source"/>
+  <bundle id="org.eclipse.jst.ws.axis2.creation.core.source"/>
+  <bundle id="org.eclipse.jst.ws.axis2.creation.ui.source"/>
+  <bundle id="org.eclipse.jst.ws.axis2.ui.source"/>
+  <bundle id="org.eclipse.jst.ws.consumption.source"/>
+  <bundle id="org.eclipse.jst.ws.consumption.infopop.source"/>
+  <bundle id="org.eclipse.jst.ws.consumption.ui.source"/>
+  <bundle id="org.eclipse.jst.ws.consumption.ui.doc.user.source"/>
+  <bundle id="org.eclipse.jst.ws.creation.ejb.ui.source"/>
+  <bundle id="org.eclipse.jst.ws.creation.ui.source"/>
+  <bundle id="org.eclipse.jst.ws.cxf.consumption.core.source"/>
+  <bundle id="org.eclipse.jst.ws.cxf.consumption.ui.source"/>
+  <bundle id="org.eclipse.jst.ws.cxf.core.source"/>
+  <bundle id="org.eclipse.jst.ws.cxf.creation.core.source"/>
+  <bundle id="org.eclipse.jst.ws.cxf.creation.ui.source"/>
+  <bundle id="org.eclipse.jst.ws.cxf.doc.user.source"/>
+  <bundle id="org.eclipse.jst.ws.cxf.tests.source"/>
+  <bundle id="org.eclipse.jst.ws.cxf.ui.source"/>
+  <bundle id="org.eclipse.jst.ws.doc.user.source"/>
+  <bundle id="org.eclipse.jst.ws.infopop.source"/>
+  <bundle id="org.eclipse.jst.ws.jaxb.core.source"/>
+  <bundle id="org.eclipse.jst.ws.jaxb.core.tests.source"/>
+  <bundle id="org.eclipse.jst.ws.jaxrs.core.source"/>
+  <bundle id="org.eclipse.jst.ws.jaxrs.ui.source"/>
+  <bundle id="org.eclipse.jst.ws.jaxws.core.source"/>
+  <bundle id="org.eclipse.jst.ws.jaxws.core.tests.source"/>
+  <bundle id="org.eclipse.jst.ws.jaxws.doc.isv.source"/>
+  <bundle id="org.eclipse.jst.ws.jaxws.doc.user.source"/>
+  <bundle id="org.eclipse.jst.ws.jaxws.dom.doc.isv.source"/>
+  <bundle id="org.eclipse.jst.ws.jaxws.dom.integration.source"/>
+  <bundle id="org.eclipse.jst.ws.jaxws.dom.integration.tests.source"/>
+  <bundle id="org.eclipse.jst.ws.jaxws.dom.runtime.source"/>
+  <bundle id="org.eclipse.jst.ws.jaxws.dom.runtime.tests.source"/>
+  <bundle id="org.eclipse.jst.ws.jaxws.dom.ui.source"/>
+  <bundle id="org.eclipse.jst.ws.jaxws.dom.ui.tests.source"/>
+  <bundle id="org.eclipse.jst.ws.jaxws.testutils.source"/>
+  <bundle id="org.eclipse.jst.ws.jaxws.ui.source"/>
+  <bundle id="org.eclipse.jst.ws.jaxws.utils.source"/>
+  <bundle id="org.eclipse.jst.ws.jaxws.utils.tests.source"/>
+  <bundle id="org.eclipse.jst.ws.tests.source"/>
+  <bundle id="org.eclipse.jst.ws.tests.performance.source"/>
+  <bundle id="org.eclipse.jst.ws.uddiregistry.source"/>
+  <bundle id="org.eclipse.jst.ws.ui.source"/>
+  <bundle id="org.eclipse.wst.command.env.source"/>
+  <bundle id="org.eclipse.wst.command.env.core.source"/>
+  <bundle id="org.eclipse.wst.command.env.doc.user.source"/>
+  <bundle id="org.eclipse.wst.command.env.infopop.source"/>
+  <bundle id="org.eclipse.wst.command.env.ui.source"/>
+  <bundle id="org.eclipse.wst.ws.source"/>
+  <bundle id="org.eclipse.wst.ws.api.doc.source"/>
+  <bundle id="org.eclipse.wst.ws.explorer.source"/>
+  <bundle id="org.eclipse.wst.ws.infopop.source"/>
+  <bundle id="org.eclipse.wst.ws.parser.source"/>
+  <bundle id="org.eclipse.wst.ws.service.policy.source"/>
+  <bundle id="org.eclipse.wst.ws.service.policy.ui.source"/>
+  <bundle id="org.eclipse.wst.ws.tests.source"/>
+  <bundle id="org.eclipse.wst.ws.ui.source"/>
+  <bundle id="org.eclipse.wst.wsdl.source"/>
+  <bundle id="org.eclipse.wst.wsdl.doc.isv.source"/>
+  <bundle id="org.eclipse.wst.wsdl.tests.source"/>
+  <bundle id="org.eclipse.wst.wsdl.tests.ui.source"/>
+  <bundle id="org.eclipse.wst.wsdl.ui.source"/>
+  <bundle id="org.eclipse.wst.wsdl.ui.doc.user.source"/>
+  <bundle id="org.eclipse.wst.wsdl.ui.tests.source"/>
+  <bundle id="org.eclipse.wst.wsdl.validation.source"/>
+  <bundle id="org.eclipse.wst.wsdl.validation.tests.source"/>
+  <bundle id="org.eclipse.wst.wsi.source"/>
+  <bundle id="org.eclipse.wst.wsi.tests.source"/>
+  <bundle id="org.eclipse.wst.wsi.ui.source"/>
+  <bundle id="org.eclipse.wst.wsi.ui.doc.user.source"/>
+  <bundle id="org.jmock.source"/>
+
+  <category-def name="sources" label="WTP Web Services Sources"/>
   <category-def name="ws" label="WTP Web Services"/>
   <category-def name="ws-sdk" label="WTP Web Services SDK"/>
   <category-def name="ws-tests" label="WTP Web Services Tests"/>
