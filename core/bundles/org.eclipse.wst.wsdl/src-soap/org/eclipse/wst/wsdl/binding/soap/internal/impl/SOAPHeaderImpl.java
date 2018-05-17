@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2009 IBM Corporation and others.
+ * Copyright (c) 2000, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -109,13 +109,29 @@ public class SOAPHeaderImpl extends SOAPHeaderBaseImpl implements SOAPHeader
 
   /**
    * <!-- begin-user-doc -->
+   * Add a SOAP header fault to this SOAP header.
    * <!-- end-user-doc -->
    * @generated NOT
    */
   public void addSOAPHeaderFault(javax.wsdl.extensions.soap.SOAPHeaderFault soapHeaderFault)
   {
-    EList headerFaults = getHeaderFaults();
-    headerFaults.add(soapHeaderFault);
+    getHeaderFaults().add(soapHeaderFault);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * Remove a SOAP header fault from this SOAP header.
+   * @return the remove SOAP header fault
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public javax.wsdl.extensions.soap.SOAPHeaderFault removeSOAPHeaderFault(javax.wsdl.extensions.soap.SOAPHeaderFault soapHeaderFault)
+  {
+    if (getHeaderFaults().remove(soapHeaderFault))
+    {
+      return soapHeaderFault;
+    }
+    return null;
   }
 
   /**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2010 IBM Corporation and others.
+ * Copyright (c) 2001, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -203,6 +203,29 @@ public class PortTypeImpl extends ExtensibleElementImpl implements PortType
   {
     if (!operation.isUndefined())
       getEOperations().add(operation);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * Remove an operation from this port type.
+   * @param name the name of the desired operation.
+   * @param inputName the name of the input message; if this is null
+   *        it will be ignored.
+   * @param outputName the name of the output message; if this is null
+   *        it will be ignored.
+   * @return the corresponding operation, or null if there wasn't
+   *         any matching operation
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public javax.wsdl.Operation removeOperation(String name, String inputName, String outputName)
+  {
+    javax.wsdl.Operation op = getOperation(name, inputName, outputName);
+    if (getEOperations().remove(op))
+    {
+      return op;
+    }
+    return null;
   }
 
   /**

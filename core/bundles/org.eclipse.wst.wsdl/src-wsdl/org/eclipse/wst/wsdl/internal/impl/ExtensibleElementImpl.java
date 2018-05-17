@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2009 IBM Corporation and others.
+ * Copyright (c) 2001, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -96,6 +96,7 @@ public abstract class ExtensibleElementImpl extends WSDLElementImpl implements E
 
   /**
    * <!-- begin-user-doc -->
+   * Get all the extensibility elements defined here.
    * <!-- end-user-doc -->
    * @generated NOT
    */
@@ -106,12 +107,30 @@ public abstract class ExtensibleElementImpl extends WSDLElementImpl implements E
 
   /**
    * <!-- begin-user-doc -->
+   * Add an extensibility element.
    * <!-- end-user-doc -->
    * @generated NOT
    */
   public void addExtensibilityElement(javax.wsdl.extensions.ExtensibilityElement extElement)
   {
     getExtensibilityElements().add(extElement);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * Remove an extensibility element.
+   * @return the extensibility element that was removed
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public javax.wsdl.extensions.ExtensibilityElement removeExtensibilityElement(
+    javax.wsdl.extensions.ExtensibilityElement extElement)
+  {
+    if (getExtensibilityElements().remove(extElement))
+    {
+      return extElement;
+    }
+    return null;
   }
 
   /**

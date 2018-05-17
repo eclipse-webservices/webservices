@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2010 IBM Corporation and others.
+ * Copyright (c) 2001, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -203,6 +203,24 @@ public class ServiceImpl extends ExtensibleElementImpl implements Service
   public void addPort(javax.wsdl.Port port)
   {
     getEPorts().add((Port)port);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * Remove a port from this service.
+   * @param name the name of the port to be removed
+   * @return the removed port
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public javax.wsdl.Port removePort(String name)
+  {
+    javax.wsdl.Port port = getPort(name);
+    if (getEPorts().remove(port))
+    {
+      return port;
+    }
+    return null;
   }
 
   /**

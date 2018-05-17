@@ -20,7 +20,6 @@
   <feature id="org.eclipse.wst.ws_tests.feature"><category name="ws-tests"/></feature>
   <feature id="org.eclipse.wst.ws_ui.feature"><category name="ws"/></feature>
   <feature id="org.eclipse.wst.ws_userdoc.feature"><category name="ws-sdk"/></feature>
-  <feature id="org.eclipse.wst.ws_wsdl15.feature"><category name="ws"/></feature>
 
   <!-- javaee-web features -->
   <feature id="org.eclipse.jst.doc.user.feature"><category name="javaee-web"/></feature>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -104,6 +104,7 @@ public class MIMEPartImpl extends ExtensibilityElementImpl implements MIMEPart
 
   /**
    * <!-- begin-user-doc -->
+   * Add an extensibility element to this MIME part.
    * <!-- end-user-doc -->
    * @generated NOT
    */
@@ -120,6 +121,22 @@ public class MIMEPartImpl extends ExtensibilityElementImpl implements MIMEPart
   public List getExtensibilityElements()
   {
     return getEExtensibilityElements();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * Remove an extensibility element from this MIME part.
+   * @return the removed extensibility element
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public ExtensibilityElement removeExtensibilityElement(ExtensibilityElement extensibilityElement)
+  {
+    if (getExtensibilityElements().remove(extensibilityElement))
+    {
+      return extensibilityElement;
+    }
+    return null;
   }
 
   /**

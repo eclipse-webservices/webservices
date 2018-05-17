@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -212,6 +212,21 @@ public final class WSDLReaderImpl implements WSDLReader
    * @return the definition described in the document
    */
   public Definition readWSDL(WSDLLocator locator) throws WSDLException
+  {
+    throw new WSDLException(WSDLException.OTHER_ERROR, "Not Implemented");
+  }
+
+  /**
+   * Read the specified <wsdl:definitions> element into a WSDL definition.
+   * The WSDLLocator is used to provide the document base URIs. The InputSource
+   * of the WSDLLocator is ignored, instead the WSDL is parsed from the given Element.
+   * 
+   * @param location A WSDLLocator object used to provide the document base URI of
+   * the WSDL definition described by the element.
+   * @param definitionsElement the <wsdl:definitions> element
+   * @return the definition described by the element
+   */
+  public Definition readWSDL(WSDLLocator locator, Element definitionsElement) throws WSDLException
   {
     throw new WSDLException(WSDLException.OTHER_ERROR, "Not Implemented");
   }

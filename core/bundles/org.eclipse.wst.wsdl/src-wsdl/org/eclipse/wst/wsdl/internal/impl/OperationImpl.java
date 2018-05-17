@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2009 IBM Corporation and others.
+ * Copyright (c) 2001, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -525,6 +525,25 @@ return opType;
   public void addFault(javax.wsdl.Fault fault)
   {
     getEFaults().add((Fault)fault);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * Remove a fault message that is associated with this
+   * operation.
+   * @param name the name of the removed fault message
+   * @return the removed fault message
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public javax.wsdl.Fault removeFault(String name)
+  {
+    javax.wsdl.Fault fault = getFault(name);
+    if (getEFaults().remove(fault))
+    {
+      return fault;
+    }
+    return null;
   }
 
   /**
