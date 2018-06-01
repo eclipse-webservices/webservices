@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -100,6 +100,7 @@ public class MIMEMultipartRelatedImpl extends ExtensibilityElementImpl implement
 
   /**
    * <!-- begin-user-doc -->
+   * Add a MIME part to this MIME multipart related.
    * <!-- end-user-doc -->
    * @generated NOT
    */
@@ -116,6 +117,22 @@ public class MIMEMultipartRelatedImpl extends ExtensibilityElementImpl implement
   public List getMIMEParts()
   {
     return getEMIMEPart();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * Remove a MIME part from this MIME multipart related.
+   * @return the removed MIME part
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public javax.wsdl.extensions.mime.MIMEPart removeMIMEPart(javax.wsdl.extensions.mime.MIMEPart mimePart)
+  {
+    if(getEMIMEPart().remove(mimePart))
+    {
+      return mimePart;
+    }
+    return null;
   }
 
   /**

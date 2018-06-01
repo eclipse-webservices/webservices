@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2009 IBM Corporation and others.
+ * Copyright (c) 2001, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -903,6 +903,17 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
 
   /**
    * <!-- begin-user-doc -->
+   * @see getBindings()
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public Map getAllBindings()
+  {
+    return getBindings();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
    * Get a map of lists containing all the imports defined here.
    * The map's keys are the namespaceURIs, and the map's values
    * are lists. There is one list for each namespaceURI for which
@@ -1042,6 +1053,17 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
 
   /**
    * <!-- begin-user-doc -->
+   * @see getPortTypes()
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public Map getAllPortTypes()
+  {
+    return getPortTypes();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
    * Get a prefix associated with this namespace URI. Or null if
    * there are no prefixes associated with this namespace URI. This is
    * unrelated to the &lt;wsdl:import&gt; element.
@@ -1091,6 +1113,17 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
   public Map getServices()
   {
     return createMap(WSDLConstants.SERVICE, getEServices());
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * @see getServices()
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public Map getAllServices()
+  {
+    return getServices();
   }
 
   /**
@@ -1208,6 +1241,36 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     if (!removed)
       wsdlElement = null;
     return (Message)wsdlElement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * Remove the specified import
+   * @param the import to remove
+   * @return the removed import
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public javax.wsdl.Import removeImport(javax.wsdl.Import importDef)
+  {
+    if (getEImports().remove(importDef))
+    {
+      return importDef;
+    }
+    return null;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * Remove the namespace URI associated with this prefix, or null
+   * if there is no namespace URI associated with this prefix.
+   * @param prefix the prefix of the namespace to be removed
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public String removeNamespace(String prefix)
+  {
+    return (String)getNamespaces().remove(prefix);
   }
 
   /**

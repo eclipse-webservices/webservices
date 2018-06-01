@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2010 IBM Corporation and others.
+ * Copyright (c) 2001, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -204,6 +204,24 @@ public class MessageImpl extends ExtensibleElementImpl implements Message
   public void addPart(javax.wsdl.Part part)
   {
     getEParts().add((Part)part);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * Remove a part from this message.
+   * @param name the name of part to be removed
+   * @return the removed part
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public javax.wsdl.Part removePart(String name)
+  {
+    javax.wsdl.Part part = getPart(name);
+    if (getEParts().remove(part))
+    {
+      return part;
+    }
+    return null;
   }
 
   /**

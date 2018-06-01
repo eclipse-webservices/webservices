@@ -20,7 +20,17 @@
    </license>
 
    <requires>
-      <import feature="org.eclipse.wst.ws_wsdl15.feature"/>
+      <import plugin="javax.mail"/>
+      <import plugin="javax.xml.rpc"/>
+      <import plugin="javax.xml.soap" version="1.2.0" match="greaterOrEqual"/>
+      <import plugin="javax.wsdl" version="1.6.2" match="greaterOrEqual"/>
+      <import plugin="org.apache.axis"/>
+      <import plugin="org.apache.commons.codec"/>
+      <import plugin="org.apache.commons.discovery"/>
+      <import plugin="org.apache.commons.logging" version="1.0.4" match="greaterOrEqual"/>
+      <import plugin="org.apache.log4j" version="1.2.15" match="greaterOrEqual"/>
+      <import plugin="org.apache.wsil4j"/>
+      <import plugin="org.uddi4j"/>
    </requires>
 
    <plugin
@@ -32,13 +42,6 @@
 
    <plugin
          id="org.eclipse.wst.command.env.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.commons.codec"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -74,72 +77,6 @@
 
    <plugin
          id="org.eclipse.wst.wsi"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.commons.logging"
-         download-size="0"
-         install-size="0"
-         version="1.0.4.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.log4j"
-         download-size="0"
-         install-size="0"
-         version="1.2.15.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.wsil4j"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.uddi4j"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.commons.discovery"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="javax.xml.rpc"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="javax.xml.soap"
-         download-size="0"
-         install-size="0"
-         version="1.2.0.qualifier"/>
-
-   <plugin
-         id="org.apache.axis"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="javax.mail"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="javax.activation"
          download-size="0"
          install-size="0"
          version="0.0.0"
