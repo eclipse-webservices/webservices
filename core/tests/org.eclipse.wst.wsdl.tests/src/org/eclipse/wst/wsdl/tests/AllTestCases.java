@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,42 +16,54 @@ import org.eclipse.wst.wsdl.tests.extensions.MIMEExtensionsTest;
 import org.eclipse.wst.wsdl.tests.extensions.SOAPExtensionsTest;
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
 
 /**
  * @author Kihup Boo
  */
-public class AllTestCases extends TestCase
+public class AllTestCases extends TestSuite
 {
 
   public AllTestCases()
   {
-  }
+    super();
+    addTest(InlineSchemaTest.suite());
+    addTest(new InlineSchemaTest("InlineSchema")
+      {
+        protected void runTest()
+        {
+          testInlineSchema();
+        }
+      }
+    );
 
-  public static void main(String[] args)
-  {
+    addTest(new InlineSchemaTest("InlineSchemaWithWSDL4J")
+      {
+        protected void runTest()
+        {
+          testInlineSchemaWithWSDL4J();
+        }
+      }
+    );
+    
+    
+    addTest(LoadAndSerializationTest.suite());
+    addTest(SemanticTest.suite());
+    addTest(WSDLGenerationTest.suite());
+    addTest(WSDL4JAPITest.suite());
+    addTest(WSDLEMFAPITest.suite());
+    addTest(UtilTest.suite());
+    addTest(BugFixesTest.suite());
+    addTestSuite(LocationTrackingTest.class);
+    addTest(RefactoringTest.suite());
+    addTest(SOAPExtensionsTest.suite());
+    addTest(HTTPExtensionsTest.suite());
+    addTest(MIMEExtensionsTest.suite());
   }
 
   public static Test suite()
   {
-    TestSuite suite = new TestSuite();
-
-    suite.addTest(InlineSchemaTest.suite());
-    suite.addTest(LoadAndSerializationTest.suite());
-    suite.addTest(SemanticTest.suite());
-    suite.addTest(WSDLGenerationTest.suite());
-    suite.addTest(WSDL4JAPITest.suite());
-    suite.addTest(WSDLEMFAPITest.suite());
-    suite.addTest(UtilTest.suite());
-    suite.addTest(BugFixesTest.suite());
-    suite.addTest(LocationTrackingTest.suite());
-    suite.addTest(RefactoringTest.suite());
-    suite.addTest(SOAPExtensionsTest.suite());
-    suite.addTest(HTTPExtensionsTest.suite());
-    suite.addTest(MIMEExtensionsTest.suite());
-
+    TestSuite suite = new AllTestCases();
     return suite;
   }
 }
