@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jst.ws.cxf.feature"
       label="%featureName"
-      version="1.1.301.qualifier"
+      version="1.1.400.qualifier"
       provider-name="%featureProvider"
       plugin="org.eclipse.jst.ws.cxf.core"
       image="eclipse_update_120.jpg"
@@ -86,6 +86,13 @@
          download-size="0"
          install-size="0"
          version="0.0.0"
+         unpack="false"/>
+
+    <plugin
+         id="javax.xml.bind"
+         download-size="0"
+         install-size="0"
+         version="2.1.9.qualifier"
          unpack="false"/>
 
    <plugin

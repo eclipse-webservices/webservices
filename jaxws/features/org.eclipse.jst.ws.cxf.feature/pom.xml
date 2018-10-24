@@ -22,7 +22,7 @@
 
   <groupId>org.eclipse.webtools.webservices</groupId>
   <artifactId>org.eclipse.jst.ws.cxf.feature</artifactId>
-  <version>1.1.301-SNAPSHOT</version>
+  <version>1.1.400-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 
   <build>
@@ -41,6 +41,7 @@
             <configuration>
               <excludes>
                   <feature id="org.eclipse.jst.ws.jaxws_userdoc.feature"/>
+                  <plugin id="javax.xml.bind"/>
                   <plugin id="javax.xml.stream"/>
                   <plugin id="javax.xml.ws"/>
               </excludes>
