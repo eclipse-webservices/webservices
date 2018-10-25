@@ -88,13 +88,13 @@
          version="0.0.0"
          unpack="false"/>
 
-    <plugin
+   <plugin
          id="javax.xml.bind"
          download-size="0"
          install-size="0"
-         version="2.1.9.qualifier"
+         version="2.2.0.qualifier"
          unpack="false"/>
-
+   
    <plugin
          id="javax.xml.stream"
          download-size="0"
