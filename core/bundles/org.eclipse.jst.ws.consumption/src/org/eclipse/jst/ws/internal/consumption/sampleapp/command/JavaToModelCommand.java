@@ -1,10 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -33,10 +35,6 @@ import org.eclipse.wst.ws.internal.datamodel.Model;
 * This is the base class for commands that need to report progress
 * and status during and after their execution. This class extends
 * {@link org.eclipse.emf.common.command.AbstractCommand AbstractCommand}
-
-  // Copyright
-  public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
-
 * with methods to {@link #setProgressMonitor set}
 * and {@link #getProgressMonitor get} a progress monitor,
 * and to get a status object {@link #getReadyStatus before}
