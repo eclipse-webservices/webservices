@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2008 IONA Technologies PLC
+ * Copyright (c) 2008, 2011 IONA Technologies PLC
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
@@ -261,7 +263,7 @@ public final class WSDLUtils {
 
     /**
      * Constructs a dot separated package name from a given namespace.
-     * <p>E.g., the namespace Òhttp://ws.example.com/Ó would return the Java package name Òcom.example.wsÓ.</p>
+     * <p>E.g., the namespace ï¿½http://ws.example.com/ï¿½ would return the Java package name ï¿½com.example.wsï¿½.</p>
      * <p>N.B. This method does not preserve 'www' in the returned package name if it exists in the given namespace.</p>
      * @param namespace the given name.
      * @return a package name.

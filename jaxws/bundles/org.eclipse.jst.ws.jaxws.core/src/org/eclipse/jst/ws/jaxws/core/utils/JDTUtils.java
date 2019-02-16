@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2008 IONA Technologies PLC
+ * Copyright (c) 2008, 2010 IONA Technologies PLC
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
@@ -193,7 +195,7 @@ public final class JDTUtils {
      * Constructs a target namespace string from the given package name by splitting the dot '.' separated
      * package name, reversing the order of the package name segments followed by prefixing the string with
      * 'http://' and appending a forward slash '/' to the end.
-     * <p>E.g., the Java package Òcom.example.wsÓ would return the target namespace Òhttp://ws.example.com/Ó.</p>
+     * <p>E.g., the Java package ï¿½com.example.wsï¿½ would return the target namespace ï¿½http://ws.example.com/ï¿½.</p>
      * <p>If the package name is null or is of zero length  "http://default_package/" is returned.</p>
      * @param packageName the package name
      * @return the derived target namespace
