@@ -7,7 +7,7 @@
       plugin="org.eclipse.jst.ws.cxf.core"
       image="eclipse_update_120.jpg"
       license-feature="org.eclipse.license"
-      license-feature-version="1.0.1.qualifier">
+      license-feature-version="2.0.0.qualifier">
 
    <description>
       %description
@@ -24,7 +24,7 @@
    <requires>
       <import feature="org.eclipse.jst.ws.jaxws_userdoc.feature"/>
    </requires>
-   
+
    <plugin
          id="org.jdom"
          download-size="156"
@@ -94,7 +94,7 @@
          install-size="0"
          version="2.2.0.qualifier"
          unpack="false"/>
-   
+
    <plugin
          id="javax.xml.stream"
          download-size="0"
