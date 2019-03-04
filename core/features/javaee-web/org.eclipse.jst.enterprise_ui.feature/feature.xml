@@ -2,11 +2,11 @@
 <feature
       id="org.eclipse.jst.enterprise_ui.feature"
       label="%featureName"
-      version="3.9.200.qualifier"
+      version="3.9.300.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.jst.jee.ui"
       license-feature="org.eclipse.license"
-      license-feature-version="1.0.1.qualifier">
+      license-feature-version="2.0.0.qualifier">
 
    <description>
       %description

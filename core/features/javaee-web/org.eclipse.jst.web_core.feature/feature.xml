@@ -2,10 +2,10 @@
 <feature
       id="org.eclipse.jst.web_core.feature"
       label="%featureName"
-      version="3.12.0.qualifier"
+      version="3.13.0.qualifier"
       provider-name="%providerName"
       license-feature="org.eclipse.license"
-      license-feature-version="1.0.1.qualifier">
+      license-feature-version="2.0.0.qualifier">
 
    <description>
       %description
