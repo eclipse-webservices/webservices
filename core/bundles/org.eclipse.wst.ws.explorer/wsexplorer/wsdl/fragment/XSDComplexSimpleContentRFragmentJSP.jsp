@@ -1,18 +1,17 @@
 <%
 /**
-* <copyright>
-*
-* Copyright (c) 2002, 2016 IBM Corporation and others.
-* All rights reserved. This program and the accompanying materials
-* are made available under the terms of the Eclipse Public License v1.0
-* which accompanies this distribution, and is available at
-* http://www.eclipse.org/legal/epl-v10.html
-*
-* </copyright>
-*
-* File plugins/com.ibm.etools.webservice.explorer/wsexplorer/wsdl/fragment/XSDComplexRFragmentJSP.jsp, wsa.etools.ws.explorer, lunar-5.1.2 1
-* Version 1.1 03/02/28 15:33:57
-*/
+ *
+ * Copyright (c) 2002, 2016 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * File plugins/com.ibm.etools.webservice.explorer/wsexplorer/wsdl/fragment/XSDComplexRFragmentJSP.jsp, wsa.etools.ws.explorer, lunar-5.1.2 1
+ * Version 1.1 03/02/28 15:33:57
+ */
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.*,
