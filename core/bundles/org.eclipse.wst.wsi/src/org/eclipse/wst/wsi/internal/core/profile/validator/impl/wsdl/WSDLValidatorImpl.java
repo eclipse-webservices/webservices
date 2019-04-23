@@ -239,9 +239,9 @@ public class WSDLValidatorImpl
 
     // always process Import, Definitions & Types assertions 
     // TEMP:
+    processDefinitionAssertions(classPrefix, candidate);
     if (processDefAssertions)
     {
-      processDefinitionAssertions(classPrefix, candidate);
       processTypesAssertions(classPrefix, candidate);
       processImportAssertions(classPrefix, candidate);
     }
