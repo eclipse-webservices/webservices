@@ -1050,6 +1050,10 @@ public class FacetUtils
     {
       javaFacetVersion = JavaFacet.VERSION_12;
     }
+    else if (jdkComplianceLevel.equals("13"))
+    {
+      javaFacetVersion = JavaFacet.VERSION_13;
+    }
     else
     {
       javaFacetVersion = javaFacet.getVersion("1.4");
