@@ -2,11 +2,11 @@
 <feature
       id="org.eclipse.jst.enterprise_ui.feature"
       label="%featureName"
-      version="3.9.500.qualifier"
+      version="3.15.0.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.jst.jee.ui"
       license-feature="org.eclipse.license"
-      license-feature-version="2.0.0.qualifier">
+      license-feature-version="0.0.0">
 
    <description>
       %description
@@ -51,10 +51,9 @@
       <import plugin="org.eclipse.jst.ejb.ui.infopop"/>
       <import plugin="org.eclipse.jst.ws.jaxrs.core"/>
       <import plugin="org.eclipse.jst.ws.jaxrs.ui"/>
-
-      <!-- deprecated axis 1.x bundles -->
       <import plugin="org.eclipse.jst.ws.axis.consumption.core"/>
       <import plugin="org.eclipse.jst.ws.axis.consumption.ui"/>
       <import plugin="org.eclipse.jst.ws.axis.creation.ui"/>
    </requires>
+
 </feature>

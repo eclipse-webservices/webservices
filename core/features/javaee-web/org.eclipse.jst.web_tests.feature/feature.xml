@@ -2,10 +2,10 @@
 <feature
       id="org.eclipse.jst.web_tests.feature"
       label="%featureName"
-      version="3.6.100.qualifier"
+      version="3.15.0.qualifier"
       provider-name="%providerName"
       license-feature="org.eclipse.license"
-      license-feature-version="2.0.0.qualifier">
+      license-feature-version="0.0.0">
 
    <description>
       %description
@@ -22,11 +22,12 @@
    <requires>
       <import plugin="org.eclipse.jst.j2ee.core.tests"/>
       <import plugin="org.eclipse.jst.j2ee.tests"/>
-      <!-- test failures so disable for now <import plugin="org.eclipse.jst.jsp.core.tests"/> -->
       <import plugin="org.eclipse.jst.jsp.tests.encoding"/>
+      <import plugin="org.eclipse.jst.jsp.core.tests"/>
       <import plugin="org.eclipse.jst.jsp.ui.tests"/>
       <import plugin="org.eclipse.jst.servlet.tests"/>
       <import plugin="org.eclipse.jem.tests"/>
       <import plugin="org.eclipse.jst.jee.tests"/>
    </requires>
+
 </feature>

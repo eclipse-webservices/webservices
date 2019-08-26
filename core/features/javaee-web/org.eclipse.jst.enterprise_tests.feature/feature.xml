@@ -2,10 +2,10 @@
 <feature
       id="org.eclipse.jst.enterprise_tests.feature"
       label="%featureName"
-      version="3.10.100.qualifier"
+      version="3.15.0.qualifier"
       provider-name="%providerName"
       license-feature="org.eclipse.license"
-      license-feature-version="2.0.0.qualifier">
+      license-feature-version="0.0.0">
 
    <description>
       %description
@@ -25,8 +25,7 @@
       <import plugin="org.eclipse.jst.ws.tests"/>
       <import plugin="org.eclipse.jst.ws.tests.performance"/>
       <import plugin="org.eclipse.jst.ejb.ui.tests"/>
-
-      <!-- deprecated axis 1.x bundles -->
       <import plugin="org.eclipse.jst.ws.axis.consumption.core.tests"/>
    </requires>
+
 </feature>
