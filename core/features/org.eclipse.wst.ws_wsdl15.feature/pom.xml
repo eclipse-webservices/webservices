@@ -22,7 +22,7 @@
 
   <groupId>org.eclipse.webtools.webservices</groupId>
   <artifactId>org.eclipse.wst.ws_wsdl15.feature</artifactId>
-  <version>1.5.500-SNAPSHOT</version>
+  <version>1.5.501-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 
   <build>

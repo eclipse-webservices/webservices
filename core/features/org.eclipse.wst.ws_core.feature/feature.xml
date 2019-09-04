@@ -2,10 +2,10 @@
 <feature
       id="org.eclipse.wst.ws_core.feature"
       label="%featureName"
-      version="3.7.350.qualifier"
+      version="3.7.351.qualifier"
       provider-name="%providerName"
       license-feature="org.eclipse.license"
-      license-feature-version="2.0.0.qualifier">
+      license-feature-version="0.0.0">
 
    <description>
       %description

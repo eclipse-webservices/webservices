@@ -2,12 +2,12 @@
 <feature
       id="org.eclipse.jst.ws.jaxws.feature"
       label="%featureName"
-      version="1.2.500.qualifier"
+      version="1.2.501.qualifier"
       provider-name="%featureProvider"
       plugin="org.eclipse.jst.ws.jaxws.core"
       image="eclipse_update_120.jpg"
       license-feature="org.eclipse.license"
-      license-feature-version="2.0.0.qualifier">
+      license-feature-version="0.0.0">
 
    <description>
       %description
