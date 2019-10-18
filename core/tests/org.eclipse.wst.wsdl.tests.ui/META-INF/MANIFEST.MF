@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.wst.wsdl.tests.ui; singleton:=true
-Bundle-Version: 1.0.300.qualifier
+Bundle-Version: 1.0.350.qualifier
 Bundle-ClassPath: wsdl.tests.ui.jar
 Require-Bundle: org.eclipse.wst.wsdl,
  org.eclipse.wst.wsdl.tests,
@@ -10,5 +10,5 @@ Require-Bundle: org.eclipse.wst.wsdl,
  org.eclipse.ui,
  org.eclipse.core.runtime
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: %providerName

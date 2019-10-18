@@ -22,7 +22,7 @@
 
   <groupId>org.eclipse.webtools.webservices</groupId>
   <artifactId>org.eclipse.wst.wsdl.ui.tests</artifactId>
-  <version>1.0.200-SNAPSHOT</version>
+  <version>1.0.250-SNAPSHOT</version>
   <packaging>eclipse-test-plugin</packaging>
 
   <properties>
