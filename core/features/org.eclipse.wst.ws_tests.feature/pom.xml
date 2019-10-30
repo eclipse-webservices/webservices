@@ -22,6 +22,6 @@
 
   <groupId>org.eclipse.webtools.webservices</groupId>
   <artifactId>org.eclipse.wst.ws_tests.feature</artifactId>
-  <version>3.0.950-SNAPSHOT</version>
+  <version>3.1.0-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 </project>
