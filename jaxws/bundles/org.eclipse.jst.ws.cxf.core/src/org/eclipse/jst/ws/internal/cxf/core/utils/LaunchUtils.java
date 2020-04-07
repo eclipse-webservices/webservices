@@ -13,6 +13,7 @@
 package org.eclipse.jst.ws.internal.cxf.core.utils;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -91,7 +92,7 @@ public final class LaunchUtils {
         if (vmInstall == null) {
             vmInstall = JavaRuntime.getDefaultVMInstall();
         }
-
+        
         String installedVersion = CXFCorePlugin.getDefault().getCXFRuntimeVersion(javaProject.getProject());
         CXFInstall cxfInstall = CXFCorePlugin.getDefault().getJava2WSContext().getInstallations().get(installedVersion);
 
@@ -103,7 +104,10 @@ public final class LaunchUtils {
 
         if (vmInstall instanceof IVMInstall2) {
             IVMInstall2 install2 = (IVMInstall2) vmInstall;
-            if (install2.getJavaVersion().compareTo(JavaCore.VERSION_1_6) > 0) {
+            String vers = install2.getJavaVersion();
+            boolean java6OrGreater = compareJavaVersions(vers, JavaCore.VERSION_1_6) >= 0;
+            boolean ltJava9 = compareJavaVersions(vers, JavaCore.VERSION_9) < 0;
+            if (java6OrGreater && ltJava9) {
                 vmRunnerConfiguration.setVMArguments(new String[] { "-Djava.endorsed.dirs=" //$NON-NLS-1$
                         + cxfInstall.getLocation() });
             }
@@ -130,6 +134,30 @@ public final class LaunchUtils {
         logErrorStreamContents(errorStream, className);
     }
 
+    /**
+     * Compare a java version string from the runtime itself (ie 1.5.3), with the constants used 
+     * in the JavaRuntime class. In order to do this, we find which constant is a prefix
+     * of the version from the JRE. (ie 1.8 is a prefix of 1.8.2). 
+     * We then compare their indexes in the allVersions list, which is an ordered list. 
+     * 
+     * @param fromInstall
+     * @param target
+     * @return
+     */
+    private static int compareJavaVersions(String fromInstall, String target) {
+    	List<String> all = JavaCore.getAllVersions();
+    	int targetIndex = all.indexOf(target);
+    	int fromInstallIndex = -1;
+    	for( int i = 0; i < all.size(); i++ ) { 
+    		String prefix = all.get(i);
+    		if( fromInstall.startsWith(prefix)) {
+    			fromInstallIndex = i;
+    			break;
+    		}
+    	}
+        return fromInstallIndex-targetIndex;
+    }
+    
     private static void logStream(String outputStream, CXFInstall cxfInstall) {
         if (!PlatformUI.isWorkbenchRunning()) {
             return;
