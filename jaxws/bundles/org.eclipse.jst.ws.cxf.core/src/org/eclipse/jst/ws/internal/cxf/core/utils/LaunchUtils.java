@@ -1,5 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 IONA Technologies PLC
+ * Copyright (c) 2008, 2020 IONA Technologies PLC and others
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -9,6 +10,7 @@
  *
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
+ * Rob Stryker, Red Hat, Inc. - 561880 - endorsed dirs flags...
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.cxf.core.utils;
 
