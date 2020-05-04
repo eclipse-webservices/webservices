@@ -23,12 +23,15 @@
       <import feature="org.eclipse.wst.ws_ui.feature"/>
       <import feature="org.eclipse.jst.web_userdoc.feature"/>
       <import feature="org.eclipse.jst.web_core.feature"/>
-      <import plugin="org.eclipse.wst.jsdt.web.support.jsp"/>
       <import plugin="org.eclipse.jst.common.annotations.ui"/>
       <import plugin="org.eclipse.jst.common.ui"/>
       <import plugin="org.eclipse.jst.jsp.ui"/>
       <import plugin="org.eclipse.jst.jsp.ui.infopop"/>
-      <import plugin="org.eclipse.wst.jsdt.debug.rhino.ui"/>
    </requires>
+
+   <includes
+         id="org.eclipse.jst.web_js_support.feature"
+         version="0.0.0"
+         optional="true"/>
 
 </feature>

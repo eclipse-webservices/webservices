@@ -33,6 +33,7 @@
   <feature id="org.eclipse.jst.web_tests.feature"><category name="javaee-web"/></feature>
   <feature id="org.eclipse.jst.web_ui.feature"><category name="javaee-web"/></feature>
   <feature id="org.eclipse.jst.web_userdoc.feature"><category name="javaee-web"/></feature>
+  <feature id="org.eclipse.jst.web_js_support.feature"><category name="javaee-web.js_support"/></feature>
 
   <!-- missing dependency org.eclipse.wst.common.tests.performance so cannot build <bundle id="org.eclipse.wst.wsdl.tests.performance"/> -->
   <!-- missing junit4, comment out for now <bundle id="org.eclipse.wst.ws.service.policy.test"/> -->
@@ -214,4 +215,5 @@
   <category-def name="ws-sdk" label="WTP Web Services SDK"/>
   <category-def name="ws-tests" label="WTP Web Services Tests"/>
   <category-def name="javaee-web" label="WTP Web Services - JavaEE Enterprise / Web Features"/>
+  <category-def name="javaee-web.js_support" label="WTP Web Services - JavaEE Enterprise / Web JavaScript Features"/>
 </site>

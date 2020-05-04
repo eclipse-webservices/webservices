@@ -38,6 +38,7 @@
     <module>org.eclipse.jst.web_core.feature</module>
     <module>org.eclipse.jst.web_sdk.feature</module>
     <module>org.eclipse.jst.web_ui.feature</module>
+    <module>org.eclipse.jst.web_js_support.feature</module>
     <module>org.eclipse.jst.web_userdoc.feature</module>   
   </modules>
 
