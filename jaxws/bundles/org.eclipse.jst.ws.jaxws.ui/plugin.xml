@@ -74,7 +74,8 @@
       <javaCompletionProposalComputer
             activate="true"
             categoryId="org.eclipse.jst.ws.jaxws.ui.jaxwsProposalComputer"
-            class="org.eclipse.jst.ws.internal.jaxws.ui.annotations.contentassist.AnnotationCompletionProposalComputer">
+            class="org.eclipse.jst.ws.internal.jaxws.ui.annotations.contentassist.AnnotationCompletionProposalComputer"
+            requiresUIThread="false">
          <partition
                type="__java_string">
          </partition>
