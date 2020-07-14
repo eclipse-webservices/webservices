@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 IBM Corporation and others.
+ * Copyright (c) 2004, 2020 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -16,8 +16,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 /**
@@ -35,7 +35,7 @@ public class WaitForAutoBuildCommand extends AbstractDataModelOperation
   	
 	try 
 	{
-	  Platform.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
+	  Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 	} 
 	catch( InterruptedException exc ) 
 	{

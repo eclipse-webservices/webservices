@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.eclipse.wst.wsdl.tests.performance
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 1.1.100.qualifier
 Bundle-ClassPath: performance.jar
 Bundle-Activator: org.eclipse.wst.wsdl.tests.performance.PerformancePlugin
 Bundle-Localization: plugin

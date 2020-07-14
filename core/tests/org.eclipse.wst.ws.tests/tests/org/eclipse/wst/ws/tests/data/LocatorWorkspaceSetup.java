@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2019 IBM Corporation and others.
+ * Copyright (c) 2005, 2020 IBM Corporation and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.intro.IIntroManager;
 import org.eclipse.ui.intro.IIntroPart;
@@ -125,7 +125,7 @@ public class LocatorWorkspaceSetup extends TestCase {
 	    {
 	      try
 	      {
-	        Platform.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
+	        Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 	        interrupted = false;
 	      }
 	      catch (InterruptedException e)

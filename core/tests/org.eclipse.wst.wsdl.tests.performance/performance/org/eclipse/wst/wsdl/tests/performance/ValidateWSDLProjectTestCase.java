@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2020 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.test.performance.Dimension;
 import org.eclipse.test.performance.PerformanceTestCase;
@@ -113,7 +113,7 @@ public class ValidateWSDLProjectTestCase extends PerformanceTestCase {
 		Display.getDefault().syncExec(new Runnable() {
 			public void run() {
 				try {
-					Platform.getJobManager().join(
+					Job.getJobManager().join(
 							ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 				} catch (InterruptedException e) {
 				}
