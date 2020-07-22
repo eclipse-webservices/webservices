@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2020 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.wsdl.validation.internal.logging.ILogger;
 import org.eclipse.wst.wsdl.validation.internal.logging.LoggerFactory;
 
@@ -23,10 +24,11 @@ import org.eclipse.wst.wsdl.validation.internal.logging.LoggerFactory;
 /**
  * This class allows InputStreams to be created and returned to xerces without
  * actually opening file handles or network connections until it is absolutely
- * neccessary.
+ * necessary.
  */
 public class LazyURLInputStream extends InputStream
 {  
+  static final boolean doDebugTotalOpenStreamCount = Boolean.valueOf(Platform.getDebugOption("org.eclipse.wst.wsdl.validation/debugTotalOpenStreamCount")).booleanValue(); //$NON-NLS-1$ //$NON-NLS-2$
   private static int debugTotalOpenStreamCount = 0; 
   protected InputStream inner;
   protected String url;
@@ -46,7 +48,9 @@ public class LazyURLInputStream extends InputStream
     if (inner == null && !error)
     {
       debugTotalOpenStreamCount++;
-      //System.out.println("Creating stream (" + debugTotalOpenStreamCount + ")-- " + url);
+      if (doDebugTotalOpenStreamCount) {
+        System.out.println("Creating stream (" + debugTotalOpenStreamCount + ")-- " + url);
+      }
       try
       {
         inner = new URL(url).openStream();
@@ -86,7 +90,9 @@ public class LazyURLInputStream extends InputStream
 	} else {
 		if (inner != null) {
 			debugTotalOpenStreamCount--;
-		      //System.out.println("Closing stream (" + debugTotalOpenStreamCount + ") -- " + url);
+			if (doDebugTotalOpenStreamCount) {
+		      System.out.println("Closing stream (" + debugTotalOpenStreamCount + ") -- " + url);
+			}
 			inner.close();
 		}
 	}
