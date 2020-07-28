@@ -19,7 +19,7 @@
    </license>
 
    <url>
-      <update label="%updateSiteName" url="http://download.eclipse.org/webtools/updates/"/>
+      <update label="%updateSiteName" url="http://download.eclipse.org/releases/latest/"/>
    </url>
 
    <requires>
