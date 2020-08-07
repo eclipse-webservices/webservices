@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Shane Clarke.
+ * Copyright (c) 2009, 2020 Shane Clarke and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -55,8 +55,12 @@ public class WebServiceSEINoWebResultRuleTest extends AbstractWebServiceSEIRule 
 
             IMarker[] allmarkers = source.getResource().findMarkers(IMarker.PROBLEM, true,
                     IResource.DEPTH_INFINITE);
-
-            assertEquals(1, allmarkers.length);
+            StringBuilder messages = new StringBuilder();
+            for (int i = 0; i < allmarkers.length; i++) {
+				messages.append(allmarkers[i].getAttribute(IMarker.MESSAGE));
+				messages.append('\n');
+			}
+            assertEquals(messages.toString(), 1, allmarkers.length);
 
             IMarker annotationProblemMarker = allmarkers[0];
 

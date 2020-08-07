@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 IONA Technologies PLC, Shane Clarke
+ * Copyright (c) 2008, 2020 IONA Technologies PLC, Shane Clarke, and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -320,6 +321,7 @@ public final class AnnotationUtils {
         final String annotationSimpleName = qualifiedName.substring(qualifiedName.lastIndexOf(".") + 1);
         final List<String> occurences = new ArrayList<String>();
         AnnotationDefinition annotationDefinition = AnnotationsManager.getAnnotationDefinitionForClass(qualifiedName);
+		Assert.isNotNull(annotationDefinition, "Annotation definition for " + qualifiedName + " in project " + javaElement.getJavaProject().getElementName() + " was unexpectedly null");
         annotationDefinition.setJavaProject(javaElement.getJavaProject());
         List<ElementType> elementTypes = Collections.emptyList();
         if (annotationDefinition != null) {

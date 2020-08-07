@@ -40,6 +40,11 @@
                 <id>javax.jws</id>
                 <versionRange>0.0.0</versionRange>
               </requirement>
+              <requirement>
+                <type>eclipse-plugin</type>
+                <id>javax.xml.ws</id>
+                <versionRange>0.0.0</versionRange>
+              </requirement>
             </extraRequirements>
           </dependency-resolution>
         </configuration>

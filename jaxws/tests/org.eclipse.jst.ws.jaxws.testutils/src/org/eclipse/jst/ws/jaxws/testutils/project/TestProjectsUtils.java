@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 by SAP AG, Walldorf. 
+ * Copyright (c) 2009, 2020 by SAP AG, Walldorf, and Others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,9 @@
  *     SAP AG - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.testutils.project;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -30,8 +33,11 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -52,6 +58,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
+import org.osgi.framework.Bundle;
 
 public class TestProjectsUtils
 {
@@ -123,6 +130,17 @@ public class TestProjectsUtils
 		project.setDescription(description, null);
 		IJavaProject javaP = JavaCore.create(project);
 		addToClasspath(javaP, JavaRuntime.getDefaultJREContainerEntry());
+        for (String bundleName : new String[] {"javax.jws", "javax.xml.ws"}) {
+			Bundle bundle = Platform.getBundle(bundleName);
+			assertNotNull("The " + bundleName + " bundle was not found", bundle);
+			String location = bundle.getLocation();
+			if (location.indexOf("reference:file:") >= 0) {
+				location = location.substring(location.indexOf("reference:file:") + "reference:file:".length());
+			}
+			IPath absoluteLocation = Path.fromOSString(location).makeAbsolute();
+			assertTrue("Expected jar at " + absoluteLocation + " does not exist", absoluteLocation.toFile().exists());
+			addToClasspath(javaP, JavaCore.newLibraryEntry(absoluteLocation, null, null));
+		}
 
 		return project;
 	}

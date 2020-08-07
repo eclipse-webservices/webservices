@@ -79,7 +79,12 @@ public class SOAPBindingRPCStyleOnMethodRuleTest extends AbstractSOAPBindingVali
             IMarker[] allmarkers = source.getResource().findMarkers(IMarker.PROBLEM, true,
                     IResource.DEPTH_INFINITE);
 
-            assertEquals(1, allmarkers.length);
+            StringBuilder messages = new StringBuilder();
+            for (int i = 0; i < allmarkers.length; i++) {
+				messages.append(allmarkers[i].getAttribute(IMarker.MESSAGE));
+				messages.append("\n");
+			}
+            assertEquals(messages.toString(), 1, allmarkers.length);
 
             IMarker annotationProblemMarker = allmarkers[0];
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Shane Clarke.
+ * Copyright (c) 2009, 2020 Shane Clarke and Others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,11 +12,17 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.core.tests;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.apt.core.util.AptConfig;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -29,9 +35,11 @@ import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.IVMInstall2;
 import org.eclipse.jdt.launching.IVMInstallType;
 import org.eclipse.jdt.launching.JavaRuntime;
+import org.osgi.framework.Bundle;
 
 public class TestJavaProject extends TestProject {
-    private IJavaProject javaProject;
+	private static final String[] ADDITIONAL_REQUIRED_BUNDLES = new String[]{"javax.xml.ws", "javax.jws"};
+	private IJavaProject javaProject;
     
     public TestJavaProject(String projectName) throws CoreException {
         super(projectName);
@@ -41,9 +49,22 @@ public class TestJavaProject extends TestProject {
         javaProject.setRawClasspath(new IClasspathEntry[0], null);
 
         createSourceFolder();
-        addToClasspath(javaProject, getJREContainerEntry());
-        createOutputFolder();
-    }
+
+		for (String bundleName : ADDITIONAL_REQUIRED_BUNDLES) {
+			Bundle bundle = Platform.getBundle(bundleName);
+			assertNotNull("The " + bundleName + " bundle was not found", bundle);
+			String location = bundle.getLocation();
+			if (location.indexOf("reference:file:") >= 0) {
+				location = location.substring(location.indexOf("reference:file:") + "reference:file:".length());
+			}
+			IPath absoluteLocation = Path.fromOSString(location).makeAbsolute();
+			assertTrue("Expected jar at " + absoluteLocation + " does not exist", absoluteLocation.toFile().exists());
+			addToClasspath(javaProject, JavaCore.newLibraryEntry(absoluteLocation, null, null));
+		}
+
+		addToClasspath(javaProject, getJREContainerEntry());
+		createOutputFolder();
+	}
     
     public void setAutoBuilding(boolean autoBuild) throws CoreException {
         IWorkspaceDescription description = ResourcesPlugin.getWorkspace().getDescription();
