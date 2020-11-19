@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002-2006 IBM Corporation and others.
+ * Copyright (c) 2002, 2020 IBM Corporation and others.
  * All rights reserved.   This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -18,11 +18,18 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.Locale;
-import com.ibm.icu.util.StringTokenizer;
 
-import sun.net.www.MessageHeader;
+import org.apache.http.Header;
+import org.apache.http.HttpException;
+import org.apache.http.HttpResponse;
+import org.apache.http.config.MessageConstraints;
+import org.apache.http.impl.conn.DefaultHttpResponseParserFactory;
+import org.apache.http.impl.io.HttpTransportMetricsImpl;
+import org.apache.http.impl.io.SessionInputBufferImpl;
+import org.apache.http.io.HttpMessageParser;
 
 import com.ibm.icu.text.SimpleDateFormat;
+import com.ibm.icu.util.StringTokenizer;
 
 /**
  * This class checks HTTP request headers about RFC 2616.
@@ -342,55 +349,29 @@ public class HttpHeadersValidator
 
   public static boolean validateHttpRequestHeaders(String headers)
   {
+    SessionInputBufferImpl buffer = new SessionInputBufferImpl(new HttpTransportMetricsImpl(), 2048);
+    buffer.bind(new ByteArrayInputStream(headers.getBytes()));
+    HttpMessageParser<HttpResponse> messageParser = DefaultHttpResponseParserFactory.INSTANCE.create(buffer, MessageConstraints.DEFAULT);
+    HttpResponse response;
+	try {
+		response = messageParser.parse();
+	}
+	catch (IOException e1) {
+		return false;
+	}
+	catch (HttpException e1) {
+		return false;
+	}
 
-    MessageHeader mh = new MessageHeader();
+    if (!isHTTPVersion(response.getProtocolVersion().toString()))
+      return false;
+
     try
     {
-      mh.parseHeader(new ByteArrayInputStream(headers.getBytes()));
-    }
-    catch (IOException e)
-    {
-      return false;
-    }
-
-    String header = null;
-    String value = null;
-
-    header = mh.getKey(0);
-    if (header != null)
-      return false;
-
-    value = mh.getValue(0);
-    if (value == null)
-      return false;
-
-    //method
-    StringTokenizer st = new StringTokenizer(value, " ");
-    if (!st.hasMoreElements())
-      return false;
-    String str = st.nextToken();
-    if (!isToken(str))
-      return false;
-
-    if (!st.hasMoreElements())
-      return false;
-    str = st.nextToken();
-    if (!isURI(str) && !str.equals("*"))
-      return false;
-
-    if (!st.hasMoreElements())
-      return false;
-    str = st.nextToken();
-    if (!isHTTPVersion(str))
-      return false;
-
-    int i = 1;
-    try
-    {
-      while ((header = mh.getKey(i)) != null)
+      for (Header httpHeader: response.getAllHeaders())
       {
-        value = mh.getValue(i);
-        i++;
+        String header = httpHeader.getName();
+        String value = httpHeader.getValue();
 
         // is message-header token
         if (!isToken(header))
@@ -605,7 +586,7 @@ public class HttpHeadersValidator
             continue;
         }
 
-        //---			
+        //---		
         if (header.equals(HEADER_IF_MODIFIED_SINCE))
         {
           if (!isHTTPDate(value))
