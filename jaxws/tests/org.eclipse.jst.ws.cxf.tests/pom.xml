@@ -42,6 +42,7 @@
           <argLine>-XX:MaxPermSize=128m</argLine>
           <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
+          <useJDK>BREE</useJDK>
         </configuration>
       </plugin>
     </plugins>
