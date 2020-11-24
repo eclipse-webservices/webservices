@@ -57,10 +57,10 @@
          unpack="false"/>
 
    <plugin
-         id="javax.xml.bind"
+         id="jakarta.xml.bind"
          download-size="0"
          install-size="0"
-         version="2.2.0.qualifier"
+         version="2.3.3.qualifier"
          unpack="false"/>
 
    <plugin

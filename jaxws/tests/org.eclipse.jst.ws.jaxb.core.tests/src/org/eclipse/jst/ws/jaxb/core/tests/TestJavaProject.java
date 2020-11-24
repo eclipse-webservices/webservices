@@ -35,7 +35,7 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.osgi.framework.Bundle;
 
 public class TestJavaProject extends TestProject {
-	private static final String[] ADDITIONAL_REQUIRED_BUNDLES = new String[]{"javax.xml.bind"};
+	private static final String[] ADDITIONAL_REQUIRED_BUNDLES = new String[]{"jakarta.xml.bind"};
     private IJavaProject javaProject;
     
     public TestJavaProject(String projectName) throws CoreException {
