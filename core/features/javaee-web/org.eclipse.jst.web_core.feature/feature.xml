@@ -39,4 +39,23 @@
       <import plugin="org.eclipse.jst.standard.schemas"/>
    </requires>
 
+   <plugin
+         id="jakarta.el"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+   <plugin
+         id="jakarta.servlet"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+   <plugin
+         id="jakarta.servlet.jsp"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
