@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2009 IBM Corporation and others.
+ * Copyright (c) 2001, 2021 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -309,12 +309,12 @@ public class DefaultXMLValidator implements IXMLValidator
         /* (non-Javadoc)
          * @see org.apache.xerces.impl.XMLErrorReporter#reportError(java.lang.String, java.lang.String, java.lang.Object[], short)
          */
-        public void reportError(String domain, String key, Object[] arguments,
+        public String reportError(String domain, String key, Object[] arguments,
             short severity) throws XNIException
         {
           currentErrorKey = key;
           currentMessageArguments = arguments;
-          super.reportError(domain, key, arguments, severity);
+          return super.reportError(domain, key, arguments, severity);
         }
       };
     }
