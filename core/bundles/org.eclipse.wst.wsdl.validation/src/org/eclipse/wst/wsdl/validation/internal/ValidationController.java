@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2021 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -310,7 +310,7 @@ public class ValidationController
         {
           return new XMLErrorReporter()
           {
-            public void reportError(String domain, String key, Object[] arguments, short severity) throws XNIException
+            public String reportError(String domain, String key, Object[] arguments, short severity) throws XNIException
             {
               boolean reportError = true;
               if (key.equals("PrematureEOF"))
@@ -320,8 +320,9 @@ public class ValidationController
 
               if (reportError)
               {
-                super.reportError(domain, key, arguments, severity);
+                return super.reportError(domain, key, arguments, severity);
               }
+              return "";
             }
           };
         }
