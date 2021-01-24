@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002, 2009 IBM Corporation and others.
+ * Copyright (c) 2002, 2021 IBM Corporation and others.
  * All rights reserved.   This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -685,12 +685,9 @@ catch (Exception e)
 
     try
     {
-      // See if the element object is an instanceof org.apache.xerces.dom.ElementImpl
-      ElementImpl elementImpl = (ElementImpl) element;
-
       // If it is, then get the element location information
       elementLocation =
-        (ElementLocation) elementImpl.getUserData();
+        (ElementLocation) element.getUserData(ElementLocation.KEY_NAME);
 
       // Add it to the list
       this.wsdlElementList.addElement(wsdlElement, elementLocation);

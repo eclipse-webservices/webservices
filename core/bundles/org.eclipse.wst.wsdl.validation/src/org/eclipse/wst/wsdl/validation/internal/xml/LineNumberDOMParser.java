@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2009 IBM Corporation and others.
+ * Copyright (c) 2001, 2021 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 
 package org.eclipse.wst.wsdl.validation.internal.xml;
 
-import org.apache.xerces.dom.ElementImpl;
 import org.apache.xerces.parsers.DOMParser;
 import org.apache.xerces.util.SymbolTable;
 import org.apache.xerces.xni.Augmentations;
@@ -122,11 +121,7 @@ public class LineNumberDOMParser extends DOMParser
     try
     {
       element = (Element)getProperty(CURRENT_ELEMENT_NODE);
-      ElementImpl elementImpl = (ElementImpl)element;
-      // Setting the user data with an identifier such as ElementLocation.KEY_NAME
-      // may be a long term good idea. The setUserData method with no id is used 
-      // to support JVMs with alternate versions of Xerces.
-      elementImpl.setUserData(new ElementLocation(locator.getLineNumber(), locator.getColumnNumber()));
+      element.setUserData(ElementLocation.ID, new ElementLocation(locator.getLineNumber(), locator.getColumnNumber()), null);
     }
     // catch SAXNotRecognizedException and SAXNotSupportedException if can't get element
     catch (ClassCastException e)

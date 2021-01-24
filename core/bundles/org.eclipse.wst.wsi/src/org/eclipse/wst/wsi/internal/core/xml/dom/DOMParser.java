@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002-2005 IBM Corporation and others.
+ * Copyright (c) 2002-2021 IBM Corporation and others.
  * All rights reserved.   This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -60,7 +60,6 @@ public class DOMParser extends org.apache.xerces.parsers.DOMParser
     throws XNIException
   {
     Element element;
-    ElementImpl elementImpl;
 
     // DEBUG:
     //System.err.println("1-line: " + locator.getLineNumber() + ", column: " + locator.getColumnNumber());
@@ -74,11 +73,10 @@ public class DOMParser extends org.apache.xerces.parsers.DOMParser
     {
       element = (Element) getProperty(CURRENT_ELEMENT_NODE);
 
-      elementImpl = (ElementImpl) element;
       // Setting the user data with an identifier such as ElementLocation.KEY_NAME
       // may be a long term good idea. The setUserData method with no id is used 
       // to support JVMs with alternate versions of Xerces.
-      elementImpl.setUserData(new ElementLocation(locator.getLineNumber(), locator.getColumnNumber()));
+      element.setUserData(ElementLocation.KEY_NAME, new ElementLocation(locator.getLineNumber(), locator.getColumnNumber()), null);
     }
     catch (ClassCastException cce)
     {

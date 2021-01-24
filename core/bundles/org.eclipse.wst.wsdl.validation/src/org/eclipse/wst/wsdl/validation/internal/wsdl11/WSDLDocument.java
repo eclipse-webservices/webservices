@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2009 IBM Corporation and others.
+ * Copyright (c) 2001, 2021 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -50,7 +50,6 @@ import javax.wsdl.extensions.schema.Schema;
 import javax.wsdl.factory.WSDLFactory;
 import javax.xml.namespace.QName;
 
-import org.apache.xerces.dom.ElementImpl;
 import org.apache.xerces.dom.ElementNSImpl;
 import org.apache.xerces.xs.XSModel;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
@@ -1888,8 +1887,7 @@ public class WSDLDocument
   {
     try
     {
-      ElementImpl elementImpl = (ElementImpl)element;
-      ElementLocation elementLocation = (ElementLocation)elementImpl.getUserData();
+      ElementLocation elementLocation = (ElementLocation)element.getUserData(ElementLocation.ID);
       if (elementLocation != null)
       {
 
