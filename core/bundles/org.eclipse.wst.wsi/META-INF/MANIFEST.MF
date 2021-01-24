@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %_PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.wst.wsi; singleton:=true
-Bundle-Version: 1.1.200.qualifier
+Bundle-Version: 1.2.0.qualifier
 Bundle-Activator: org.eclipse.wst.wsi.internal.WSITestToolsPlugin
 Bundle-Vendor: %_PROVIDER_NAME
 Bundle-Localization: plugin
@@ -61,6 +61,6 @@ Import-Package: com.ibm.icu.util; version="3.8",
  org.apache.http.config,
  org.apache.http.impl.conn,
  org.apache.http.impl.io,
- org.apache.http.io 
+ org.apache.http.io
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
