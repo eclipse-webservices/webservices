@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.jst.ws.tests;singleton:=true
-Bundle-Version: 1.0.400.qualifier
+Bundle-Version: 1.0.500.qualifier
 Bundle-ClassPath: tests.jar
 Bundle-Activator: org.eclipse.jst.ws.tests.plugin.TestsPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
@@ -38,4 +38,4 @@ Require-Bundle: org.eclipse.jst.ws.consumption.ui,
  org.eclipse.wst.validation,
  org.eclipse.wst.ws.explorer
 Eclipse-LazyStart: true
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

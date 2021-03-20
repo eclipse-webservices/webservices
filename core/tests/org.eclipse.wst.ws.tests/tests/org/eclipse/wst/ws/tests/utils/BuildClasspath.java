@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2019 IBM Corporation and others.
+ * Copyright (c) 2007, 2021 IBM Corporation and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -15,8 +15,9 @@ package org.eclipse.wst.ws.tests.utils;
 import java.util.Enumeration;
 import java.util.ResourceBundle;
 
-import org.eclipse.core.runtime.IPlatformRunnable;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.equinox.app.IApplication;
+import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.osgi.util.ManifestElement;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
@@ -25,7 +26,7 @@ import org.osgi.framework.Constants;
  * This program will generate a classpath that can be used to build the wsexplorer.war file.
  * 
  */
-public class BuildClasspath implements IPlatformRunnable
+public class BuildClasspath implements IApplication
 {
     public Object run(Object args) throws Exception 
     {        
@@ -38,7 +39,7 @@ public class BuildClasspath implements IPlatformRunnable
         buildClasspath( pluginRequires.getString(key) );
       }
             
-      return IPlatformRunnable.EXIT_OK;
+      return IApplication.EXIT_OK;
     }
     
     private void buildClasspath( String pluginId ) throws Exception
@@ -83,4 +84,11 @@ public class BuildClasspath implements IPlatformRunnable
         }
       }
     }
+
+	public Object start(IApplicationContext context) throws Exception {
+		return run(context.getArguments().get(IApplicationContext.APPLICATION_ARGS));
+	}
+
+	public void stop() {
+	}
 }
