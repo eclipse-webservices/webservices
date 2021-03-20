@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.jst.ws.creation.ui; singleton:=true
-Bundle-Version: 1.0.1000.qualifier
+Bundle-Version: 1.0.1001.qualifier
 Bundle-Activator: org.eclipse.jst.ws.internal.creation.ui.plugin.WebServiceCreationUIPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
@@ -21,7 +21,7 @@ Require-Bundle: org.eclipse.wst.command.env;bundle-version="[1.0.101,1.1.0)",
  org.eclipse.wst.command.env.core;bundle-version="[1.0.101,2.0.0)",
  org.eclipse.wst.wsdl;bundle-version="[1.2.0,2.0.0)",
  org.eclipse.wst.ws;bundle-version="[1.0.100,1.2.0)",
- org.eclipse.wst.ws.explorer;bundle-version="[1.0.101,1.1.0)",
+ org.eclipse.wst.ws.explorer;bundle-version="[1.1.0,1.2.0)",
  org.eclipse.jst.ws;bundle-version="[1.0.101,1.1.0)",
  org.eclipse.jst.ws.consumption;bundle-version="[1.0.101,1.1.0)",
  org.eclipse.wst.ws.parser;bundle-version="[1.0.100,2.0.0)",

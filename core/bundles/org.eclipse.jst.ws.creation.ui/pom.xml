@@ -22,6 +22,6 @@
 
   <groupId>org.eclipse.webtools.webservices</groupId>
   <artifactId>org.eclipse.jst.ws.creation.ui</artifactId>
-  <version>1.0.1000-SNAPSHOT</version>
+  <version>1.0.1001-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 </project>
