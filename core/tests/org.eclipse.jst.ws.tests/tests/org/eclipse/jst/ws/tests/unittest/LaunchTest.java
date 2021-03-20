@@ -42,7 +42,6 @@ public class LaunchTest implements IApplication
   }
 
 public Object start(IApplicationContext context) throws Exception {
-	// TODO Auto-generated method stub
 	return run(context.getArguments().get(IApplicationContext.APPLICATION_ARGS));
 }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2019 IBM Corporation and others.
+ * Copyright (c) 2005, 2021 IBM Corporation and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,12 +12,13 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.tests.unittest;
 
-import org.eclipse.core.runtime.IPlatformRunnable;
+import org.eclipse.equinox.app.IApplication;
+import org.eclipse.equinox.app.IApplicationContext;
 
 /**
  * Minimal app to run as Eclipse "application"
  */
-public class LaunchTest implements IPlatformRunnable
+public class LaunchTest implements IApplication
 {
   /**
    * @see org.eclipse.core.runtime.IPlatformRunnable#run(Object)
@@ -40,6 +41,14 @@ public class LaunchTest implements IPlatformRunnable
       return result;
     }
     else
-      return IPlatformRunnable.EXIT_OK;
+      return IApplication.EXIT_OK;
   }
+
+  public Object start(IApplicationContext context) throws Exception {
+	  return run(context.getArguments().get(IApplicationContext.APPLICATION_ARGS));
+  }
+
+  public void stop() {
+  }
+
 }
