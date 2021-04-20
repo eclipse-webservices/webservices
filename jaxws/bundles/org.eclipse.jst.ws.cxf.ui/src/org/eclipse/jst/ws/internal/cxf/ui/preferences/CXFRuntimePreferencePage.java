@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 IONA Technologies PLC
+ * Copyright (c) 2008, 2021 IONA Technologies PLC and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -273,21 +274,7 @@ public class CXFRuntimePreferencePage extends PreferencePage implements IWorkben
         gridData.verticalSpan = 5;
         cxfInstallations.getTable().setLayoutData(gridData);
 
-        cxfInstallations.setContentProvider(new IStructuredContentProvider() {
-
-            public Object[] getElements(Object inputElement) {
-                if (inputElement instanceof Collection<?>) {
-                    return ((Collection<?>) inputElement).toArray();
-                }
-                return new Object[] {};
-            }
-
-            public void dispose() {
-            }
-
-            public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-            }
-        });
+        cxfInstallations.setContentProvider(new ArrayContentProvider());
 
         cxfInstallations.setComparator(new ViewerComparator() {
             @Override

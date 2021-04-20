@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Shane Clarke.
+ * Copyright (c) 2010, 2021 Shane Clarke and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.ClasspathContainerInitializer;
 import org.eclipse.jdt.core.IJavaProject;
@@ -54,6 +55,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 
 public class CXFInstallWizardPage extends WizardPage {
@@ -283,6 +285,12 @@ public class CXFInstallWizardPage extends WizardPage {
 
         for (String jarFile : jarFiles) {
             cxfLib.add(cxLibFolderPath + System.getProperty("file.separator") + jarFile); //$NON-NLS-1$
+        }
+
+        final String supportedPrefix = "reference:file:"; //$NON-NLS-1$
+        Bundle activation = Platform.getBundle("javax.activation");
+        if (activation != null && activation.getLocation().startsWith(supportedPrefix)) {
+            cxfLib.add(activation.getLocation().substring(supportedPrefix.length()));
         }
 
         IStatus toolVersionStatus = LaunchUtils.launch(cxfLib.toArray(new String[cxfLib.size()]),

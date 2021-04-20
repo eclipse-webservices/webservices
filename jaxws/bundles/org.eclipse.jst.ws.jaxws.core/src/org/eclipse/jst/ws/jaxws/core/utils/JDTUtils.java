@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 IONA Technologies PLC
+ * Copyright (c) 2008, 2021 IONA Technologies PLC and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -153,6 +153,13 @@ public final class JDTUtils {
      */
     public static IPath getJavaProjectSourceDirectoryPath(IJavaProject javaProject) {
         try {
+            IClasspathEntry[] rawClasspath = javaProject.getRawClasspath();
+            for (int i = 0; i < rawClasspath.length; i++) {
+                if (rawClasspath[i].getEntryKind() == IClasspathEntry.CPE_SOURCE) {
+                    return rawClasspath[i].getPath();
+                }
+            }
+
             IPackageFragmentRoot[] packageFragmentRoots = javaProject.getAllPackageFragmentRoots();
             IPackageFragmentRoot packageFragmentRoot = packageFragmentRoots[0];
             IResource srcDirectoryResource = packageFragmentRoot.getResource();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2011 IBM Corporation and others.
+ * Copyright (c) 2004, 2021 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -47,6 +47,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -715,7 +716,21 @@ public final class ResourceUtils {
 	 * @return
 	 */
 	public static IPath[] getAllJavaSourceLocations(IProject project) {
-		Vector pathVector = new Vector();
+		try {
+			IClasspathEntry[] entries = JavaCore.create(project).getRawClasspath();
+			List<IPath> paths = new ArrayList<IPath>();
+			for (int i = 0; i < entries.length; i++) {
+				if (IClasspathEntry.CPE_SOURCE == entries[i].getEntryKind()) {
+					paths.add(entries[i].getPath());
+				}
+			}
+			return paths.toArray(new IPath[paths.size()]);
+		}
+		catch (JavaModelException e1) {
+			Platform.getLog(WebServicePlugin.getInstance().getBundle()).error(e1.getLocalizedMessage(), e1);
+		}
+
+		Vector<IPath> pathVector = new Vector<IPath>();
 		IPackageFragmentRoot[] fragmentRoots = getJavaPackageFragmentRoots(project);
 
 		for (int i = 0; i < fragmentRoots.length; i++) {
