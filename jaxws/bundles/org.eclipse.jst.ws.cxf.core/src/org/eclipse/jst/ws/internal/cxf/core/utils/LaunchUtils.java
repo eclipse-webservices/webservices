@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2020 IONA Technologies PLC and others
+ * Copyright (c) 2008, 2021 IONA Technologies PLC and others
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -16,6 +16,7 @@ package org.eclipse.jst.ws.internal.cxf.core.utils;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -97,6 +98,15 @@ public final class LaunchUtils {
         
         String installedVersion = CXFCorePlugin.getDefault().getCXFRuntimeVersion(javaProject.getProject());
         CXFInstall cxfInstall = CXFCorePlugin.getDefault().getJava2WSContext().getInstallations().get(installedVersion);
+
+		if (cxfInstall.getLocation() == null) {
+			StringBuilder builder = new StringBuilder("Default [" + installedVersion + "] CXF Installation has no location\n");
+			Map<String, CXFInstall> installations = CXFCorePlugin.getDefault().getJava2WSContext().getInstallations();
+			for (Map.Entry<String, CXFInstall> entry : installations.entrySet()) {
+				builder.append("Known CXF Installation: " + entry.getKey() + " location :" + entry.getValue().getLocation());
+			}
+			CXFCorePlugin.logMessage(IStatus.INFO, builder.toString());
+		}
 
         IVMRunner vmRunner = vmInstall.getVMRunner(ILaunchManager.RUN_MODE);
         String[] runtimeClasspath = JavaRuntime.computeDefaultRuntimeClassPath(javaProject);
