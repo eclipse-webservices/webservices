@@ -42,7 +42,6 @@
               <excludes>
                 <plugin id="org.apache.commons.codec" />
                 <plugin id="org.apache.commons.logging" />
-                <plugin id="org.apache.log4j" />
                 <plugin id="org.apache.wsil4j" />
                 <plugin id="org.uddi4j" />
                 <plugin id="org.apache.commons.discovery" />
