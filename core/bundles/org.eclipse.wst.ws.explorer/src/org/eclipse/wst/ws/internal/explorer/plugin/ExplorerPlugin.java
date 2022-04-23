@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Hashtable;
+
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -169,7 +172,7 @@ public class ExplorerPlugin extends AbstractUIPlugin
 
   public String getPluginStateLocation()
   {
-    return Platform.getPluginStateLocation(this).addTrailingSeparator().toOSString();
+	return instance_.getStateLocation().addTrailingSeparator().toOSString();
   }
 
   public String getDefaultFavoritesLocation()
