@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.eclipse.wst.wsi.tests; singleton:=true
-Bundle-Version: 1.0.200.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-ClassPath: wsi.tests.jar
 Bundle-Activator: org.eclipse.wst.wsi.tests.internal.WSITestsPlugin
 Bundle-Vendor: %Bundle-Vendor.0
@@ -19,4 +19,4 @@ Require-Bundle: org.eclipse.wst.wsi,
  org.eclipse.wst.command.env.core
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.wst.wsi.tests.internal
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
