@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jst.ws.jaxws.dom.feature"
       label="%featureName"
-      version="1.0.400.qualifier"
+      version="1.0.500.qualifier"
       provider-name="%featureProvider"
       image="eclipse_update_120.jpg"
       license-feature="org.eclipse.license"
@@ -21,12 +21,7 @@
    </license>
 
    <requires>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.emf.edit.ui"/>
-      <import plugin="org.eclipse.jdt.core"/>
-      <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.ui.navigator"/>
       <import plugin="org.eclipse.jdt.ui"/>
       <import plugin="org.eclipse.jst.j2ee.core" version="1.1.200" match="greaterOrEqual"/>
