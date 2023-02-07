@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2019 IBM Corporation and others.
+ * Copyright (c) 2007, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -1010,53 +1010,81 @@ public class FacetUtils
 
     IProjectFacet javaFacet = ProjectFacetsManager.getProjectFacet(JavaFacet.ID);
     IProjectFacetVersion javaFacetVersion = null;
-    if (jdkComplianceLevel.equals("1.3"))
+    if ("17".equals(jdkComplianceLevel))
     {
-      javaFacetVersion = javaFacet.getVersion("1.3");
+      javaFacetVersion = JavaFacet.VERSION_17;
     }
-    else if (jdkComplianceLevel.equals("1.4"))
-    {
-      javaFacetVersion = javaFacet.getVersion("1.4");
-    }
-    else if (jdkComplianceLevel.equals("1.5"))
-    {
-      javaFacetVersion = JavaFacet.JAVA_50;
-    }
-    else if (jdkComplianceLevel.equals("1.6"))
-    {
-      javaFacetVersion = JavaFacet.JAVA_60;
-    }
-    else if (jdkComplianceLevel.equals("1.7"))
-    {
-      javaFacetVersion = JavaFacet.VERSION_1_7;
-    }
-    else if (jdkComplianceLevel.equals("1.8"))
-    {
-      javaFacetVersion = JavaFacet.VERSION_1_8;
-    }
-    else if (jdkComplianceLevel.equals("9"))
-    {
-      javaFacetVersion = JavaFacet.VERSION_9;
-    }
-    else if (jdkComplianceLevel.equals("10"))
-    {
-      javaFacetVersion = JavaFacet.VERSION_10;
-    }
-    else if (jdkComplianceLevel.equals("11"))
+    else if ("11".equals(jdkComplianceLevel))
     {
       javaFacetVersion = JavaFacet.VERSION_11;
     }
-    else if (jdkComplianceLevel.equals("12"))
+    else if ("1.8".equals(jdkComplianceLevel))
+    {
+      javaFacetVersion = JavaFacet.VERSION_1_8;
+    }
+    else if ("1.3".equals(jdkComplianceLevel))
+    {
+      javaFacetVersion = javaFacet.getVersion("1.3");
+    }
+    else if ("1.4".equals(jdkComplianceLevel))
+    {
+      javaFacetVersion = javaFacet.getVersion("1.4");
+    }
+    else if ("1.5".equals(jdkComplianceLevel))
+    {
+      javaFacetVersion = JavaFacet.JAVA_50;
+    }
+    else if ("1.6".equals(jdkComplianceLevel))
+    {
+      javaFacetVersion = JavaFacet.JAVA_60;
+    }
+    else if ("1.7".equals(jdkComplianceLevel))
+    {
+      javaFacetVersion = JavaFacet.VERSION_1_7;
+    }
+    else if ("9".equals(jdkComplianceLevel))
+    {
+      javaFacetVersion = JavaFacet.VERSION_9;
+    }
+    else if ("10".equals(jdkComplianceLevel))
+    {
+      javaFacetVersion = JavaFacet.VERSION_10;
+    }
+    else if ("12".equals(jdkComplianceLevel))
     {
       javaFacetVersion = JavaFacet.VERSION_12;
     }
-    else if (jdkComplianceLevel.equals("13"))
+    else if ("13".equals(jdkComplianceLevel))
     {
       javaFacetVersion = JavaFacet.VERSION_13;
     }
+    else if ("14".equals(jdkComplianceLevel))
+    {
+      javaFacetVersion = JavaFacet.VERSION_14;
+    }
+    else if ("15".equals(jdkComplianceLevel))
+    {
+      javaFacetVersion = JavaFacet.VERSION_15;
+    }
+    else if ("16".equals(jdkComplianceLevel))
+    {
+      javaFacetVersion = JavaFacet.VERSION_16;
+    }
+    else if ("18".equals(jdkComplianceLevel))
+    {
+      javaFacetVersion = JavaFacet.VERSION_18;
+    }
+    else if ("19".equals(jdkComplianceLevel))
+    {
+      javaFacetVersion = JavaFacet.VERSION_19;
+    }
+    else if ("20".equals(jdkComplianceLevel))
+    {
+      javaFacetVersion = JavaFacet.VERSION_20;
+    }
     else
     {
-      javaFacetVersion = javaFacet.getVersion("1.4");
+      javaFacetVersion = javaFacet.getVersion("1.8");
     }
  
     facets.add(javaFacetVersion);

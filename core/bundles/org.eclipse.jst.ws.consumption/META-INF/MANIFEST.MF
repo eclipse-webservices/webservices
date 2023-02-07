@@ -1,8 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
+Automatic-Module-Name: org.eclipse.jst.ws.consumption
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.jst.ws.consumption; singleton:=true
-Bundle-Version: 1.0.1500.qualifier
+Bundle-Version: 1.0.1600.qualifier
 Bundle-ClassPath: .,
  webserviceutils.jar
 Bundle-Activator: org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin
@@ -59,7 +60,7 @@ Require-Bundle: org.eclipse.jem;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.jst.server.core;bundle-version="[1.0.102,2.0.0)",
  org.eclipse.emf.codegen;bundle-version="[2.2.0,3.0.0)",
  org.eclipse.core.commands;bundle-version="[3.5.0,4.0.0)",
- org.eclipse.jst.common.project.facet.core;bundle-version="[1.4.100,2.0.0)"
+ org.eclipse.jst.common.project.facet.core;bundle-version="[1.12.200,2.0.0)"
 Eclipse-LazyStart: true
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
