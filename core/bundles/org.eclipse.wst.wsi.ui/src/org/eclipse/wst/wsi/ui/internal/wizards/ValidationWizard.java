@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002-2005 IBM Corporation and others.
+ * Copyright (c) 2002, 2023 IBM Corporation and others.
  * All rights reserved.   This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -16,19 +16,22 @@ import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLReader;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsi.ui.internal.Messages;
 import org.eclipse.wst.wsi.ui.internal.Resource;
 import org.eclipse.wst.wsi.ui.internal.WSIUIPlugin;
-import org.eclipse.ui.IViewReference;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.views.navigator.ResourceNavigator;
 
 /**
  * This wizard allows the user to specify the location of the 
@@ -279,24 +282,30 @@ public class ValidationWizard extends Wizard
   }
 
   /**
-   * Returns the selection in the Resource Navigator view.
+   * Returns the selected resources, or objects adaptable to resources, in a view of the active page.
    * 
-   * @return the selection in the Resource Navigator view.
+   * @return the selection of resources, or adaptables, or an empty selection.
    */
-  public ISelection getResourceNavigatorSelection()
-  {
-    IViewReference viewParts[] =
-      PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getViewReferences();
+	public ISelection getResourceNavigatorSelection() {
+		IViewReference viewPartReferences[] = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getViewReferences();
 
-    for (int i = 0; i < viewParts.length; i++)
-    {
-      if (viewParts[i] instanceof ResourceNavigator)
-      {
-        return ((ResourceNavigator) viewParts[i]).getViewSite().getSelectionProvider().getSelection();
-      }
-    }
-    return StructuredSelection.EMPTY;
-  }
+		for (int i = 0; i < viewPartReferences.length; i++) {
+			IViewPart view = viewPartReferences[i].getView(false);
+			if (view != null) {
+				ISelectionProvider selectionProvider = view.getViewSite().getSelectionProvider();
+				if (selectionProvider != null) {
+					ISelection selected = selectionProvider.getSelection();
+					if (!selected.isEmpty() && selected instanceof IStructuredSelection) {
+						Object o = ((IStructuredSelection) selected).getFirstElement();
+						if (o instanceof IResource || Platform.getAdapterManager().hasAdapter(o, IResource.class.getName())) {
+							return selected;
+						}
+					}
+				}
+			}
+		}
+		return StructuredSelection.EMPTY;
+	}
 
   /**
    * Set the list of WSDL locations to let the user choose from.
