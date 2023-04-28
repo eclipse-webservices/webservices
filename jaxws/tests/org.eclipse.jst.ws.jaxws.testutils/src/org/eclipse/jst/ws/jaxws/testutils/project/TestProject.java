@@ -89,6 +89,9 @@ public class TestProject
 		 */
 		final String testProjectName = "JavaProj_" + Long.toString(System.currentTimeMillis()) + "_" + idInMillis++ + name;
 		project = workspace().getRoot().getProject(testProjectName);
+        if (project.isAccessible()) {
+        	project.delete(true, true, null);
+        }
 		
 		final IWorkspaceRunnable createProjectOperation = new IWorkspaceRunnable()
 		{

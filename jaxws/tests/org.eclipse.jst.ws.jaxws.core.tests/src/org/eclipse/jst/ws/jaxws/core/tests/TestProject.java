@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Shane Clarke.
+ * Copyright (c) 2009, 2023 Shane Clarke.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,9 @@ public class TestProject {
     public TestProject(String projectName) throws CoreException {
         IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
         testProject = workspaceRoot.getProject(projectName);
+        if (testProject.isAccessible()) {
+            testProject.delete(true, true, null);
+        }
         testProject.create(monitor);
         testProject.open(monitor);
     }

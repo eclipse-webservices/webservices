@@ -128,18 +128,29 @@ public class TestProjectsUtils
 		IProjectDescription description = project.getDescription();
 		description.setNatureIds(new String[] { JavaCore.NATURE_ID });
 		project.setDescription(description, null);
-		IJavaProject javaP = JavaCore.create(project);
-		addToClasspath(javaP, JavaRuntime.getDefaultJREContainerEntry());
+		IJavaProject javaProject = JavaCore.create(project);
+		addToClasspath(javaProject, JavaRuntime.getDefaultJREContainerEntry());
         for (String bundleName : new String[] {"javax.jws", "javax.xml.ws"}) {
 			Bundle bundle = Platform.getBundle(bundleName);
 			assertNotNull("The " + bundleName + " bundle was not found", bundle);
+			IPath absoluteLocation = null;
 			String location = bundle.getLocation();
 			if (location.indexOf("reference:file:") >= 0) {
 				location = location.substring(location.indexOf("reference:file:") + "reference:file:".length());
 			}
-			IPath absoluteLocation = Path.fromOSString(location).makeAbsolute();
-			assertTrue("Expected jar at " + absoluteLocation + " does not exist", absoluteLocation.toFile().exists());
-			addToClasspath(javaP, JavaCore.newLibraryEntry(absoluteLocation, null, null));
+			absoluteLocation = Path.fromOSString(location).makeAbsolute();
+			if (!absoluteLocation.toFile().exists()) {
+				absoluteLocation = Path.fromOSString(System.getProperty("user.dir")).addTrailingSeparator().append(location);
+				if (!absoluteLocation.toFile().exists()) {
+					absoluteLocation = Path.fromOSString(System.getProperty("user.home")).addTrailingSeparator().append(location);
+					if (!absoluteLocation.toFile().exists()) {
+						absoluteLocation = Path.fromOSString(Platform.getInstallLocation().getURL().getFile().toString()).addTrailingSeparator().append(location);
+					}
+				}
+			}
+
+			assertTrue("Expected jar at " + absoluteLocation + " does not exist based on bundle location " + bundle.getLocation() + " from " + System.getProperty("user.dir"), absoluteLocation.toFile().exists());
+			addToClasspath(javaProject, JavaCore.newLibraryEntry(absoluteLocation, null, null));
 		}
 
 		return project;

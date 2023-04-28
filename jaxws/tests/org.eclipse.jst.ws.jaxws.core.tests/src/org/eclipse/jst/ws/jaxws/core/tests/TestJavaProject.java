@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2020 Shane Clarke and Others.
+ * Copyright (c) 2009, 2023 Shane Clarke and Others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,11 @@ package org.eclipse.jst.ws.jaxws.core.tests;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IWorkspaceDescription;
@@ -41,7 +46,7 @@ public class TestJavaProject extends TestProject {
 	private static final String[] ADDITIONAL_REQUIRED_BUNDLES = new String[]{"javax.xml.ws", "javax.jws"};
 	private IJavaProject javaProject;
     
-    public TestJavaProject(String projectName) throws CoreException {
+    public TestJavaProject(String projectName) throws CoreException, IOException {
         super(projectName);
         javaProject = JavaCore.create(getProject());
         addProjectNature(getProject(), JavaCore.NATURE_ID);
@@ -53,12 +58,23 @@ public class TestJavaProject extends TestProject {
 		for (String bundleName : ADDITIONAL_REQUIRED_BUNDLES) {
 			Bundle bundle = Platform.getBundle(bundleName);
 			assertNotNull("The " + bundleName + " bundle was not found", bundle);
+			IPath absoluteLocation = null;
 			String location = bundle.getLocation();
 			if (location.indexOf("reference:file:") >= 0) {
 				location = location.substring(location.indexOf("reference:file:") + "reference:file:".length());
 			}
-			IPath absoluteLocation = Path.fromOSString(location).makeAbsolute();
-			assertTrue("Expected jar at " + absoluteLocation + " does not exist", absoluteLocation.toFile().exists());
+			absoluteLocation = Path.fromOSString(location).makeAbsolute();
+			if (!absoluteLocation.toFile().exists()) {
+				absoluteLocation = Path.fromOSString(System.getProperty("user.dir")).addTrailingSeparator().append(location);
+				if (!absoluteLocation.toFile().exists()) {
+					absoluteLocation = Path.fromOSString(System.getProperty("user.home")).addTrailingSeparator().append(location);
+					if (!absoluteLocation.toFile().exists()) {
+						absoluteLocation = Path.fromOSString(Platform.getInstallLocation().getURL().getFile().toString()).addTrailingSeparator().append(location);
+					}
+				}
+			}
+
+			assertTrue("Expected jar at " + absoluteLocation + " does not exist based on bundle location " + bundle.getLocation() + " from " + System.getProperty("user.dir"), absoluteLocation.toFile().exists());
 			addToClasspath(javaProject, JavaCore.newLibraryEntry(absoluteLocation, null, null));
 		}
 

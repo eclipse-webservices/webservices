@@ -51,12 +51,23 @@ public class TestJavaProject extends TestProject {
         for (String bundleName : ADDITIONAL_REQUIRED_BUNDLES) {
 			Bundle bundle = Platform.getBundle(bundleName);
 			assertNotNull("The " + bundleName + " bundle was not found", bundle);
+			IPath absoluteLocation = null;
 			String location = bundle.getLocation();
 			if (location.indexOf("reference:file:") >= 0) {
 				location = location.substring(location.indexOf("reference:file:") + "reference:file:".length());
 			}
-			IPath absoluteLocation = Path.fromOSString(location).makeAbsolute();
-			assertTrue("Expected jar at " + absoluteLocation + " does not exist", absoluteLocation.toFile().exists());
+			absoluteLocation = Path.fromOSString(location).makeAbsolute();
+			if (!absoluteLocation.toFile().exists()) {
+				absoluteLocation = Path.fromOSString(System.getProperty("user.dir")).addTrailingSeparator().append(location);
+				if (!absoluteLocation.toFile().exists()) {
+					absoluteLocation = Path.fromOSString(System.getProperty("user.home")).addTrailingSeparator().append(location);
+					if (!absoluteLocation.toFile().exists()) {
+						absoluteLocation = Path.fromOSString(Platform.getInstallLocation().getURL().getFile().toString()).addTrailingSeparator().append(location);
+					}
+				}
+			}
+
+			assertTrue("Expected jar at " + absoluteLocation + " does not exist based on bundle location " + bundle.getLocation() + " from " + System.getProperty("user.dir"), absoluteLocation.toFile().exists());
 			addToClasspath(javaProject, JavaCore.newLibraryEntry(absoluteLocation, null, null));
 		}
 

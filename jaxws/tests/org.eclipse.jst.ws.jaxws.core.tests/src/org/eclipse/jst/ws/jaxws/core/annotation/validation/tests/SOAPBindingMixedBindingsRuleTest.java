@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Shane Clarke.
+ * Copyright (c) 2009, 2023 Shane Clarke.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -67,8 +67,7 @@ public class SOAPBindingMixedBindingsRuleTest extends AbstractSOAPBindingValidat
         return classContents.toString();
     }
 
-    public void testSOAPBindingMixedBindingsRule() {
-        try {
+    public void testSOAPBindingMixedBindingsRule() throws CoreException, OperationCanceledException, InterruptedException {
             assertNotNull(annotation);
             assertEquals(SOAPBinding.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
@@ -97,12 +96,5 @@ public class SOAPBindingMixedBindingsRuleTest extends AbstractSOAPBindingValidat
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
             assertEquals(JAXWSCoreMessages.SOAPBINDING_NO_MIXED_BINDINGS,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
-        } catch (CoreException ce) {
-            fail(ce.getLocalizedMessage());
-        } catch (OperationCanceledException oce) {
-            fail(oce.getLocalizedMessage());
-        } catch (InterruptedException ie) {
-            fail(ie.getLocalizedMessage());
-        }
     }
 }

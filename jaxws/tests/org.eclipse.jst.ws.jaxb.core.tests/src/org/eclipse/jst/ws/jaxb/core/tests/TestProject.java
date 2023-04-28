@@ -26,6 +26,9 @@ public class TestProject {
     public TestProject(String projectName) throws CoreException {
         IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
         testProject = workspaceRoot.getProject(projectName);
+        if (testProject.isAccessible()) {
+        	testProject.delete(true, true, null);
+        }
         testProject.create(monitor);
         testProject.open(monitor);
     }
