@@ -149,6 +149,9 @@ public class ValidationTestsSetUp extends MockObjectTestCase
 			{
 				String newContent = "package " + testPack.getElementName() + ";\n" + contents;
 				FileUtils.getInstance().setCompilationUnitContent(cu, newContent, false, monitor);
+				ICompilationUnit workingCopy = cu.getWorkingCopy(null);
+				workingCopy.getBuffer().setContents(newContent);
+				workingCopy.save(null, true);
 				cu.getResource().getProject().build(IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor);
 			}
 		};

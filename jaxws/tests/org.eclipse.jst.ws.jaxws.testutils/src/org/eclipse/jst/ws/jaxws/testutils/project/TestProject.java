@@ -50,6 +50,7 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jst.ws.jaxws.testutils.jobs.JobUtils;
 import org.eclipse.jst.ws.jaxws.testutils.threading.TestContext;
 import org.eclipse.jst.ws.jaxws.utils.ContractChecker;
+import org.eclipse.jst.ws.jaxws.utils.logging.Logger;
 import org.osgi.framework.Bundle;
 
 /**
@@ -263,6 +264,7 @@ public class TestProject
 			{
 				try {
 					project.refreshLocal(IResource.DEPTH_INFINITE, null);
+//					project.getWorkspace().delete(new IResource[] {project}, true, null);
 					project.delete(true, true, null);
 				} catch (ResourceException re) {
 					/*
@@ -271,6 +273,7 @@ public class TestProject
 					 * after the test has completed and a failure will not report a problem in the test.
 			    	 * Only ResourceException is caught in order not to hide unexpected errors.	
 					 */
+					new Logger().logError("ResourceException tearing down test fixture projects", re);
 					return;
 				}
 			}
@@ -321,7 +324,13 @@ public class TestProject
 			public void run(IProgressMonitor monitor) throws CoreException
 			{
 				IFolder folder = project.getFolder(name);
-				folder.create(false, true, null);
+				// if we're not forcing creation, allow it to already exist
+				if (!folder.exists()) {
+					folder.create(false, true, null);
+				}
+				else {
+					new Logger().logWarn("Project already has a folder for sources: " + folder.getFullPath());
+				}
 				createdRoot[0] = javaProject.getPackageFragmentRoot(folder);
 
 				IClasspathEntry[] oldEntries = javaProject.getRawClasspath();

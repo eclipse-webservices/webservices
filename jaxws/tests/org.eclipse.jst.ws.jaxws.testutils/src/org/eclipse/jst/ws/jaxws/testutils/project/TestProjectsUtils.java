@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2020 by SAP AG, Walldorf, and Others.
+ * Copyright (c) 2009, 2023 by SAP AG, Walldorf, and Others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -345,15 +345,8 @@ public class TestProjectsUtils
 	
 	private static void executeWorkspaceRunnable(final IWorkspaceRunnable runnable, final IProgressMonitor monitor) throws CoreException
 	{
-		if(Display.getCurrent() == null)
-		{
-			// Execute the runnable in the current (non-UI) thread
-			workspace().run(runnable, monitor);
-		}
-		else
-		{
-			runInTestContext(runnable, monitor);
-		}
+		// Execute the runnable in the current (non-UI) thread as a blocking operation
+		workspace().run(runnable, monitor);
 	}
 	
 	private static void runInTestContext(final IWorkspaceRunnable runnable, final IProgressMonitor pm) throws CoreException
@@ -373,7 +366,9 @@ public class TestProjectsUtils
 		};
 		try
 		{
-			TestContext.run(textCtxRunnable, true, pm, PlatformUI.getWorkbench().getDisplay());
+			// block and run <b>now</b>
+			textCtxRunnable.run(pm);
+//			TestContext.run(textCtxRunnable, true, pm, PlatformUI.getWorkbench().getDisplay());
 		} catch (InvocationTargetException e)
 		{
 			if(e.getCause() instanceof CoreException)

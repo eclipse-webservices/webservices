@@ -1,8 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
+Automatic-Module-Name: org.eclipse.jst.ws.axis.creation.ui
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.jst.ws.axis.creation.ui; singleton:=true
-Bundle-Version: 1.0.1100.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
@@ -22,16 +23,16 @@ Require-Bundle: org.eclipse.ui;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.jem;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.jem.workbench;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.wst.ws.parser;bundle-version="[1.0.100,2.0.0)",
- org.eclipse.jst.ws;bundle-version="[1.0.101,1.1.0)",
- org.eclipse.jst.ws.consumption.ui;bundle-version="[1.1.300,1.2.0)",
- org.eclipse.jst.ws.consumption;bundle-version="[1.0.101,1.1.0)",
+ org.eclipse.jst.ws;bundle-version="[1.1.0,2.0.0)",
+ org.eclipse.jst.ws.consumption.ui;bundle-version="[1.2.0,2.0.0)",
+ org.eclipse.jst.ws.consumption;bundle-version="[1.1.0,2.0.0)",
  org.eclipse.jst.ws.ui;bundle-version="[1.0.100,2.0.0)",
- org.eclipse.jst.ws.axis.consumption.core;bundle-version="[1.0.101,1.1.0)",
- org.eclipse.jst.ws.axis.consumption.ui;bundle-version="[1.0.101,1.1.0)",
+ org.eclipse.jst.ws.axis.consumption.core;bundle-version="[1.1.0,2.0.0)",
+ org.eclipse.jst.ws.axis.consumption.ui;bundle-version="[1.1.0,2.0.0)",
  org.eclipse.core.runtime;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.jem.workbench;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.wst.command.env.core;bundle-version="[1.0.101,2.0.0)",
- org.eclipse.wst.command.env;bundle-version="[1.0.101,1.1.0)",
+ org.eclipse.wst.command.env;bundle-version="[1.0.600,2.0.0)",
  org.eclipse.wst.command.env.ui;bundle-version="[1.0.101,2.0.0)",
  org.eclipse.wst.server.core;bundle-version="[1.0.102,2.0.0)",
  org.eclipse.wst.ws;bundle-version="[1.0.100,1.2.0)",
@@ -39,14 +40,14 @@ Require-Bundle: org.eclipse.ui;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.jst.j2ee.core;bundle-version="[1.1.0,2.0.0)",
  org.eclipse.jst.j2ee.web;bundle-version="[1.2.0,2.0.0)",
  javax.wsdl;bundle-version="[1.6.2,1.7.0)",
- org.eclipse.jst.common.frameworks;bundle-version="[1.1.0,1.2.0)",
+ org.eclipse.jst.common.frameworks;bundle-version="[1.2.0,2.0.0)",
  org.eclipse.jem.util;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.wst.common.frameworks;bundle-version="[1.1.0,2.0.0)",
- org.eclipse.wst.common.environment;bundle-version="[1.0.100,1.1.0)",
+ org.eclipse.wst.common.environment;bundle-version="[1.1.0,2.0.0)",
  org.eclipse.debug.core;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.jdt.core;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.wst.wsdl;bundle-version="[1.2.0,2.0.0)",
  org.eclipse.wst.common.project.facet.core;bundle-version="[1.4.100,2.0.0)",
  org.eclipse.jst.jee;bundle-version="[1.0.300,2.0.0)"
 Eclipse-LazyStart: true
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavSE-1.8

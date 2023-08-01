@@ -1,8 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
+Automatic-Module-Name: org.eclipse.jst.ws.cxf.ui
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.jst.ws.cxf.ui;singleton:=true
-Bundle-Version: 1.0.500.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: org.eclipse.jst.ws.internal.cxf.ui.CXFUIPlugin
 Bundle-Vendor: %pluginProvider
 Bundle-Localization: plugin
@@ -10,17 +11,15 @@ Export-Package: org.eclipse.jst.ws.internal.cxf.ui;x-internal:=true,
  org.eclipse.jst.ws.internal.cxf.ui.dialogs;x-internal:=true,
  org.eclipse.jst.ws.internal.cxf.ui.viewers;x-friends:="org.eclipse.jst.ws.cxf.consumption.ui,org.eclipse.jst.ws.cxf.creation.ui",
  org.eclipse.jst.ws.internal.cxf.ui.widgets;x-friends:="org.eclipse.jst.ws.cxf.consumption.ui,org.eclipse.jst.ws.cxf.creation.ui"
-Require-Bundle: org.eclipse.jst.ws.cxf.core;bundle-version="[1.0.0,1.2.0)",
+Require-Bundle: org.eclipse.jst.ws.cxf.core;bundle-version="[1.2.0,2.0.0)",
  org.eclipse.core.resources;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.ui.ide;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.jdt.core;bundle-version="[3.4.0,4.0.0)",
  javax.wsdl;bundle-version="[1.6.2,1.7.0)",
  org.eclipse.jdt.ui;bundle-version="[3.4.0,4.0.0)",
- org.eclipse.wst.command.env;bundle-version="[1.0.305,1.1.0)",
- org.eclipse.wst.command.env.core;bundle-version="[1.0.204,2.0.0)",
- org.eclipse.jst.ws.jaxws.core;bundle-version="[1.0.0,1.1.0)",
- org.eclipse.wst.common.project.facet.ui;bundle-version="[1.3.0,1.5.0)"
-Ant-Version: Apache Ant 1.7.0
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Created-By: 1.5.0_14-b03 (Sun Microsystems Inc.)
+ org.eclipse.wst.command.env;bundle-version="[1.0.600,2.0.0)",
+ org.eclipse.wst.command.env.core;bundle-version="[1.1.0,2.0.0)",
+ org.eclipse.jst.ws.jaxws.core;bundle-version="[1.0.600,2.0.0)",
+ org.eclipse.wst.common.project.facet.ui;bundle-version="[1.5.0,2.0.0)"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy

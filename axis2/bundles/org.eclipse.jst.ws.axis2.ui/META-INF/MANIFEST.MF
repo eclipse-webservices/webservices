@@ -1,8 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
+Automatic-Module-Name: org.eclipse.jst.ws.axis2.ui
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.jst.ws.axis2.ui;singleton:=true
-Bundle-Version: 1.0.400.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: org.eclipse.jst.ws.axis2.ui.plugin.WebServiceAxis2UIPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
@@ -14,4 +15,4 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.jst.ws.axis2.ui.plugin,
  org.eclipse.jst.ws.internal.axis2.consumption.ui.preferences
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

@@ -90,7 +90,7 @@ public class JAXRSUIPlugin extends AbstractUIPlugin {
 	/**
 	 * Returns a shared image for the given name
 	 * <p>
-	 * Note: Images returned from this method will be automitically disposed of
+	 * Note: Images returned from this method will be automatically disposed of
 	 * when this plug-in shuts down. Callers must not dispose of these images
 	 * themselves.
 	 * </p>
