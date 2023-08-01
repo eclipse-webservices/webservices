@@ -10,10 +10,11 @@ Export-Package: org.jmock,
  org.jmock.util
 Bundle-Vendor: org.jmock
 Bundle-ClassPath: lib/jmock-core-1.2.0.jar
-Bundle-Version: 1.2.0
+Bundle-Version: 1.3.0
 Eclipse-BuddyPolicy: global
 Bundle-Name: JMock
 Bundle-ManifestVersion: 2
+Automatic-Module-Name: org.jmock
 Bundle-SymbolicName: org.jmock;singleton:=true
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 

@@ -4,8 +4,8 @@ Bundle-Name: %Bundle-Name.0
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-SymbolicName: org.eclipse.jst.ws.jaxws.dom.integration.tests
 Bundle-Localization: plugin
-Bundle-Version: 1.0.300.qualifier
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Version: 1.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.jst.ws.jaxws.dom.integration,
