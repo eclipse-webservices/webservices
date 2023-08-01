@@ -4,10 +4,10 @@ Bundle-Name: %Bundle-Name.0
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-SymbolicName: org.eclipse.jst.ws.jaxws.dom.ui;singleton:=true
 Bundle-Localization: plugin
-Bundle-Version: 1.0.101.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: org.eclipse.jst.ws.jaxws.dom.ui.internal.plugin.DomUi$Implementation
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.eclipse.jst.ws.jaxws.dom.ui;x-friends:="org.eclipse.jst.ws.jaxws.dom.integration,org.eclipse.jst.ws.jaxws.dom.integration.tests,org.eclipse.jst.ws.jaxws.dom.ui.tests",
  org.eclipse.jst.ws.jaxws.dom.ui.internal.impl;x-friends:="org.eclipse.jst.ws.jaxws.dom.ui.tests"
 Require-Bundle: org.eclipse.core.runtime,
