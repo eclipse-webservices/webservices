@@ -54,6 +54,7 @@
       <import plugin="org.eclipse.jst.ws.axis.consumption.core"/>
       <import plugin="org.eclipse.jst.ws.axis.consumption.ui"/>
       <import plugin="org.eclipse.jst.ws.axis.creation.ui"/>
+      <import plugin="org.apache.axis.ant"/>
    </requires>
 
 </feature>
