@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2006 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -138,7 +138,7 @@ public class ClasspathUtils {
 		if (needJavaClasspath) {
 			String[] javaClasspath;
 			try {
-				IJavaProject javaProj = (IJavaProject) project.getNature(JavaCore.NATURE_ID);
+				IJavaProject javaProj = JavaCore.create(project);
 				if (javaProj != null) {
 					javaClasspath = getClasspathForJavaProject(javaProj);
 					for (int j = 0; j < javaClasspath.length; j++) {

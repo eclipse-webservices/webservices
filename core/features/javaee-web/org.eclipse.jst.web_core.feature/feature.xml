@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jst.web_core.feature"
       label="%featureName"
-      version="3.33.0.qualifier"
+      version="3.34.0.qualifier"
       provider-name="%providerName"
       license-feature="org.eclipse.license"
       license-feature-version="0.0.0">
@@ -41,21 +41,14 @@
 
    <plugin
          id="jakarta.el"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
+
    <plugin
          id="jakarta.servlet"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
+
    <plugin
          id="jakarta.servlet.jsp"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
 </feature>

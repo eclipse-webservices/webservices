@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 WSO2 Inc. and others.
+ * Copyright (c) 2007, 2024 WSO2 Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -62,7 +62,7 @@ public class Axis2CoreUtils {
 	
 	public static void addResourcesFolderAsClassPath(IProject project){
 		try {
-			IJavaProject javaProject = (IJavaProject)project.getNature(JavaCore.NATURE_ID);
+			IJavaProject javaProject = JavaCore.create(project);
 			IClasspathEntry[] rawClasspath = javaProject.getRawClasspath();
 			List list = new LinkedList(java.util.Arrays.asList(rawClasspath));
 				String resourceName = "resources";
