@@ -137,17 +137,13 @@ public class ClasspathUtils {
 		// If there are Web or Java module in the project, get the project's Java classpath
 		if (needJavaClasspath) {
 			String[] javaClasspath;
-			try {
-				IJavaProject javaProj = JavaCore.create(project);
-				if (javaProj != null) {
-					javaClasspath = getClasspathForJavaProject(javaProj);
-					for (int j = 0; j < javaClasspath.length; j++) {
-						projectClasspath.add(javaClasspath[j]);
-					}
+			IJavaProject javaProj = JavaCore.create(project);
+			if (javaProj != null) {
+				javaClasspath = getClasspathForJavaProject(javaProj);
+				for (int j = 0; j < javaClasspath.length; j++) {
+					projectClasspath.add(javaClasspath[j]);
 				}
-			} catch (CoreException e) {
-				// not able to get Java classpath, just ignore
-			}	
+			}
 		}
 		
 		return (String[]) projectClasspath.toArray(new String[projectClasspath.size()]);
