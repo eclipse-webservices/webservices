@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 by SAP AG, Walldorf. 
+ * Copyright (c) 2009, 2024 by SAP AG, Walldorf and others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -39,12 +39,12 @@ public class SeiSerializerAdapterTest extends SerializerAdapterTestFixture
 		try {
 			new MySeiSerializerAdapter(resource).createIAnnotation((IServiceEndpointInterface)null, project.getJavaProject().getJavaModel());
 			fail("NullPointerException not thrown");
-		} catch (NullPointerException _) {}
+		} catch (NullPointerException e) {}
 		
 		try {
 			new MySeiSerializerAdapter(resource).createIAnnotation(sei, null);
 			fail("NullPointerException not thrown");
-		} catch (NullPointerException _) {}
+		} catch (NullPointerException e) {}
 	}
 
 	public void testCreateIAnnotationExplicitSei() throws JavaModelException 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 by SAP AG, Walldorf. 
+ * Copyright (c) 2009, 2024 by SAP AG, Walldorf and others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -43,12 +43,12 @@ public class WsSerializerAdapterTest extends SerializerAdapterTestFixture
 		try {
 			new MyWsSerializerAdapter(resource).createIAnnotation((IWebService)null, project.getJavaProject().getJavaModel());
 			fail("NullPointerException not thrown");
-		} catch (NullPointerException _) {}
+		} catch (NullPointerException e) {}
 		
 		try {
 			new MyWsSerializerAdapter(resource).createIAnnotation(ws, null);
 			fail("NullPointerException not thrown");
-		} catch (NullPointerException _) {}		
+		} catch (NullPointerException e) {}
 	}	
 	
 	public void testCreateIAnnotationIWebServiceExplicit() throws JavaModelException 

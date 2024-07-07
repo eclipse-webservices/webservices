@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 by SAP AG, Walldorf. 
+ * Copyright (c) 2009, 2024 by SAP AG, Walldorf and others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -99,7 +99,7 @@ public class ValidationTestsSetUp extends MockObjectTestCase
 		super.tearDown();
 		try {
 			disposeFixtureProjects();
-		} catch (Exception _) {}
+		} catch (Exception e) {}
 	}
 	
 	protected void disposeFixtureProjects() throws CoreException
