@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002, 2020 IBM Corporation and others.
+ * Copyright (c) 2002, 2024 IBM Corporation and others.
  * All rights reserved.   This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -19,14 +19,15 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Locale;
 
-import org.apache.http.Header;
-import org.apache.http.HttpException;
-import org.apache.http.HttpResponse;
-import org.apache.http.config.MessageConstraints;
-import org.apache.http.impl.conn.DefaultHttpResponseParserFactory;
-import org.apache.http.impl.io.HttpTransportMetricsImpl;
-import org.apache.http.impl.io.SessionInputBufferImpl;
-import org.apache.http.io.HttpMessageParser;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.HttpException;
+import org.apache.hc.core5.http.HttpResponse;
+import org.apache.hc.core5.http.config.Http1Config;
+import org.apache.hc.core5.http.impl.BasicHttpTransportMetrics;
+import org.apache.hc.core5.http.impl.io.DefaultHttpResponseParserFactory;
+import org.apache.hc.core5.http.impl.io.SessionInputBufferImpl;
+import org.apache.hc.core5.http.io.HttpMessageParser;
 
 import com.ibm.icu.text.SimpleDateFormat;
 import com.ibm.icu.util.StringTokenizer;
@@ -349,12 +350,12 @@ public class HttpHeadersValidator
 
   public static boolean validateHttpRequestHeaders(String headers)
   {
-    SessionInputBufferImpl buffer = new SessionInputBufferImpl(new HttpTransportMetricsImpl(), 2048);
-    buffer.bind(new ByteArrayInputStream(headers.getBytes()));
-    HttpMessageParser<HttpResponse> messageParser = DefaultHttpResponseParserFactory.INSTANCE.create(buffer, MessageConstraints.DEFAULT);
+    SessionInputBufferImpl buffer = new SessionInputBufferImpl(new BasicHttpTransportMetrics(), 2048);
+//    buffer.fillBuffer(new ByteArrayInputStream(headers.getBytes()));
+    HttpMessageParser<ClassicHttpResponse> messageParser = DefaultHttpResponseParserFactory.INSTANCE.create(Http1Config.custom().build());
     HttpResponse response;
 	try {
-		response = messageParser.parse();
+		response = messageParser.parse(buffer, new ByteArrayInputStream(headers.getBytes()));
 	}
 	catch (IOException e1) {
 		return false;
@@ -363,12 +364,12 @@ public class HttpHeadersValidator
 		return false;
 	}
 
-    if (!isHTTPVersion(response.getProtocolVersion().toString()))
+    if (response.getVersion()==null)
       return false;
 
     try
     {
-      for (Header httpHeader: response.getAllHeaders())
+      for (Header httpHeader: response.getHeaders())
       {
         String header = httpHeader.getName();
         String value = httpHeader.getValue();
