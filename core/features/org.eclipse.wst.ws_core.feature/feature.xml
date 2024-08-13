@@ -28,7 +28,6 @@
       <import plugin="org.apache.axis.ant"/>
       <import plugin="org.apache.commons.commons-codec"/>
       <import plugin="org.apache.commons.discovery"/>
-      <import plugin="org.apache.commons.commons-logging" version="1.0.4" match="greaterOrEqual"/>
       <import plugin="org.apache.wsil4j"/>
       <import plugin="org.uddi4j"/>
    </requires>
