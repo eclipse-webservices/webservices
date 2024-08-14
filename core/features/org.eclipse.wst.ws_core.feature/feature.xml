@@ -20,10 +20,10 @@
    </license>
 
    <requires>
-      <import plugin="javax.mail"/>
-      <import plugin="javax.xml.rpc"/>
-      <import plugin="javax.xml.soap" version="1.2.0" match="equivalent"/>
-      <import plugin="javax.wsdl" version="1.6.2" match="greaterOrEqual"/>
+      <import plugin="jakarta.mail-api"/>
+      <import plugin="javax.xml.rpc-api"/>
+      <import plugin="jakarta.xml.soap-api"/>
+      <import plugin="javax.wsdl" version="1.6.3" match="greaterOrEqual"/>
       <import plugin="org.apache.axis"/>
       <import plugin="org.apache.axis.ant"/>
       <import plugin="org.apache.commons.commons-codec"/>

@@ -36,14 +36,14 @@
          unpack="false"/>
 
    <plugin
-         id="javax.xml.ws"
+         id="jakarta.xml.ws-api"
          download-size="0"
          install-size="0"
-         version="2.1.0.qualifier"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="javax.jws"
+         id="jakarta.jws-api"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -57,14 +57,7 @@
          unpack="false"/>
 
    <plugin
-         id="jakarta.xml.bind"
-         download-size="0"
-         install-size="0"
-         version="2.3.3.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="javax.xml.stream"
+         id="jakarta.xml.bind-api"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -81,7 +74,7 @@
          id="javax.wsdl"
          download-size="0"
          install-size="0"
-         version="1.6.2.qualifier"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
