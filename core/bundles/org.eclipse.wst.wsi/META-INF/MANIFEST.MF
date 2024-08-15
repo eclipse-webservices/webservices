@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %_PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.wst.wsi; singleton:=true
 Automatic-Module-Name: org.eclipse.wst.wsi
-Bundle-Version: 1.1.600.qualifier
+Bundle-Version: 1.1.700.qualifier
 Bundle-Activator: org.eclipse.wst.wsi.internal.WSITestToolsPlugin
 Bundle-Vendor: %_PROVIDER_NAME
 Bundle-Localization: plugin
