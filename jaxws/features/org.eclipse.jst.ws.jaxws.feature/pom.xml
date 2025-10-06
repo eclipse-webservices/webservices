@@ -42,7 +42,7 @@
             </goals>
             <configuration>
               <excludes>
-                  <plugin id="jakarta.xml.bind"/>
+                  <plugin id="jakarta.xml.bind-api"/>
                   <plugin id="javax.xml.ws"/>
               </excludes>
             </configuration>
