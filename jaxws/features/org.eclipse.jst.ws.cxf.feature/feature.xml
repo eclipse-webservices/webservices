@@ -89,10 +89,10 @@
          unpack="false"/>
 
    <plugin
-         id="jakarta.xml.bind"
+         id="jakarta.xml.bind-api"
          download-size="0"
          install-size="0"
-         version="2.3.3.qualifier"
+         version="2.3.3"
          unpack="false"/>
 
    <plugin
