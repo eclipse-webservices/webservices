@@ -20,11 +20,8 @@
       %license
    </license>
 
-   <plugin
-         id="javax.wsdl"
-         download-size="0"
-         install-size="0"
-         version="1.5.1.qualifier"
-         unpack="false"/>
+   <requires>
+      <import plugin="javax.wsdl" version="1.6.3" match="compatible"/>
+   </requires>
 
 </feature>
