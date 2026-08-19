@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jst.ws.jaxws_sdk.feature"
       label="%featureName"
-      version="1.2.600.qualifier"
+      version="1.2.1300.qualifier"
       provider-name="%featureProvider"
       image="eclipse_update_120.jpg"
       license-feature="org.eclipse.license"
@@ -26,9 +26,6 @@
 
    <plugin
          id="org.eclipse.jst.ws.jaxws.doc.isv"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
 </feature>
