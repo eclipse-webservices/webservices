@@ -39,4 +39,16 @@
       <import plugin="org.eclipse.jst.standard.schemas"/>
    </requires>
 
+   <plugin
+         id="jakarta.el-api"
+         version="0.0.0"/>
+
+   <plugin
+         id="jakarta.servlet-api"
+         version="0.0.0"/>
+
+   <plugin
+         id="jakarta.servlet.jsp-api"
+         version="0.0.0"/>
+
 </feature>
