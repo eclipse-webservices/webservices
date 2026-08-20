@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.jst.ws.jaxws.core.tests
 Automatic-Module-Name: org.eclipse.jst.ws.jaxws.core.tests
-Bundle-Version: 1.1.1.qualifier
+Bundle-Version: 1.1.100.qualifier
 Bundle-Vendor: %pluginProvider
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.junit;bundle-version="3.8.0",
