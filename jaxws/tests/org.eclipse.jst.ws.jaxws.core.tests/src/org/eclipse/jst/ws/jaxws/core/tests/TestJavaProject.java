@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2023 Shane Clarke and Others.
+ * Copyright (c) 2009, 2026 Shane Clarke and Others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -43,7 +43,7 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.osgi.framework.Bundle;
 
 public class TestJavaProject extends TestProject {
-	private static final String[] ADDITIONAL_REQUIRED_BUNDLES = new String[]{"javax.xml.ws", "javax.jws"};
+	private static final String[] ADDITIONAL_REQUIRED_BUNDLES = new String[]{"javax.xml.ws", "javax.jws","jakarta.xml.ws-api", "jakarta.jws-api"};
 	private IJavaProject javaProject;
     
     public TestJavaProject(String projectName) throws CoreException, IOException {

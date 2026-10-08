@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2013 IBM Corporation and others.
+ * Copyright (c) 2003, 2026 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,6 @@ import javax.wsdl.Service;
 import javax.wsdl.extensions.soap.SOAPAddress;
 import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLReader;
-import javax.xml.namespace.QName;
 import org.apache.axis.wsdl.toJava.Utils;
 import org.eclipse.wst.wsdl.internal.impl.wsdl4j.WSDLFactoryImpl;
 import com.ibm.icu.text.Collator;
@@ -191,8 +190,7 @@ public class WSDLUtils {
     if (port != null && ns2pkgMap != null)
     {
       Binding binding = port.getBinding();
-      QName bndQName = binding.getQName();
-      String namespace = bndQName.getNamespaceURI();
+     String namespace = binding.getQName().getNamespaceURI();
       Object pkg = ns2pkgMap.get(namespace);
       if (pkg != null)
         return (String)pkg;
@@ -231,8 +229,7 @@ public static String getPackageNameForBindingImpl(Port port)
    {
 	  Binding binding = port.getBinding();
 //	  PortType portType = binding.getPortType();
-	  QName bndQName = binding.getQName();
-	  String namespace = bndQName.getNamespaceURI();
+	  String namespace = binding.getQName().getNamespaceURI();
 	  return namespaceURI2PackageName(namespace);
    }
    return "";
@@ -254,8 +251,7 @@ public static String getPortTypeNamespace(Definition definition)
       for (int i=0; i<port.getExtensibilityElements().size();i++) {
         if (port.getExtensibilityElements().get(i) instanceof SOAPAddress){ 
 	      PortType portType = port.getBinding().getPortType();
-	      QName bndQName = portType.getQName();
-	      namespace = bndQName.getNamespaceURI();
+	      namespace = portType.getQName().getNamespaceURI();
       	}  
 	  }
   	}

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Automatic-Module-Name: org.eclipse.jst.ws.axis.consumption.core
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.jst.ws.axis.consumption.core; singleton:=true
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 1.1.100.qualifier
 Bundle-Activator: org.eclipse.jst.ws.internal.axis.consumption.core.plugin.WebServiceAxisConsumptionCorePlugin
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %PLUGIN_PROVIDER
@@ -32,5 +32,9 @@ Require-Bundle: org.apache.ant;bundle-version="[1.10.0,2.0.0)",
  javax.wsdl;bundle-version="[1.6.2,1.7.0)",
  org.eclipse.wst.wsdl;bundle-version="[1.2.0,2.0.0)",
  com.ibm.icu;bundle-version="73.1.0"
+Import-Package: javax.xml.parsers;resolution:="optional",
+ org.xml.sax;resolution:="optional",
+ org.xml.sax.helpers;resolution:="optional",
+ javax.xml.namespace;resolution:="optional"
 Eclipse-LazyStart: true
 Bundle-RequiredExecutionEnvironment: JavaSE-17
