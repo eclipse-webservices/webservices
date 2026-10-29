@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.core.tests;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -43,7 +44,7 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.osgi.framework.Bundle;
 
 public class TestJavaProject extends TestProject {
-	private static final String[] ADDITIONAL_REQUIRED_BUNDLES = new String[]{"javax.xml.ws", "javax.jws","jakarta.xml.ws-api", "jakarta.jws-api"};
+	private static final String[] ADDITIONAL_REQUIRED_BUNDLES = new String[]{"jakarta.xml.ws-api:2.3.0", "jakarta.jws-api:2.1.0"};
 	private IJavaProject javaProject;
     
     public TestJavaProject(String projectName) throws CoreException, IOException {
@@ -56,26 +57,28 @@ public class TestJavaProject extends TestProject {
         createSourceFolder();
 
 		for (String bundleName : ADDITIONAL_REQUIRED_BUNDLES) {
-			Bundle bundle = Platform.getBundle(bundleName);
-			assertNotNull("The " + bundleName + " bundle was not found", bundle);
-			IPath absoluteLocation = null;
-			String location = bundle.getLocation();
-			if (location.indexOf("reference:file:") >= 0) {
-				location = location.substring(location.indexOf("reference:file:") + "reference:file:".length());
-			}
-			absoluteLocation = Path.fromOSString(location).makeAbsolute();
-			if (!absoluteLocation.toFile().exists()) {
-				absoluteLocation = Path.fromOSString(System.getProperty("user.dir")).addTrailingSeparator().append(location);
+			Bundle[] bundles = Platform.getBundles(bundleName.split(":")[0], bundleName.split(":")[1]);
+			assertFalse("The " + bundleName + " bundle was not found", bundles == null || bundles.length == 0);
+			for (Bundle bundle : bundles) {
+				IPath absoluteLocation = null;
+				String location = bundle.getLocation();
+				if (location.indexOf("reference:file:") >= 0) {
+					location = location.substring(location.indexOf("reference:file:") + "reference:file:".length());
+				}
+				absoluteLocation = Path.fromOSString(location).makeAbsolute();
 				if (!absoluteLocation.toFile().exists()) {
-					absoluteLocation = Path.fromOSString(System.getProperty("user.home")).addTrailingSeparator().append(location);
+					absoluteLocation = Path.fromOSString(System.getProperty("user.dir")).addTrailingSeparator().append(location);
 					if (!absoluteLocation.toFile().exists()) {
-						absoluteLocation = Path.fromOSString(Platform.getInstallLocation().getURL().getFile().toString()).addTrailingSeparator().append(location);
+						absoluteLocation = Path.fromOSString(System.getProperty("user.home")).addTrailingSeparator().append(location);
+						if (!absoluteLocation.toFile().exists()) {
+							absoluteLocation = Path.fromOSString(Platform.getInstallLocation().getURL().getFile().toString()).addTrailingSeparator().append(location);
+						}
 					}
 				}
-			}
 
-			assertTrue("Expected jar at " + absoluteLocation + " does not exist based on bundle location " + bundle.getLocation() + " from " + System.getProperty("user.dir"), absoluteLocation.toFile().exists());
-			addToClasspath(javaProject, JavaCore.newLibraryEntry(absoluteLocation, null, null));
+				assertTrue("Expected jar at " + absoluteLocation + " does not exist based on bundle location " + bundle.getLocation() + " from " + System.getProperty("user.dir"), absoluteLocation.toFile().exists());
+				addToClasspath(javaProject, JavaCore.newLibraryEntry(absoluteLocation, null, null));
+			}
 		}
 
 		addToClasspath(javaProject, getJREContainerEntry());
