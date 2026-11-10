@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Automatic-Module-Name: org.eclipse.jst.ws.cxf.creation.ui
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.jst.ws.cxf.creation.ui;singleton:=true
-Bundle-Version: 1.1.100.qualifier
+Bundle-Version: 1.1.200.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: org.eclipse.jst.ws.internal.cxf.creation.ui.CXFCreationUIPlugin
 Bundle-Vendor: %pluginProvider
@@ -37,6 +37,6 @@ Require-Bundle: org.eclipse.ui;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.ui.editors;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.core.filesystem;bundle-version="[1.2.0,2.0.0)",
  org.eclipse.jdt.apt.core;bundle-version="[3.3.100,4.0.0)",
- javax.jws;bundle-version="[2.0.0,3.0.0)"
+ jakarta.jws-api;bundle-version="[2.0.0,3.0.0)"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
